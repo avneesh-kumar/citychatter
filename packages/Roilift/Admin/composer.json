@@ -1,0 +1,15 @@
+{
+    "name": "roilift/admin",
+    "description": "This package will handle everything for admin section",
+    "autoload": {
+        "psr-4": {
+            "Roilift\\Admin\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ROILift"
+        }
+    ],
+    "require": {}
+}
