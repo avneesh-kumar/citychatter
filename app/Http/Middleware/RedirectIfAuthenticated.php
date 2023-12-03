@@ -24,7 +24,7 @@ class RedirectIfAuthenticated
                 return redirect(RouteServiceProvider::HOME);
             }
 
-            if (Auth::guard('admin')->check()) {
+            if (Auth::guard('admin')->check() && $request->routeIs('admin.*')) {
                 return redirect()->route('admin.category');
             }
         }

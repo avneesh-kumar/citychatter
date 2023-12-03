@@ -16,6 +16,16 @@ class Category extends Model
     protected $casts = [
         'status' => 'boolean'
     ];
+
+    public function publicPosts()
+    {
+        return $this->hasMany(Post::class)->where('status', 1);
+    }
+
+    public function privatePosts()
+    {
+        return $this->hasMany(Post::class)->where('status', 0);
+    }
 }
 
 ?>
