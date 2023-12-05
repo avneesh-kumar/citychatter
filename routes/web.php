@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+// use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +22,14 @@ Route::group([
     'namespace' => 'App\Http\Controllers',
     'middleware' => 'auth',
 ], function () {
+
+    Route::group([
+        'namespace' => 'Account',
+        'prefix' => 'account',
+    ], function () {
+        Route::get('/profile', 'ProfileController@index')->name('profile');
+    });
+
     Route::get('/feed/{type?}', 'App\Http\Controllers\FeedController@index')->name('feed');
     
     Route::get('/post/create', 'App\Http\Controllers\PostController@create')->name('post.create');

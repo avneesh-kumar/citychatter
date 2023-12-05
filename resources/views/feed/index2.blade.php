@@ -1,76 +1,54 @@
 @extends('layouts.app') 
 @section('content')
 
-   @if($feeds->count() > 0)
-      <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-3 mb-4">
-         @foreach($feeds as $feed)
-            <div class="h-auto mb-4 shadow-lg">
-               <div class="items-center justify-center h-56 bg-gray-50">
-                  <img class="object-cover w-full h-full" src="{{ asset($feed['image']) }}" alt="{{ $feed['title'] }}" />
-               </div>
-               <div class="p-2">
-                  <div class="mt-2">
-                     <a href="{{ route('post', $feed->slug) }}">
-                        <h1 class="text-xl font-bold text-blue-500 hover:underline">
-                              {{ $feed->title }}
-                        </h1>
-                     </a>
-                     <p class="text-gray-700 dark:text-gray-300">
-                        {{ implode(' ', array_slice(explode(' ', $feed->content), 0, 20)) }}...
-                     </p>
-                  </div>
-                  <!-- <div class="my-4">
-                     <div class="grid grid-cols-3 gap-4">
-                        <div class="text-left">
-                           <span class="text-blue-400 cursor-pointer">
-                              Like
-                           </span>
+<div class="md:flex">
+    <div class="md:flex-1 flex-auto ">
+        @if($feeds->count() > 0)
+            @foreach ($feeds as $feed)
+                <div class="flex w-3/4 mb-8">
+                    <div class="flex-none">
+                        <a href="{{ route('user.profile') }}">
+                            <img src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="" class="rounded-full w-12 h-12">
+                        </a>
+                    </div>
+                    <div class="flex-auto ml-2">
+                        <div class="flex">
+                            <div class="flex-auto">
+                                <div class="font-semibold">
+                                    <a href="{{ route('user.profile') }}">
+                                        {{ $feed->user->name }}
+                                    </a>
+                                </div>
+                                <div class="text-xs text-gray-500">{{ $feed->created_at->diffForHumans() }}</div>
+                            </div>
                         </div>
-                        <div class="text-center">
-                           <span class="text-blue-400 cursor-pointer">
-                              Comment
-                           </span>
+                        <div class="text-sm my-2">
+                            <a href="{{ route('post', $feed->slug) }}" class="text-red-600">
+                                {{ $feed->title }}
+                            </a>
                         </div>
-                        <div class="text-right">
-                           <span class="text-blue-400 cursor-pointer">
-                              Share
-                           </span>
+                        <div class="flex-none w-2/3 h-1/2">
+                            <a href="{{ route('post', $feed->slug) }}">
+                                <img src="{{ asset($feed->image ) }}" alt="" class="w-full h-full">
+                            </a>
+                            <div class="text-sm my-2">
+                                {{ Str::limit($feed->content, 210) }}
+                            </div>
                         </div>
-                     </div>
-                  </div> -->
-                  <div class="my-4">
-                     <div class="grid grid-cols-2">
-                        <div class="text-left">
-                           <span class="text-gray-400 ">
-                              {{ $feed['location'] }}
-                           </span>
-                        </div>
-                        <div class="text-right">
-                           <span class="text-gray-400 ">
-                              {{ date('d M Y h:m:i', strtotime($feed['created_at']))  }}
-                           </span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+                    </div>
+                </div>
+            @endforeach
+        @else
+            <div class="text-center text-2xl text-red-500 p-4 font-semibold">
+                No Post Found
             </div>
-         @endforeach
-      </div>
+        @endif
+    </div>
 
-      <div class="flex items-center justify-center">
-         {{ $feeds->links() }}
-      </div>
-   @else
-      <div class="flex items-center justify-center h-screen">
-         <div class="text-center">
-            <h1 class="text-2xl font-bold text-red-600">
-               No feeds found
-            </h1>
-            <p class="text-red-700">
-               Please try again later
-            </p>
-         </div>
-      </div>
-   @endif
+    <!-- show pagination links -->
+</div>
+<div class="md:flex-1 flex-auto">
+    {{ $feeds->links() }}
+</div>
 
 @endsection

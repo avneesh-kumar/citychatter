@@ -1,37 +1,61 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="text-center p-4">
+<!-- <div class="text-center p-4">
     <div class="text-2xl text-red-500 p-4 font-semibold">
         CityChatter
     </div>
     <div class="">
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Non asperiores quam modi et fugiat voluptatum ex ullam ducimus soluta. Porro, consectetur amet rerum facilis dignissimos repudiandae nemo delectus ratione veritatis.
     </div>
-</div>
+</div> -->
 <div class="md:flex">
     <div class="md:flex-1 flex-auto ">
-        <div class="flex gap-3 columns-3">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                @foreach ($feeds as $feed)
-                    <div class="w-full p-4">
-                        <div class="bg-white rounded-lg shadow-lg">
-                            <div class="bg-cover bg-center h-56 p-4">
-                                <img src="{{ $feed['image'] }}" alt="{{ $feed['title'] }}">
-                            </div>
-                            <div class="p-4">
-                                <p class="uppercase tracking-wide text-sm font-bold text-gray-700">{{ $feed['title'] }}</p>
-                                <p class="text-md text-gray-900">{{ $feed['description'] }}</p>
-                                <p class="text-gray-700">{{ $feed['location'] }}</p>
-                                <div class="mt-4">
-                                    <a href="#" class="text-red-500 hover:underline">Read more</a>
+        @if($feeds->count() > 0)
+            @foreach ($feeds as $feed)
+                <div class="flex w-3/4 mb-8">
+                    <div class="flex-none">
+                        <a href="{{ route('user.profile') }}">
+                            <img src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="" class="rounded-full w-12 h-12">
+                        </a>
+                    </div>
+                    <div class="flex-auto ml-2">
+                        <div class="flex">
+                            <div class="flex-auto">
+                                <div class="font-semibold">
+                                    <a href="{{ route('user.profile') }}">
+                                        {{ $feed->user->name }}
+                                    </a>
                                 </div>
+                                <div class="text-xs text-gray-500">{{ $feed->created_at->diffForHumans() }}</div>
+                            </div>
+                        </div>
+                        <div class="text-sm my-2">
+                            <a href="{{ route('post', $feed->slug) }}" class="text-red-600">
+                                {{ $feed->title }}
+                            </a>
+                        </div>
+                        <div class="flex-none w-2/3 h-1/2 object-cover">
+                            <a href="{{ route('post', $feed->slug) }}">
+                                <img src="{{ $feed->image }}" alt="" class="w-full h-full">
+                            </a>
+                            <div class="text-sm my-2">
+                                {{ Str::limit($feed->content, 210) }}
                             </div>
                         </div>
                     </div>
-                @endforeach
+                </div>
+            @endforeach
+        @else
+            <div class="text-center text-2xl text-red-500 p-4 font-semibold">
+                No Post Found
             </div>
-        </div>    
+        @endif
     </div>
+
+    <!-- show pagination links -->
+</div>
+<div class="md:flex-1 flex-auto">
+    {{ $feeds->links() }}
 </div>
 @endsection

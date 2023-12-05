@@ -1,42 +1,39 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-3 mb-4">
+<div>
+    <a href="{{ url()->previous() }}" class="text-red-600 hover:underline">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"  stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+    </a>
+</div>
+<div class="grid lg:grid-cols-1 md:grid-cols-2 grid-cols-1 gap-0 mb-4"> 
     <div class="h-auto mb-4 ">
         <div class="mb-4">
-            <h1 class="text-xl font-bold text-gray-900 dark:text-gray-100">
+            <div class="flex">
+                <img src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="" class="rounded-full w-12 h-12">
+                <div class="ml-2">
+                    <a href="{{ route('user.profile') }}" class="text-red-600 hover:underline align-baseline ">
+                        {{ $post->user->name }}
+                    </a>
+                    <div class="text-xs text-gray-500">
+                        {{ $post->created_at->diffForHumans() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mb-4">
+            <h1 class="text-2xl text-red-700">
                 {{ $post["title"] }}
             </h1>
         </div>
         <div class="items-center justify-center h-auto shadow-lg bg-gray-50">
             <img class="object-cover w-full h-full" src="{{ asset($post['image']) }}" alt="{{ $post['title'] }}" />
         </div>
-        <!-- <div class="grid lg:grid-cols-6 md:grid-cols-4 grid-cols-3 gap-1 m-4">
-            <div class="flex items-center justify-center h-auto shadow-lg">
-                <img class="object-cover w-full h-full" src="{{ $post['image'] }}" alt="{{ $post['title'] }}" />
-            </div>
-            <div class="flex items-center justify-center h-auto shadow-lg">
-                <img class="object-cover w-full h-full" src="{{ $post['image'] }}" alt="{{ $post['title'] }}" />
-            </div>
-            <div class="flex items-center justify-center h-auto shadow-lg">
-                <img class="object-cover w-full h-full" src="{{ $post['image'] }}" alt="{{ $post['title'] }}" />
-            </div>
-            <div class="flex items-center justify-center h-auto shadow-lg">
-                <img class="object-cover w-full h-full" src="{{ $post['image'] }}" alt="{{ $post['title'] }}" />
-            </div>
-            <div class="flex items-center justify-center h-auto shadow-lg">
-                <img class="object-cover w-full h-full" src="{{ $post['image'] }}" alt="{{ $post['title'] }}" />
-            </div>
-            <div class="flex items-center justify-center h-auto shadow-lg">
-                <img class="object-cover w-full h-full" src="{{ $post['image'] }}" alt="{{ $post['title'] }}" />
-            </div>
-            <div class="flex items-center justify-center h-auto shadow-lg">
-                <img class="object-cover w-full h-full" src="{{ $post['image'] }}" alt="{{ $post['title'] }}" />
-            </div>
-        </div> -->
         <div class="mt-4">
-            <p class="text-gray-700 dark:text-gray-300">
-                {{ $post["content"] }}
+            <p class="text-gray-700 text-justify">
+                {!! $post["content"] !!}
             </p>
         </div>
         <div class="p-2">
@@ -110,40 +107,28 @@
                     <button type="button" class="px-4 py-2 bg-blue-500 text-white shadow-sm rounded-md" id="commentSubmitBtn">Comment</button>
                 </div>
             </div>
-
-            <!-- show comments  -->
             <div class="w-full ">
-                @foreach($post->postComments as $comment)
-                    <div class="p-2 shadow-sm rounded-sm">
-                        <div class="flex">
-                            <img src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="" class="w-8 h-8 object-cover">
-                            <div class="ml-2">
-                                <span class="text-red-600">{{ $comment->user->name }}</span> <br>
-                                <span>{{ $comment['comment'] }}</span>
+                @if($post->postComments)
+                    @foreach($post->postComments as $comment)
+                        <div class="p-2 shadow-sm rounded-sm">
+                            <div class="flex">
+                                <img src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="" class="w-8 h-8 object-cover">
+                                <div class="ml-2">
+                                    <span class="text-red-600">
+                                        <a href="{{ route('user.profile') }}">
+                                            {{ $comment->user->name }}
+                                        </a>
+                                    </span> <br>
+                                    <span>{{ $comment['comment'] }}</span>
+                                </div>
                             </div>
                         </div>
+                    @endforeach
+                @else
+                    <div>
+                        No comments
                     </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
-
-    <div class="h-auto mb-4 ">
-        <div class="flex items-center justify-center">
-            <div class="w-1/2 p-4 shadow-lg">
-                <div class="flex justify-center">
-                    <img src="https://st3.depositphotos.com/15648834/17930/v/450/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" class="h-36 w-36 rounded-full shadow-md" alt="">
-                </div>
-                <div class="block text-center">
-                    <a href="{{ route('user.profile') }}">
-                        <h1 class="text-xl font-bold text-red-400 mt-2">
-                            Avneesh kumar
-                        </h1>
-                    </a>
-                    <p class="text-gray-700 ">
-                        avneesh@roilift.com
-                    </p>
-                </div>
+                @endif
             </div>
         </div>
     </div>
