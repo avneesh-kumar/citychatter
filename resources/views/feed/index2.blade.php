@@ -2,20 +2,24 @@
 @section('content')
 
 <div class="md:flex">
-    <div class="md:flex-1 flex-auto ">
+    <div class="md:flex-1 flex-auto">
         @if($feeds->count() > 0)
             @foreach ($feeds as $feed)
-                <div class="flex w-3/4 mb-8">
+                <div class="flex p-8">
                     <div class="flex-none">
-                        <a href="{{ route('user.profile') }}">
-                            <img src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="" class="rounded-full w-12 h-12">
+                        <a href="{{ route('user.profile', $feed->user->profile->username ) }}">
+                            @if($feed->user->profile->avatar)
+                                <img src="{{ asset($feed->user->profile->avatar) }}" alt="{{ $feed->user->name }}" class="w-12 h-12 shadow-xl rounded-full object-cover">
+                            @else
+                                <img src="{{ asset('images/avatar.jpg') }}" alt="{{ $feed->user->name }}" class="w-12 h-12 shadow-xl rounded-full object-cover">
+                            @endif
                         </a>
                     </div>
-                    <div class="flex-auto ml-2">
+                    <div class="flex-auto ml-2" >
                         <div class="flex">
                             <div class="flex-auto">
                                 <div class="font-semibold">
-                                    <a href="{{ route('user.profile') }}">
+                                    <a href="{{ route('user.profile', $feed->user->profile->username) }}" class="text-red-600 hover:underline">
                                         {{ $feed->user->name }}
                                     </a>
                                 </div>
@@ -27,13 +31,13 @@
                                 {{ $feed->title }}
                             </a>
                         </div>
-                        <div class="flex-none w-2/3 h-1/2">
+                        <div class="flex-none h-96 ">
                             <a href="{{ route('post', $feed->slug) }}">
-                                <img src="{{ asset($feed->image ) }}" alt="" class="w-full h-full">
+                                <img src="{{ asset($feed->image) }}" alt="" class="object-cover w-full h-full">
                             </a>
-                            <div class="text-sm my-2">
-                                {{ Str::limit($feed->content, 210) }}
-                            </div>
+                        </div>
+                        <div class="text-sm my-2 ">
+                            {{ Str::limit($feed->content, 180) }}
                         </div>
                     </div>
                 </div>
@@ -44,10 +48,15 @@
             </div>
         @endif
     </div>
+    <div class="w-1/3 border-2 border-gray-900">
+        <div class="text-center">
+            Advertisement
+        </div>
+    </div>
 
     <!-- show pagination links -->
 </div>
-<div class="md:flex-1 flex-auto">
+<div class="md:flex-1 flex-auto" style="margin-top: 100px;">
     {{ $feeds->links() }}
 </div>
 

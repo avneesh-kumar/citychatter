@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Roilift\Admin\Models\UserProfile;
 
 class UserController extends Controller
 {
@@ -11,10 +12,9 @@ class UserController extends Controller
 
     }
 
-    public function profile()
+    public function profile($username)
     {
-        $feeds = auth()->user()->posts()->orderBy('created_at', 'desc')->get();
-
-        return view('user.profile', compact('feeds'));
+        $userProfile = UserProfile::where('username', $username)->firstOrFail();
+        return view('user.profile', compact('userProfile'));
     }
 }

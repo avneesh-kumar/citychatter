@@ -16,7 +16,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css"  rel="stylesheet" />
     </head>
     <body class="font-sans antialiased">
-        <div>
+        <div class="">
             @include('layouts.nav')
             @include('layouts.sidebar')
             <div class=" p-2 ">
@@ -27,7 +27,9 @@
                 </div>
             </div>
         </div>
-        @include('layouts.footer')
+        <div>
+            @include('layouts.footer')
+        </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
     </body>

@@ -13,16 +13,25 @@
             <div class="">
                 <div class="flex items-center justify-center">
                     <div class="w-56 h-56">
-                        <img src="https://pixinvent.com/materialize-material-design-admin-template/app-assets/images/user/12.jpg" alt="" class="shadow-xl rounded-full">
+                        @if($userProfile->avatar)
+                            <img src="{{ asset($userProfile->avatar) }}" alt="{{ $userProfile->user->name }}" class="shadow-xl rounded-full object-cover w-full h-full">
+                        @else
+                            <img src="{{ asset('images/avatar.jpg') }}" alt="{{ $userProfile->user->name }}" class="shadow-xl rounded-full object-cover w-full h-full">
+                        @endif
                     </div>
                 </div>
                 <div class="flex items-center justify-center">
                     <div class="text-center">
                         <h1 class="text-lg font-bold text-red-500 dark:text-gray-100 mt-4">
-                            @avneesh
+                            {{ '@' . $userProfile->username }}
                         </h1>
                         <p class="text-gray-700 dark:text-gray-300">
-                            avneesh@roilift.com
+                            <a href="mailto:{{ auth()->user()->email }}">
+                                {{ $userProfile->user->email }}
+                            </a>
+                        </p>
+                        <p>
+                            {{ $userProfile->bio }}
                         </p>
                     </div>
                 </div>
@@ -34,7 +43,7 @@
             <div class="md:flex mt-16 justify-center">
                 <div class="w-2/3 " style="margin: auto;">
                     <div class="grid grid-cols-1 gap-28 mb-4">
-                        @foreach($feeds as $feed)
+                        @foreach($userProfile->user->posts as $feed)
                         <div class="h-auto mb-4 shadow-lg">
                             <div class="items-center justify-center h-56 bg-gray-50">
                                 <img class="object-cover w-full h-full" src="{{ asset($feed['image'] )}}" alt="{{ $feed['title'] }}" />
@@ -89,7 +98,7 @@
                     </div>
                 </div>
                 <div class="w-1/3 border- text-center">
-                    Other Information
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque unde excepturi recusandae praesentium sequi nulla ab numquam modi maiores fuga molestiae, quo, eius libero doloremque nemo nihil. Perferendis, atque hic!
                 </div>
             </div>
         </div>

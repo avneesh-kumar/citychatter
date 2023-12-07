@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Roilift\Admin\Models\Post;
 use Laravel\Sanctum\HasApiTokens;
+use Roilift\Admin\Models\UserProfile;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -44,8 +45,13 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
     public function posts()
     {
-        return $this->hasMany(Post::class)->where('user_id', auth()->id());
+        return $this->hasMany(Post::class);
     }
 }

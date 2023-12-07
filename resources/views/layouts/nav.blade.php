@@ -39,28 +39,29 @@
                         <div>
                             <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                                 <span class="sr-only">Open user menu</span>
-                                <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                                @if(auth()->user()->profile->avatar)
+                                    <img src="{{ asset(auth()->user()->profile->avatar) }}" alt="{{ auth()->user()->name }}" class="h-8 w-8 shadow-xl rounded-full object-cover">
+                                @else
+                                    <img src="{{ asset('images/avatar.jpg') }}" alt="{{ auth()->user()->name }}" class="h-8 w-8 shadow-xl rounded-full object-cover">
+                                @endif
                             </button>
                         </div>
                         <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
                             <div class="px-4 py-3" role="none">
                                 <p class="text-sm text-gray-900 dark:text-white" role="none">
                                     @if(Auth::check())
-                                        {{ Auth::user()->name }}
-                                    @endif
-                                </p>
-                                <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                                    @if(Auth::check())
-                                        {{ Auth::user()->email }}
+                                        <a href="{{ route('user.profile', auth()->user()->profile->username) }}">
+                                            {{ Auth::user()->name }}
+                                        </a>
                                     @endif
                                 </p>
                             </div>
                             <ul class="py-1" role="none">
                                 <li>
-                                    <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">Profile</a>
+                                    <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">Profile Settings</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Reset Password</a>
+                                    <a href="{{ route('reset-password') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Reset Password</a>
                                 </li>
                                 <li>
                                     <form action="{{ route('logout') }}" method="post">
@@ -72,9 +73,9 @@
                         </div>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="p-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" data-modal-target="login-modal" data-modal-toggle="login-modal">Login </a>
+                    <a href="{{ route('login') }}" class="p-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" >Login </a>
 
-                    <a href="{{ route('register') }}" class="ml-2 p-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" data-modal-target="register-modal" data-modal-toggle="register-modal">Signup </a>
+                    <a href="{{ route('register') }}" class="ml-2 p-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" >Signup </a>
                 @endif
             </div>
         </div>

@@ -28,6 +28,11 @@ Route::group([
         'prefix' => 'account',
     ], function () {
         Route::get('/profile', 'ProfileController@index')->name('profile');
+        Route::post('/profile/store', 'ProfileController@store')->name('profile.store');
+        Route::get('/profile/username', 'ProfileController@username')->name('username');
+        Route::get('/reset-password', 'ResetPassword@index')->name('reset-password');
+        Route::post('/reset-password/store', 'ResetPassword@store')->name('reset-password.store');
+
     });
 
     Route::get('/feed/{type?}', 'App\Http\Controllers\FeedController@index')->name('feed');
@@ -40,7 +45,7 @@ Route::group([
     Route::post('/post/comment', 'App\Http\Controllers\PostController@comment')->name('post.comment');
 
     Route::get('/user', 'App\Http\Controllers\UserController@index')->name('user');
-    Route::get('/user/profile', 'App\Http\Controllers\UserController@profile')->name('user.profile');
+    Route::get('/user/profile/{username}', 'App\Http\Controllers\UserController@profile')->name('user.profile');
     
     Route::post('/logout', 'Account\LogoutController@index')->name('logout');
 });
