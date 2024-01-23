@@ -22,6 +22,25 @@
                 </div>
                 <div class="flex items-center justify-center">
                     <div class="text-center">
+                        @if(auth()->user()->id !== $userProfile->user->id)
+                            <div class="mt-4">
+                                @if($isFollowing)
+                                    <button type="button" data-user-id="{{ $userProfile->user_id}}" class="unfollowBtn bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded">
+                                        Following
+                                    </button>
+                                    <button type="button" data-user-id="{{ $userProfile->user_id}}" class="hidden followBtn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                                        Follow
+                                    </button>
+                                @else
+                                    <button type="button" data-user-id="{{ $userProfile->user_id}}" class="followBtn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                                        Follow
+                                    </button>
+                                    <button type="button" data-user-id="{{ $userProfile->user_id}}" class="hidden unfollowBtn bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded">
+                                        Following
+                                    </button>
+                                @endif
+                            </div>
+                        @endif
                         <h1 class="text-lg font-bold text-red-500 dark:text-gray-100 mt-4">
                             {{ '@' . $userProfile->username }}
                         </h1>
@@ -98,10 +117,108 @@
                     </div>
                 </div>
                 <div class="w-1/3 border- text-center">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque unde excepturi recusandae praesentium sequi nulla ab numquam modi maiores fuga molestiae, quo, eius libero doloremque nemo nihil. Perferendis, atque hic!
+                    <div class="mb-4">
+                        <h1 class="text-2xl font-bold text-red-500 dark:text-gray-100">
+                            Followers
+                        </h1>
+                    </div>
+                    @if(count($followers) != 0)
+                        @foreach($followers as $follower)
+                            <div class="mb-4">
+                                <div class="flex flex-row justify-between">
+                                    <div class="flex flex-row">
+                                        <div class="w-12 h-12">
+                                            @if($follower->followedBy->profile->avatar)
+                                                <img src="{{ asset($follower->followedBy->profile->avatar) }}" alt="{{ $follower->followedBy->name }}" class="shadow-xl rounded-full object-cover w-full h-full">
+                                            @else
+                                                <img src="{{ asset('images/avatar.jpg') }}" alt="{{ $follower->followedBy->name }}" class="shadow-xl rounded-full object-cover w-full h-full">
+                                            @endif
+                                        </div>
+                                        <div class="ml-4 mt-2 text-left">
+                                            <h1 class="text-lg font-bold text-red-500 dark:text-gray-100">
+                                                <a href="{{ route('user.profile', $follower->followedBy->profile->username) }}">
+                                                    {{ $follower->followedBy->name }}
+                                                </a>
+                                            </h1>
+                                            <p class="text-gray-700 dark:text-gray-300">
+                                                <a href="{{ route('user.profile', $follower->followedBy->profile->username) }}">
+                                                    {{ '@' . $follower->followedBy->profile->username }}
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        @if($follower->followedBy->id !== auth()->user()->id)
+                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="followBtn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                                                Follow
+                                            </button>
+                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="hidden unfollowBtn bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded">
+                                                Following
+                                            </button>
+                                        @else
+                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="unfollowBtn bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded">
+                                                Following
+                                            </button>
+                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="hidden followBtn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                                                Follow
+                                            </button>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <div>
+                            <p class="text-gray-700 dark:text-gray-300">
+                                No other followers yet.
+                            </p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 
+
+    <script>
+        $(document).ready(function() {
+            $('.followBtn').click(function() {
+                let $this = this;
+                var id = $(this).data('user-id');
+                $.ajax({
+                    url: '{{ route('user.follow') }}',
+                    type: 'POST',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        id: id,
+                    },
+                    success: function(response) {
+                        if(response.status == 'success') {
+                            $($this).next().removeClass('hidden');
+                            $($this).addClass('hidden');
+                        }
+                    }
+                });
+            });
+
+            $('.unfollowBtn').click(function() {
+                let $this = this;
+                var id = $(this).data('user-id');
+                $.ajax({
+                    url: '{{ route('user.unfollow') }}',
+                    type: 'POST',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        id: id,
+                    },
+                    success: function(response) {
+                        if(response.status == 'success') {
+                            $($this).prev().removeClass('hidden');
+                            $($this).addClass('hidden');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

@@ -4,7 +4,7 @@
 @if(isset($breadcrumbs) && $breadcrumbs)
     <div class="flex items-center justify-between p-4 bg-white border-b border-gray-200">
         <div class="flex items-center space-x-2 text-sm">
-            <a href="{{ route('feed') }}" class="text-red-600 hover:underline">
+            <a href="{{ route('post') }}" class="text-red-600 hover:underline">
                 Chatter
             </a>
             @foreach($breadcrumbs as $breadcrumb)
@@ -21,15 +21,15 @@
 
 <div class="md:flex">
     <div class="md:flex-1 flex-auto">
-        @if($feeds->count() > 0)
-            @foreach ($feeds as $feed)
+        @if($posts->count() > 0)
+            @foreach ($posts as $post)
                 <div class="flex p-8">
                     <div class="flex-none">
-                        <a href="{{ route('user.profile', $feed->user->profile->username ) }}">
-                            @if($feed->user->profile->avatar)
-                                <img src="{{ asset($feed->user->profile->avatar) }}" alt="{{ $feed->user->name }}" class="w-12 h-12 shadow-xl rounded-full object-cover">
+                        <a href="{{ route('user.profile', $post->user->profile->username ) }}">
+                            @if($post->user->profile->avatar)
+                                <img src="{{ asset($post->user->profile->avatar) }}" alt="{{ $post->user->name }}" class="w-12 h-12 shadow-xl rounded-full object-cover">
                             @else
-                                <img src="{{ asset('images/avatar.jpg') }}" alt="{{ $feed->user->name }}" class="w-12 h-12 shadow-xl rounded-full object-cover">
+                                <img src="{{ asset('images/avatar.jpg') }}" alt="{{ $post->user->name }}" class="w-12 h-12 shadow-xl rounded-full object-cover">
                             @endif
                         </a>
                     </div>
@@ -37,25 +37,25 @@
                         <div class="flex">
                             <div class="flex-auto">
                                 <div class="font-semibold">
-                                    <a href="{{ route('user.profile', $feed->user->profile->username) }}" class="text-red-600 hover:underline">
-                                        {{ $feed->user->name }}
+                                    <a href="{{ route('user.profile', $post->user->profile->username) }}" class="text-red-600 hover:underline">
+                                        {{ $post->user->name }}
                                     </a>
                                 </div>
-                                <div class="text-xs text-gray-500">{{ $feed->created_at->diffForHumans() }}</div>
+                                <div class="text-xs text-gray-500">{{ $post->created_at->diffForHumans() }}</div>
                             </div>
                         </div>
                         <div class="text-sm my-2">
-                            <a href="{{ route('post', $feed->slug) }}" class="text-red-600">
-                                {{ $feed->title }}
+                            <a href="{{ route('post', $post->slug) }}" class="text-red-600">
+                                {{ $post->title }}
                             </a>
                         </div>
                         <div class="flex-none h-96 ">
-                            <a href="{{ route('post', $feed->slug) }}">
-                                <img src="{{ asset($feed->image) }}" alt="" class="object-cover w-full h-full">
+                            <a href="{{ route('post', $post->slug) }}">
+                                <img src="{{ asset($post->image) }}" alt="" class="object-cover w-full h-full">
                             </a>
                         </div>
                         <div class="text-sm my-2 ">
-                            {{ Str::limit($feed->content, 180) }}
+                            {{ Str::limit($post->content, 180) }}
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
     <!-- show pagination links -->
 </div>
 <div class="md:flex-1 flex-auto" style="margin-top: 100px;">
-    {{ $feeds->links() }}
+    {{ $posts->links() }}
 </div>
 
 @endsection

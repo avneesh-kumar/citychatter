@@ -13,10 +13,12 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home');
 Route::get('/plain', 'App\Http\Controllers\HomeController@plain')->name('plain');
 Route::get('/search', 'App\Http\Controllers\SearchController@index')->name('search');
+Route::get('/reset-password/{token}', 'App\Http\Controllers\ResetPasswordController@index')->name('reset-password');
+Route::post('/reset-password/store', 'App\Http\Controllers\ResetPasswordController@store')->name('reset-password.store');
+
 
 Route::group([
     'namespace' => 'App\Http\Controllers',
@@ -30,10 +32,13 @@ Route::group([
         Route::get('/profile', 'ProfileController@index')->name('profile');
         Route::post('/profile/store', 'ProfileController@store')->name('profile.store');
         Route::get('/profile/username', 'ProfileController@username')->name('username');
-        Route::get('/reset-password', 'ResetPassword@index')->name('reset-password');
-        Route::post('/reset-password/store', 'ResetPassword@store')->name('reset-password.store');
+        Route::get('/reset-password', 'ResetPassword@index')->name('account.reset-password');
+        Route::post('/reset-password/store', 'ResetPassword@store')->name('account.reset-password.store');
 
+        
     });
+    
+    Route::get('/category/search', 'CategoryController@search')->name('category.search');
 
     Route::get('/feed/{type?}', 'App\Http\Controllers\FeedController@index')->name('feed');
     
@@ -46,6 +51,8 @@ Route::group([
 
     Route::get('/user', 'App\Http\Controllers\UserController@index')->name('user');
     Route::get('/user/profile/{username}', 'App\Http\Controllers\UserController@profile')->name('user.profile');
+    Route::post('/user/follow', 'App\Http\Controllers\UserController@follow')->name('user.follow');
+    Route::post('/user/unfollow', 'App\Http\Controllers\UserController@unfollow')->name('user.unfollow');
     
     Route::post('/logout', 'Account\LogoutController@index')->name('logout');
 });
@@ -58,6 +65,8 @@ Route::group([
     Route::post('/login', 'LoginController@authenticate')->name('login.authenticate');
     Route::get('/register', 'RegisterController@index')->name('register');
     Route::post('/register', 'RegisterController@store')->name('register.store');
+    Route::get('/lost-password', 'LostPasswordController@index')->name('lost-password');
+    Route::post('/lost-password/email', 'LostPasswordController@email')->name('lost-password.email');
 });
 
 // Route::get('/dashboard', function () {

@@ -20,8 +20,27 @@ class FeedController extends Controller
     {
         $categories = $this->categoryRepository->all();
 
+        $breadcrumbs = [];
+
         if($slug) {
             $category = Category::where('slug', $slug)->first();
+
+            if($category->parent_id) {
+                $parent = $category->parent;
+
+                $breadcrumbs[] = [
+                    'name' => $parent->name,
+                    'url' => route('feed', $parent->slug)
+                ];
+            }
+
+            $breadcrumbs[] = [
+                'name' => $category->name,
+                'url' => route('feed', $category->slug)
+            ];
+
+
+
             $feeds = Post::where('category_id', $category->id)
             ->where('status', true)
             ->orderBy('updated_at', 'desc')
@@ -31,7 +50,7 @@ class FeedController extends Controller
             ->orderBy('updated_at', 'desc')
             ->paginate(20);
         }
-
-        return view('feed.index2', compact('categories', 'feeds'));
+        
+        return view('feed.index2', compact('categories', 'feeds', 'slug', 'breadcrumbs'));
     }
 }

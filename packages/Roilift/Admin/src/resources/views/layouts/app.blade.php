@@ -21,13 +21,13 @@
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     </head>
 <body>
-    <div class="h-16 bg-blue-600 w-full">
+    <div class="h-16 bg-white w-full shadow-lg">
         <div class="mx-6 h-full flex items-center">
             <div class="flex-1 text-left">
-                <a href="{{ route('admin.category') }}" class="text-white text-2xl font-bold">{{ config('app.name') }}</a>
+                <a href="{{ route('admin.category') }}" class="text-red-600 text-2xl font-bold">{{ config('app.name') }}</a>
             </div>
             <div class="flex-1 text-right">
-                <a href="{{ url(env('APP_URL')) }}" target="_blank" class="text-white text-xl font-bold">Website</a>
+                <a href="{{ url(env('APP_URL')) }}" target="_blank" class="text-red-600 text-xl font-bold">Website</a>
             </div>
         </div>
     </div>

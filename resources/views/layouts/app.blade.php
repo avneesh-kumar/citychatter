@@ -20,7 +20,7 @@
             @include('layouts.nav')
             @include('layouts.sidebar')
             <div class=" p-2 ">
-                <div class="p-4 sm:ml-64">
+                <div class="p-4 sm:ml-64 min-h-screen ">
                     <div class="p-4 rounded-lg mt-14">
                         @yield('content')
                     </div>

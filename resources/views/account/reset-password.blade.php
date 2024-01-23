@@ -8,7 +8,7 @@
                 Reset Password
             </h1>
         </div>
-        <form action="{{ route('reset-password.store') }}" method="post" class="space-y-4" enctype="multipart/form-data">
+        <form action="{{ route('account.reset-password.store') }}" method="post" class="space-y-4" enctype="multipart/form-data">
             @csrf
             <div>
                 <label for="old_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Old Password

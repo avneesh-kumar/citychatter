@@ -10,12 +10,18 @@ class Category extends Model
         'name',
         'slug',
         'description',
-        'status'
+        'status',
+        'parent_id',
     ];
 
     protected $casts = [
         'status' => 'boolean'
     ];
+
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
 
     public function publicPosts()
     {

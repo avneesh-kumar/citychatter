@@ -32,9 +32,11 @@ Route::group([
 
     
     Route::get('/user', 'UserController@index')->name('user');
-    Route::get('/user/register', 'UserController@register')->name('user.register');
+    Route::get('/user/create/', 'UserController@create')->name('user.create');
+    Route::get('/user/edit/{id}', 'UserController@edit')->name('user.edit');
     Route::post('/user/store', 'UserController@store')->name('user.store');
     Route::get('/user/get', 'UserController@getUser')->name('user.get');
+    Route::post('/user/delete', 'UserController@destroy')->name('user.delete');
     
 
 

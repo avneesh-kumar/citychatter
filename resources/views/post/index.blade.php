@@ -42,7 +42,7 @@
                         <img src="{{ asset($post->image) }}" alt="" class="object-cover w-full h-full">
                     </a>
                     <div class="text-sm my-2 h-auto text-justify">
-                        {!! $post->content !!}
+                        {!! nl2br($post->content) !!}
                     </div>
                 </div>
 

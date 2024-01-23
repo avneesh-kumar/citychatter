@@ -53,6 +53,18 @@
                 @endif
             </div>
 
+            <div class="hidden" id="child-category-block">
+                <label for="sub_category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub Category
+                    <span class="text-red-500"> *</span>
+                </label>
+                <select name="sub_category" id="sub_category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required>
+                    <option value="">Select Sub Category</option>
+                </select>
+                @if ($errors->has('sub_category'))
+                    <span class="text-red-600 text-sm">{{ $errors->first('sub_category') }}</span>
+                @endif
+            </div>
+
             <div>
                 <label for="location" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Location
                     <span class="text-red-500"> *</span>
@@ -92,7 +104,31 @@
             </div>
         </form>
     </div>
-        
+    
+    <script>
+        document.getElementById('category').addEventListener('change', function(e) {
+            $.ajax({
+                url: "{{ route('category.search') }}",
+                type: 'GET',
+                data: {
+                    id: this.value
+                },
+                success: function(response) {
+                    if(response.status) {
+                        var html = '<option value="">Select Sub Category</option>';
+                        response.categories.forEach(function(category) {
+                            html += '<option value="' + category.id + '">' + category.name + '</option>';
+                        });
+                        document.getElementById('child-category-block').classList.remove('hidden');
+                        document.getElementById('sub_category').innerHTML = html;
+                    } else {
+                        document.getElementById('child-category-block').classList.add('hidden');
+                    }
+                }
+            }); 
+        });
+    </script>
+
     <script>
         document.getElementById('title').addEventListener('keyup', function(e) {
             document.getElementById('slug').value = slugify(this.value);
@@ -110,8 +146,8 @@
     </script>
     <script>
         function initAutocomplete() {
-            // var input = document.getElementById('location');
-            // var autocomplete = new google.maps.places.Autocomplete(input);
+            var input = document.getElementById('location');
+            var autocomplete = new google.maps.places.Autocomplete(input);
         }
     </script>
 

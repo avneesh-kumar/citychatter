@@ -10,7 +10,9 @@ use Roilift\Admin\Interfaces\CategoryRepositoryInterface;
 
 class CategoryController extends Controller
 {
-    public function __construct(protected CategoryRepositoryInterface $categoryRepository)
+    public function __construct(
+        protected CategoryRepositoryInterface $categoryRepository
+    )
     {
     }
 
@@ -34,7 +36,8 @@ class CategoryController extends Controller
     {
         view()->share('title', 'Create Category');
         $backUrl = request()->headers->get('referer');
-        return view('admin::category.create', compact('backUrl'));
+        $categories = $this->categoryRepository->all();
+        return view('admin::category.create', compact('backUrl', 'categories'));
     }
 
     public function edit()
@@ -51,7 +54,8 @@ class CategoryController extends Controller
             'name' => 'required',
             'slug' => 'required|unique:categories,slug,' . request('id'),
             'description' => 'nullable',
-            'status' => 'required'
+            'status' => 'required',
+            'parent_id' => 'nullable'
         ]);
 
         if(request('id')) {

@@ -114,16 +114,27 @@
         </form>
     </div>
     
-
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAP_API_KEY') }}&libraries=places"></script>
+    
     <script>
         $('document').ready(function() {
             if(navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
-                    console.log(position);
                     $('input[name="latitude"]').val(position.coords.latitude);
                     $('input[name="longitude"]').val(position.coords.longitude);
                 });
             }
+
+            // search location using google map
+            var input = document.getElementById('location');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.addListener('place_changed', function() {
+                var place = autocomplete.getPlace();
+                $('input[name="latitude"]').val(place.geometry.location.lat());
+                $('input[name="longitude"]').val(place.geometry.location.lng());
+            });
+
+
 
             $('#username').on('keyup', function() {
                 var username = $(this).val();

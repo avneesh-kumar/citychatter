@@ -3,9 +3,9 @@
 @section('content')
     <div class="flex justify-center items-center h-screen">
         <div class="w-full m-4 md:w-1/4 md:m-0">
-            <div class="bg-white shadow-sm shadow-blue-600 rounded px-8 pt-6 pb-8 mb-4">
+            <div class="bg-white shadow-xl shadow-red-600 rounded px-8 pt-6 pb-8 mb-4">
                 <h1 class="text-center mb-4">
-                    <a href="{{ route('admin.login') }}" class="text-2xl text-blue-600 font-bold">
+                    <a href="{{ route('admin.login') }}" class="text-2xl text-red-600 font-bold">
                         {{ config('app.name') }}
                     </a>
                 </h1>
@@ -58,7 +58,7 @@
                     <!-- create button for login -->
                     <div class="text-right">
                         <button
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                             type="submit"
                         >
                             Login

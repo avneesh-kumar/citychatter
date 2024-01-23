@@ -11,7 +11,7 @@ class HomeController extends Controller
     {
         $feeds = Post::where('status', true)
             ->orderBy('updated_at', 'desc')
-            ->paginate(20);
+            ->paginate(15);
         return view('home', compact('feeds'));
     }
 

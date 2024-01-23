@@ -61,7 +61,7 @@
                                     <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">Profile Settings</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('reset-password') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Reset Password</a>
+                                    <a href="{{ route('account.reset-password') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Reset Password</a>
                                 </li>
                                 <li>
                                     <form action="{{ route('logout') }}" method="post">

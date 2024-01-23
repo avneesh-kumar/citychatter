@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Account;
 
-use App\Http\Controllers\Controller;
+use App\Mail\Registration;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -27,6 +29,8 @@ class RegisterController extends Controller
             'user_id' => $user->id,
             'username' => $this->createUsername($user->name)
         ]);
+
+        Mail::to($user->email)->send(new Registration([]));
 
         auth()->login($user);
 

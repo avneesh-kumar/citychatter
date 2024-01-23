@@ -9,6 +9,11 @@
                     <h2 class="text-2xl text-red-500 font-bold border-b-2 border-red-600">
                         Sign in
                     </h2>
+                    @if ($errors->has('invalid'))
+                        <div class="text-center p-1 mt-2">
+                            <span class="text-red-600 text-sm font-semibold ">{{ $errors->first('invalid') }}</span>
+                        </div>
+                    @endif
                     <form class="mt-8 space-y-6" action="{{ route('login.authenticate') }}" method="post">
                         @csrf
                         <div>
@@ -26,7 +31,7 @@
                             <div class="ms-3 text-sm">
                                 <label for="remember" class="font-medium text-gray-500 dark:text-gray-400">Remember this device</label>
                             </div>
-                            <a href="#" class="ms-auto text-sm font-medium text-red-600 hover:underline dark:text-red-500">Lost Password?</a>
+                            <a href="{{ route('lost-password') }}" class="ms-auto text-sm font-medium text-red-600 hover:underline dark:text-red-500">Lost Password?</a>
                         </div>
 
                         <div class="flex items-start">

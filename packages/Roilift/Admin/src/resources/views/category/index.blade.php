@@ -8,10 +8,10 @@
             </h1>
         </div>
         <div class="flex-1 items-end text-right">
-            <button type="button"  class="float-right hover:bg-blue-700 bg-blue-600 text-white font-bold py-2 px-4 rounded text-xs ml-2" data-drawer-target="drawer-filter" data-drawer-show="drawer-filter" data-drawer-placement="right" aria-controls="drawer-filter">
+            <button type="button"  class="float-right hover:bg-red-700 bg-red-600 text-white font-bold py-2 px-4 rounded text-xs ml-2" data-drawer-target="drawer-filter" data-drawer-show="drawer-filter" data-drawer-placement="right" aria-controls="drawer-filter">
                 <i class="fa-solid fa-filter"></i>&nbsp; Filter
             </button>
-            <a href="{{ route('admin.category.create') }}" class="float-right hover:bg-blue-700 bg-blue-600 text-white font-bold py-2 px-4  rounded text-xs">
+            <a href="{{ route('admin.category.create') }}" class="float-right hover:bg-red-700 bg-red-600 text-white font-bold py-2 px-4  rounded text-xs">
                 <i class="fa-solid fa-plus"></i>&nbsp; Add Category
             </a>
         </div>
@@ -22,18 +22,18 @@
                 
                 <div class="p-2 m-2">
                     <label for="name">Name</label>
-                    <input type="text" name="name" id="name" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none focus:ring focus:ring-2 focus:ring-blue-600 w-full p-2 rounded-lg" value="{{ request('name') ? request('name') : '' }}" />
+                    <input type="text" name="name" id="name" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none focus:ring focus:ring-2 focus:ring-red-600 w-full p-2 rounded-lg" value="{{ request('name') ? request('name') : '' }}" />
                 </div>
                 <div class="p-2 m-2">
                     <label for="status">Status</label>
-                    <select name="status" id="status" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none focus:ring focus:ring-2 focus:ring-blue-600 w-full p-2 rounded-lg">
+                    <select name="status" id="status" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none focus:ring focus:ring-2 focus:ring-red-600 w-full p-2 rounded-lg">
                         <option value="">Select Status</option>
                         <option value="1" {{ request('status') == 1 ? 'selected' : '' }}>Active</option>
                         <option value="0" {{ request('status') == 0 ? 'selected' : '' }}>Inactive</option>
                     </select>
                 </div>
                 <div class="mb-4 p-4 text-left">
-                    <button type="submit" class="text-white bg-blue-600 hover:bg-blue-500 font-bold py-2 px-4 rounded text-xs">Search</button>
+                    <button type="submit" class="text-white bg-red-600 hover:bg-red-500 font-bold py-2 px-4 rounded text-xs">Search</button>
                     <a href="{{ route('admin.category') }}" class="text-white bg-gray-500 hover:bg-gray-300 font-bold py-2 px-4 rounded text-xs ml-1 float-right">Reset</a>
                 </div>
             </form>
@@ -75,7 +75,7 @@
                                         {{ $category->status == 1 ? 'Active' : 'Inactive' }}
                                     </td>
                                     <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                        <a href="{{ route('admin.category.edit', ['id' => $category->id]) }}" class="text-blue-600 hover:text-blue-900">
+                                        <a href="{{ route('admin.category.edit', ['id' => $category->id]) }}" class="text-red-600 hover:text-red-900">
                                             <i class="fa-solid fa-edit"></i>
                                         </a>
                                         <form action="{{ route('admin.category.delete') }}" method="post" class="inline-block" id="delete-form-{{ $category->id }}" >
