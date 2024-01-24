@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Registration;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Roilift\Admin\Models\Post;
@@ -18,5 +19,11 @@ class SearchController extends Controller
 
                     // put check for location filter
         return view('search.index', compact('posts'));
+    }
+
+    public function test()
+    {
+        die('what are you doing?');
+        // Mail::to('dev@avneeshkumar.in')->send(new Registration([]));
     }
 }

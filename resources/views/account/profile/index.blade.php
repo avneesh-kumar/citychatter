@@ -118,12 +118,12 @@
     
     <script>
         $('document').ready(function() {
-            if(navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    $('input[name="latitude"]').val(position.coords.latitude);
-                    $('input[name="longitude"]').val(position.coords.longitude);
-                });
-            }
+            // if(navigator.geolocation) {
+            //     navigator.geolocation.getCurrentPosition(function(position) {
+            //         $('input[name="latitude"]').val(position.coords.latitude);
+            //         $('input[name="longitude"]').val(position.coords.longitude);
+            //     });
+            // }
 
             // search location using google map
             var input = document.getElementById('location');

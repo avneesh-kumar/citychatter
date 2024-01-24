@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('slug')->unique()->nullable();
             $table->text('content')->nullable();
             $table->string('image')->nullable();
-            $table->string('latitute')->nullable();
+            $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->string('location')->nullable();
             $table->integer('distance')->nullable();

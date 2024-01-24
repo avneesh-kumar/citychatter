@@ -22,4 +22,29 @@
         <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
         <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="https://flowbite.com/" class="hover:underline">CityChatter</a>. All Rights Reserved.</span>
     </div>
+
+    <script>
+        $('document').ready(function() {
+            @if (!session('latitude') && !session('longitude'))
+                if(navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        $.ajax({
+                            url: "{{ route('currentlocation') }}",
+                            type: "POST",
+                            data: {
+                                latitude: latitude,
+                                longitude: longitude,
+                                _token: "{{ csrf_token() }}"
+                            },
+                            success: function(response) {
+                                console.log(response);
+                            }
+                        });
+                    });
+                }
+            @endif
+        });
+    </script>
 </footer>

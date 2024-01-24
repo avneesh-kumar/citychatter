@@ -13,11 +13,15 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/test', 'App\Http\Controllers\SearchController@test')->name('test');
+
 Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home');
 Route::get('/plain', 'App\Http\Controllers\HomeController@plain')->name('plain');
 Route::get('/search', 'App\Http\Controllers\SearchController@index')->name('search');
 Route::get('/reset-password/{token}', 'App\Http\Controllers\ResetPasswordController@index')->name('reset-password');
 Route::post('/reset-password/store', 'App\Http\Controllers\ResetPasswordController@store')->name('reset-password.store');
+Route::post('/currentlocation', 'App\Http\Controllers\HomeController@currentlocation')->name('currentlocation');
 
 
 Route::group([

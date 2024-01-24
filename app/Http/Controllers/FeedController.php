@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Roilift\Admin\Interfaces\CategoryRepositoryInterface;
 use Roilift\Admin\Models\Category;
 use Roilift\Admin\Models\Post;
+use Roilift\Admin\Models\UserFollow;
 
 class FeedController extends Controller
 {
@@ -21,7 +22,7 @@ class FeedController extends Controller
         $categories = $this->categoryRepository->all();
 
         $breadcrumbs = [];
-
+        $followers = UserFollow::where('followed_to', auth()->user()->id)->pluck('followed_by')->toArray();
         if($slug) {
             $category = Category::where('slug', $slug)->first();
 
@@ -39,14 +40,15 @@ class FeedController extends Controller
                 'url' => route('feed', $category->slug)
             ];
 
-
-
             $feeds = Post::where('category_id', $category->id)
+            ->whereIn('user_id', $followers)
             ->where('status', true)
             ->orderBy('updated_at', 'desc')
             ->paginate(20);
         } else {
             $feeds = Post::where('status', true)
+            ->whereIn('user_id', $followers)
+            ->where('status', true)
             ->orderBy('updated_at', 'desc')
             ->paginate(20);
         }
