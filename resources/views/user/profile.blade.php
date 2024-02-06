@@ -63,7 +63,7 @@
                 <div class="w-2/3 " style="margin: auto;">
                     <div class="grid grid-cols-1 gap-28 mb-4">
                         @foreach($userProfile->user->posts as $feed)
-                        <div class="h-auto mb-4 shadow-lg">
+                        <div class="h-auto mb-4 shadow-lg mr-8">
                             <div class="items-center justify-center h-56 bg-gray-50">
                                 <img class="object-cover w-full h-full" src="{{ asset($feed['image'] )}}" alt="{{ $feed['title'] }}" />
                             </div>
@@ -75,7 +75,7 @@
                                     </h1>
                                     </a>
                                     <p class="text-gray-700 dark:text-gray-300">
-                                    {{ implode(' ', array_slice(explode(' ', $feed['description']), 0, 20)) }}...
+                                    {!! nl2br(implode(' ', array_slice(explode(' ', $feed['content']), 0, 20))) !!}...
                                     </p>
                                 </div>
                                 <!-- <div class="my-4">
@@ -99,16 +99,33 @@
                                 </div> -->
                                 <div class="my-4">
                                     <div class="grid grid-cols-2">
-                                    <div class="text-left">
-                                        <span class="text-gray-400 ">
-                                            {{ $feed['location'] }}
-                                        </span>
+                                        <div class="text-left">
+                                            <span class="text-gray-400 ">
+                                                {{ $feed['location'] }}
+                                            </span>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="text-gray-400 ">
+                                                {{ date('d M Y h:m:i', strtotime($feed['created_at']))  }}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="text-right">
-                                        <span class="text-gray-400 ">
-                                            {{ date('d M Y h:m:i', strtotime($feed['created_at']))  }}
-                                        </span>
-                                    </div>
+                                </div>
+                                <!-- add edit and delete button -->
+                                <div class="my-4">
+                                    <div class="grid grid-cols-2">
+                                        <div class="text-left">
+                                            <span class="text-gray-400 cursor-pointer ">
+                                                Edit
+                                            </span>
+                                        </div>
+                                        @if(auth()->user()->id == $feed['user_id'])
+                                            <div class="text-right">
+                                                <span class="text-red-400 cursor-pointer">
+                                                    Delete
+                                                </span>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

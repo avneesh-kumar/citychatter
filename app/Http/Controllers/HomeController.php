@@ -3,13 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PSpell\Config;
+use Roilift\Admin\Interfaces\ConfigRepositoryInterface;
 use Roilift\Admin\Models\Post;
 use Roilift\Admin\Models\UserFollow;
 
 class HomeController extends Controller
 {
+    public function __construct(protected ConfigRepositoryInterface $configRepository)
+    {
+    }
+
     public function index()
     {
+        $perPage = $this->configRepository->getConfigValueByKey('postperpage');
+        if(!$perPage) {
+            $perPage = 15;
+        }
+
         if(auth()->user()) {
             $followers = UserFollow::where('followed_to', auth()->user()->id)->pluck('followed_by')->toArray();
             // $feeds = Post::where('status', true)
@@ -28,13 +39,13 @@ class HomeController extends Controller
                     ->where('status', true)
                     ->whereIn('user_id', $followers)
                     ->orderBy('distance', 'asc')
-                    ->paginate(15);
+                    ->paginate($perPage);
         } else {
             if(session()->has('latitude') && session()->has('longitude')) {
                 $feeds = Post::selectRaw('*, ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) * .000621371192 as distance', [session('longitude'), session('latitude')])
                     ->where('status', true)
                     ->orderBy('distance', 'asc')
-                    ->paginate(15);
+                    ->paginate($perPage);
             } else {
                 $feeds = Post::where('status', true)
                     ->orderBy('updated_at', 'desc')

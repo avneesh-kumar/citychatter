@@ -20,13 +20,15 @@
             @include('layouts.nav')
             <div class=" p-2 ">
                 <div class="p-4">
-                    <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
+                    <div class="p-4 rounded-lg mt-14 min-h-full" style="min-height: 640px;">
                         @yield('content')
                     </div>
                 </div>
+                <div class="">
+                    @include('layouts.footer')
+                </div>
             </div>
         </div>
-        @include('layouts.footer')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
     </body>
 </html>

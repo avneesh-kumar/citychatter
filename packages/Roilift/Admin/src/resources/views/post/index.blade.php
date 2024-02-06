@@ -11,9 +11,9 @@
             <button type="button"  class="float-right hover:bg-red-700 bg-red-600 text-white font-bold py-2 px-4 rounded text-xs ml-2" data-drawer-target="drawer-filter" data-drawer-show="drawer-filter" data-drawer-placement="right" aria-controls="drawer-filter">
                 <i class="fa-solid fa-filter"></i>&nbsp; Filter
             </button>
-            <a href="{{ route('admin.post.create') }}" class="float-right hover:bg-red-700 bg-red-600 text-white font-bold py-2 px-4  rounded text-xs">
+            <!-- <a href="{{ route('admin.post.create') }}" class="float-right hover:bg-red-700 bg-red-600 text-white font-bold py-2 px-4  rounded text-xs">
                 <i class="fa-solid fa-plus"></i>&nbsp; Add Post
-            </a>
+            </a> -->
         </div>
     </div>
     <div id="drawer-filter" class="fixed top-0 right-0 z-40 h-screen p-4 overflow-y-auto transition-transform translate-x-full bg-white w-80" tabindex="-1" aria-labelledby="drawer-right-label">

@@ -39,8 +39,16 @@
                 </div>
                 <div class="flex-none h-auto ">
                     <a href="{{ route('post', $post->slug) }}">
-                        <img src="{{ asset($post->image) }}" alt="" class="object-cover w-full h-full">
+                        <img id="mainImage" src="{{ asset($post->image) }}" alt="" class="object-contain w-full h-96" style="object-fit: contain;">
                     </a>
+                    <div class="m-2 p-2 flex">
+                        @if($post->images->count() > 0)
+                            <img src="{{ asset($post->image) }}" alt="" class="object-cover w-48 h-48 m-2 postImage">
+                            @foreach($post->images as $image)
+                                <img src="{{ asset($image->image) }}" alt="" class="object-cover w-48 h-48 m-2 postImage">
+                            @endforeach
+                        @endif
+                    </div>
                     <div class="text-sm my-2 h-auto text-justify">
                         {!! nl2br($post->content) !!}
                     </div>
@@ -160,6 +168,13 @@
 
 <script>
     $(document).ready(function() {
+
+        // show image on click of image as main image
+        $('.postImage').click(function() {
+            let src = $(this).attr('src');
+            $('#mainImage').attr('src', src);
+        });
+
         $('#commentBtn').click(function() {
             $('#commentingsection').removeClass('hidden');
         });

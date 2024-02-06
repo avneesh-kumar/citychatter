@@ -41,6 +41,12 @@ Route::group([
 
 
     Route::get('/account', 'AccountController@index')->name('account');
+    Route::post('/account/store', 'AccountController@store')->name('account.store');
+
+    Route::get('/configuration', 'ConfigurationController@index')->name('configuration');
+    Route::post('/configuration/store', 'ConfigurationController@store')->name('configuration.store');
+
+
     Route::get('/logout', 'LogoutController@index')->name('logout');
 });
 

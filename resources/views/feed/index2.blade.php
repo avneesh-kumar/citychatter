@@ -57,6 +57,15 @@
                         <div class="text-sm my-2 ">
                             {{ Str::limit($feed->content, 180) }}
                         </div>
+                        <div class="text-lg text-gray-500">
+                            @if($feed->distance < 1)
+                                <span class="text-green-500">Near by</span>
+                            @elseif($feed->distance > 1 && $feed->distance < 5)
+                                <span class="text-yellow-500">{{ $feed->distance }} miles away</span>
+                            @else
+                                <span class="text-red-500">{{ round($feed->distance, 2) }} miles far away</span>
+                            @endif
+                        </div>
                     </div>
                 </div>
             @endforeach

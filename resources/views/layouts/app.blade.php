@@ -21,14 +21,14 @@
             @include('layouts.sidebar')
             <div class=" p-2 ">
                 <div class="p-4 sm:ml-64 min-h-screen ">
-                    <div class="p-4 rounded-lg mt-14">
+                    <div class="p-4 rounded-lg mt-14 min-h-full" >
                         @yield('content')
                     </div>
+                    @include('layouts.footer')
                 </div>
             </div>
         </div>
         <div>
-            @include('layouts.footer')
         </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>

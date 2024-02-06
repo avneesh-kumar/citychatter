@@ -22,6 +22,11 @@ Route::get('/search', 'App\Http\Controllers\SearchController@index')->name('sear
 Route::get('/reset-password/{token}', 'App\Http\Controllers\ResetPasswordController@index')->name('reset-password');
 Route::post('/reset-password/store', 'App\Http\Controllers\ResetPasswordController@store')->name('reset-password.store');
 Route::post('/currentlocation', 'App\Http\Controllers\HomeController@currentlocation')->name('currentlocation');
+Route::get('/privacy-policy', 'App\Http\Controllers\PrivacyPolicyController@index')->name('privacy-policy');
+Route::get('/license', 'App\Http\Controllers\LicenseController@index')->name('license');
+Route::get('/about', 'App\Http\Controllers\AboutController@index')->name('about');
+Route::get('/contact', 'App\Http\Controllers\ContactController@index')->name('contact');
+Route::post('/contact', 'App\Http\Controllers\ContactController@store')->name('contact.store');
 
 
 Route::group([

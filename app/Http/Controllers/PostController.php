@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Roilift\Admin\Models\Post;
 use Roilift\Admin\Models\Category;
 use Roilift\Admin\Models\PostLike;
+use Roilift\Admin\Models\PostImage;
 use Roilift\Admin\Models\PostComment;
 
 class PostController extends Controller
@@ -19,12 +20,13 @@ class PostController extends Controller
 
     public function create()
     {
-        $categories = Category::all();
+        $categories = Category::all()->where('status', 1)->where('parent_id', null);
         return view('post.create', compact('categories'));
     }
 
     public function store()
     {
+        // dd(request()->all());
         request()->validate([
             'title' => 'required',
             'content' => 'required',
@@ -53,7 +55,32 @@ class PostController extends Controller
             'user_id' => auth()->user()->id,
         ]);
 
+        if(request()->hasFile('images')) {
+            $this->addImages(request()->images, $post->id);
+        }
+
         return redirect()->route('feed');
+    }
+
+    public function addImages($images, $postId)
+    {
+        $path = 'images/posts/' . auth()->user()->id . '/' . $postId;
+        $public_path = public_path($path);
+
+        if(!file_exists($public_path)) {
+            mkdir($public_path, 0777, true);
+        }
+
+        foreach($images as $image) {
+            $imageName = $image->getClientOriginalName() . time() . '.' . $image->extension();
+            $image->move($public_path, $imageName);
+            
+            PostImage::create([
+                'post_id' => $postId,
+                'image' => $path . '/' . $imageName,
+            ]);
+        }
+
     }
 
     public function like()

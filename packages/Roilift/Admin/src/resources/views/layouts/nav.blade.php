@@ -16,6 +16,11 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-red-600 hover:opacity-50" href="{{ route('admin.configuration') }}">
+                <i class="fa-solid fa-gear"></i>&nbsp; Configuration
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-red-600 hover:opacity-50" href="{{ route('admin.account') }}">
                 <i class="fa-solid fa-user-pen"></i>&nbsp; Account
             </a>

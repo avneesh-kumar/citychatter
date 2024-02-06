@@ -34,6 +34,14 @@
                 @endif
             </div>
 
+            <div id="images">
+
+            </div>
+            
+            <div>
+                <button type="button" id="addImageBtn" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5">Add Image</button>
+            </div>
+
             <div>
                 <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category
                     <span class="text-red-500"> *</span>
@@ -57,7 +65,7 @@
                 <label for="sub_category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub Category
                     <span class="text-red-500"> *</span>
                 </label>
-                <select name="sub_category" id="sub_category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required>
+                <select name="sub_category" id="sub_category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5>
                     <option value="">Select Sub Category</option>
                 </select>
                 @if ($errors->has('sub_category'))
@@ -70,6 +78,8 @@
                     <span class="text-red-500"> *</span>
                 </label>
                 <input type="text" name="location" id="location" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required autocomplete="off" value="{{ old('location') }}">
+                <input type="hidden" name="latitude">
+                <input type="hidden" name="longitude">
                 @if ($errors->has('location'))
                     <span class="text-red-600 text-sm">{{ $errors->first('location') }}</span>
                 @endif
@@ -106,6 +116,11 @@
     </div>
     
     <script>
+        document.getElementById('addImageBtn').addEventListener('click', function(e) {
+            var html = '<div class="mt-4"><input type="file" name="images[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required></div>';
+            document.getElementById('images').insertAdjacentHTML('beforeend', html);
+        });
+
         document.getElementById('category').addEventListener('change', function(e) {
             $.ajax({
                 url: "{{ route('category.search') }}",
@@ -148,6 +163,11 @@
         function initAutocomplete() {
             var input = document.getElementById('location');
             var autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.addListener('place_changed', function() {
+                var place = autocomplete.getPlace();
+                document.getElementsByName('latitude')[0].value = place.geometry.location.lat();
+                document.getElementsByName('longitude')[0].value = place.geometry.location.lng();
+            });
         }
     </script>
 
