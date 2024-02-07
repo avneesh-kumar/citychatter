@@ -1,0 +1,73 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Roilift\Admin\Models\Post;
+use Roilift\Admin\Models\Category;
+use Roilift\Admin\Models\UserFollow;
+use Roilift\Admin\Interfaces\ConfigRepositoryInterface;
+use Roilift\Admin\Interfaces\CategoryRepositoryInterface;
+
+class FeedController extends Controller
+{
+    public function __construct(
+        protected CategoryRepositoryInterface $categoryRepository,
+        protected ConfigRepositoryInterface $configRepository
+    )
+    {
+        
+    }
+
+    public function index($slug = null)
+    {
+        $perPage = $this->configRepository->getConfigValueByKey('postperpage');
+        if(!$perPage) {
+            $perPage = 15;
+        }
+        $latitude = session('latitude');
+        $longitude = session('longitude');
+
+        if(auth()->user()->profile->latitude && auth()->user()->profile->longitude) {
+            $latitude = auth()->user()->profile->latitude;
+            $longitude = auth()->user()->profile->longitude;
+        }
+
+        $categories = $this->categoryRepository->all();
+
+        $breadcrumbs = [];
+        $followers = UserFollow::where('followed_to', auth()->user()->id)->pluck('followed_by')->toArray();
+        if($slug) {
+            $category = Category::where('slug', $slug)->first();
+
+            if($category->parent_id) {
+                $parent = $category->parent;
+
+                $breadcrumbs[] = [
+                    'name' => $parent->name,
+                    'url' => route('feed', $parent->slug)
+                ];
+            }
+
+            $breadcrumbs[] = [
+                'name' => $category->name,
+                'url' => route('feed', $category->slug)
+            ];
+
+            $feeds = Post::selectRaw('*, ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) * .000621371192 as distance', [$latitude, $longitude])
+                    ->where('status', true)
+                    ->where('category_id', $category->id)
+                    ->whereIn('user_id', $followers)
+                    ->orderBy('distance', 'asc')
+                    ->paginate($perPage);
+        } else {
+            $feeds = Post::selectRaw('*, ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) * .000621371192 as distance', [$latitude, $longitude])
+                ->where('status', true)
+                ->whereIn('user_id', $followers)
+                ->orderBy('distance', 'asc')
+                ->paginate($perPage);
+        }
+        
+        return view('feed.index2', compact('categories', 'feeds', 'slug', 'breadcrumbs'));
+    }
+}

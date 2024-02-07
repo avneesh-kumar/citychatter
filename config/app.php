@@ -160,6 +160,7 @@ return [
          * Package Service Providers...
          */
         Roilift\Admin\ServiceProvider\AdminServiceProvider::class,
+        Roilift\Admin\ServiceProvider\RepositoryServiceProvider::class,
 
         /*
          * Application Service Providers...
