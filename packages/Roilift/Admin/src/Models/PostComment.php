@@ -4,6 +4,7 @@ namespace Roilift\Admin\Models;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Roilift\Admin\Models\PostCommentReply;
 
 class PostComment extends Model
 {    
@@ -17,6 +18,11 @@ class PostComment extends Model
     public function user() 
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(PostCommentReply::class);
     }
 }
 

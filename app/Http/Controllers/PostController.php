@@ -8,6 +8,7 @@ use Roilift\Admin\Models\Category;
 use Roilift\Admin\Models\PostLike;
 use Roilift\Admin\Models\PostImage;
 use Roilift\Admin\Models\PostComment;
+use Roilift\Admin\Models\PostCommentReply;
 
 class PostController extends Controller
 {
@@ -21,6 +22,13 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all()->where('status', 1)->where('parent_id', null);
+        if(request()->id) {
+            $post = Post::where('id', request()->id)->where('user_id', auth()->user()->id)->get()->first();
+            if(!$post) {
+                return redirect()->route('feed');
+            }
+            return view('post.create', compact('categories', 'post'));
+        }
         return view('post.create', compact('categories'));
     }
 
@@ -32,7 +40,7 @@ class PostController extends Controller
             'content' => 'required',
             'location' => 'required',
             'category' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         
         $imageName = time() . '.' . request()->image->extension();
@@ -50,7 +58,9 @@ class PostController extends Controller
             'slug' => request()->slug,
             'content' => request()->content,
             'location' => request()->location,
-            'category_id' => request()->category,
+            'latitude' => request()->latitude,
+            'longitude' => request()->longitude,
+            'category_id' => request()->sub_category ? request()->sub_category : request()->category,
             'image' => $path . '/' . $imageName,
             'user_id' => auth()->user()->id,
         ]);
@@ -117,6 +127,45 @@ class PostController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Post commented successfully',
+        ]);
+    }
+
+    public function commentReply()
+    {
+        if(request('reply') == '') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Reply cannot be empty',
+            ]);
+        }
+
+        $PostCommentReply = PostCommentReply::create([
+            'user_id' => auth()->user()->id,
+            'post_comment_id' => request('post_comment_id'),
+            'reply' => request('reply'),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Comment replied successfully',
+            'data' => $PostCommentReply,
+        ]);
+    }
+
+    public function delete()
+    {
+        $postId = request('id');
+        PostComment::where('post_id', $postId)->delete();
+        PostImage::where('post_id', $postId)->delete();
+
+        // need to add post_id field and then delete all the replies of that post
+        // PostCommentReply::where('post_id', $postId)->delete();
+
+        Post::where('id', request('id'))->where('user_id', auth()->user()->id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Post deleted successfully',
         ]);
     }
 }

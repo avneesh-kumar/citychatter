@@ -18,6 +18,7 @@
         <div class="flex-auto mt-8">
             <form action="{{ route('admin.category.store') }}" method="post">
                 @csrf
+                <input type="hidden" name="id" value="{{ isset($category) ? $category->id : '' }}" />
                 <div class="mb-4 w-1/2">
                     <label for="name" class="block text-gray-700 text-sm font-bold mb-2">
                         Name
@@ -60,6 +61,17 @@
                         <option value="0" {{ isset($category) && $category->status == 0 ? 'selected' : '' }}>Inactive</option>
                     </select>
                     @error('status')
+                        <p class="text-red-500 text-xs italic mt-4">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
+                <div class="mb-4 w-1/2">
+                    <label for="sort_by" class="block text-gray-700 text-sm font-bold mb-2">
+                        Sort Order
+                    </label>
+                    <input type="number" name="sort_by" id="sort_by" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none  focus:ring-red-500 focus:ring-2 w-full p-2 rounded-lg" value="{{ isset($category) ? $category->sort_by : old('sort_by') }}" />
+                    @error('sort_by')
                         <p class="text-red-500 text-xs italic mt-4">
                             {{ $message }}
                         </p>

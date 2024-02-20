@@ -19,6 +19,14 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
+        $user = \App\Models\User::where('email', $credentials['email'])->first();
+
+        if ($user && !$user->status) {
+            return back()->withErrors([
+                'invalid' => 'Your account is not active. Please check your email for the activation link.',
+            ]);
+        }
+
         if (auth()->attempt($credentials)) {
             $request->session()->regenerate();
 

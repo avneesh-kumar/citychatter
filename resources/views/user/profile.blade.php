@@ -10,7 +10,11 @@
     </div>
     <div class="h-auto mb-4">
         <div class="p-6">
-            <div class="">
+            @if($userProfile->cover)
+                <div class="bg-cover bg-center max-h-96 rounded-md" style="background-image: url({{ asset($userProfile->cover) }})">
+            @else
+                <div>
+            @endif
                 <div class="flex items-center justify-center">
                     <div class="w-56 h-56">
                         @if($userProfile->avatar)
@@ -42,12 +46,13 @@
                             </div>
                         @endif
                         <h1 class="text-lg font-bold text-red-500 dark:text-gray-100 mt-4">
-                            {{ '@' . $userProfile->username }}
+                            <!-- {{ '@' . $userProfile->username }} -->
+                            {{ $userProfile->user->name }}
                         </h1>
                         <p class="text-gray-700 dark:text-gray-300">
-                            <a href="mailto:{{ auth()->user()->email }}">
+                            <!-- <a href="mailto:{{ auth()->user()->email }}">
                                 {{ $userProfile->user->email }}
-                            </a>
+                            </a> -->
                         </p>
                         <p>
                             {{ $userProfile->bio }}
@@ -65,38 +70,21 @@
                         @foreach($userProfile->user->posts as $feed)
                         <div class="h-auto mb-4 shadow-lg mr-8">
                             <div class="items-center justify-center h-56 bg-gray-50">
-                                <img class="object-cover w-full h-full" src="{{ asset($feed['image'] )}}" alt="{{ $feed['title'] }}" />
+                                <a href="{{ route('post', $feed['slug']) }}">
+                                    <img class="object-cover w-full h-full" src="{{ asset($feed['image'] )}}" alt="{{ $feed['title'] }}" />
+                                </a>
                             </div>
                             <div class="p-2">
                                 <div class="mt-2">
                                     <a href="{{ route('post', $feed['slug']) }}">
-                                    <h1 class="text-xl font-bold text-red-500 hover:underline">
-                                            {{ $feed["title"] }}
-                                    </h1>
+                                        <h1 class="text-xl font-bold text-red-500 hover:underline">
+                                                {{ $feed["title"] }}
+                                        </h1>
                                     </a>
                                     <p class="text-gray-700 dark:text-gray-300">
                                     {!! nl2br(implode(' ', array_slice(explode(' ', $feed['content']), 0, 20))) !!}...
                                     </p>
                                 </div>
-                                <!-- <div class="my-4">
-                                    <div class="grid grid-cols-3 gap-4">
-                                    <div class="text-left">
-                                        <span class="text-blue-400 cursor-pointer">
-                                            Like
-                                        </span>
-                                    </div>
-                                    <div class="text-center">
-                                        <span class="text-blue-400 cursor-pointer">
-                                            Comment
-                                        </span>
-                                    </div>
-                                    <div class="text-right">
-                                        <span class="text-blue-400 cursor-pointer">
-                                            Share
-                                        </span>
-                                    </div>
-                                    </div>
-                                </div> -->
                                 <div class="my-4">
                                     <div class="grid grid-cols-2">
                                         <div class="text-left">
@@ -116,7 +104,9 @@
                                     <div class="grid grid-cols-2">
                                         <div class="text-left">
                                             <span class="text-gray-400 cursor-pointer ">
-                                                Edit
+                                                <a href="{{ route('post.create', $feed['id']) }}">
+                                                    Edit
+                                                </a>
                                             </span>
                                         </div>
                                         @if(auth()->user()->id == $feed['user_id'])

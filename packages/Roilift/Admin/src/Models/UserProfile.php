@@ -13,6 +13,7 @@ class UserProfile extends Model
         'gender',
         'bio',
         'avatar',
+        'cover',
         'latitude',
         'longitude',
         'location',

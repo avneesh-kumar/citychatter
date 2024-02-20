@@ -25,6 +25,7 @@ class ProfileController extends Controller
             'gender' => 'nullable',
             'bio' => 'nullable|max:255',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'latitude' => 'nullable',
             'longitude' => 'nullable',
             'location' => 'nullable',
@@ -50,6 +51,22 @@ class ProfileController extends Controller
             $credentials['avatar'] = $user->profile->avatar;
         }
 
+        if(request('cover')) {
+            $imageName = time() . '.' . request('cover')->extension();
+            $path = 'images/cover/' . auth()->user()->id;
+            $public_path = public_path($path);
+
+            if(!file_exists($public_path)) {
+                mkdir($public_path, 0777, true);
+            }
+
+            request('cover')->move($public_path, $imageName);
+
+            $credentials['cover'] = $path . '/' . $imageName;
+        } else {
+            $credentials['cover'] = $user->profile->cover;
+        }
+        
         $user->profile->update($credentials);
 
         return redirect()->route('profile');

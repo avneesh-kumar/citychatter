@@ -80,7 +80,9 @@
                     </button>
                 </div>
                 <div class="p-4 md:p-5 space-y-4">
-                    privary policy content
+                    <p class="text-gray-900 dark:text-white">
+                        {!! $privacyPolicy !!}
+                    </p>
                 </div>
             </div>
         </div>

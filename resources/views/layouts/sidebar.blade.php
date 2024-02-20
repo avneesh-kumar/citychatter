@@ -11,9 +11,9 @@
             
             @if(isset($slug) && $slug)
                 @php $category = \Roilift\Admin\Models\Category::where('slug', $slug)->first(); @endphp
-                @php $categories = \Roilift\Admin\Models\Category::where('status', 1)->where('parent_id', $category->id)->get(); @endphp
+                @php $categories = \Roilift\Admin\Models\Category::where('status', 1)->where('parent_id', $category->id)->orderBy('sort_by', 'asc')->get(); @endphp
             @else 
-                @php $categories = \Roilift\Admin\Models\Category::where('status', 1)->where('parent_id', 0)->get(); @endphp
+                @php $categories = \Roilift\Admin\Models\Category::where('status', 1)->where('parent_id', NULL)->orderBy('sort_by', 'asc')->get(); @endphp
             @endif
 
             @if($categories->count() > 0)

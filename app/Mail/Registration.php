@@ -13,13 +13,13 @@ class Registration extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $data;
+    public $token;
     /**
      * Create a new message instance.
      */
-    public function __construct($data)
+    public function __construct($token)
     {
-        $this->data = $data;
+        $this->token = $token;
     }
 
     /**

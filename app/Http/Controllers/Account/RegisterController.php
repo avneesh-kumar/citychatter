@@ -3,15 +3,22 @@
 namespace App\Http\Controllers\Account;
 
 use App\Mail\Registration;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
+use Roilift\Admin\Interfaces\ConfigRepositoryInterface;
 
 class RegisterController extends Controller
 {
+    public function __construct(protected ConfigRepositoryInterface $configRepository)
+    {
+    }
+
     public function index()
     {
-        return view('account.register.index');
+        $privacyPolicy = $this->configRepository->getConfigValueByKey('privacypolicy');
+        return view('account.register.index', compact('privacyPolicy'));
     }
 
     public function store(Request $request)
@@ -30,11 +37,30 @@ class RegisterController extends Controller
             'username' => $this->createUsername($user->name)
         ]);
 
-        Mail::to($user->email)->send(new Registration([]));
+        $token = Str::random(64);
+        $user->token = $token;
+        $user->save();
 
-        auth()->login($user);
+        Mail::to($user->email)->send(new Registration($token));
 
-        return redirect()->route('feed');
+        // auth()->login($user);
+
+        return redirect()->route('home');
+    }
+
+    public function validateEmail($token)
+    {
+        $user = \App\Models\User::where('token', $token)->first();
+        $valid = false;
+        if ($user) {
+            $user->email_verified_at = now();
+            $user->token = null;
+            $user->status = true;
+            $user->save();
+            $valid = true;
+        }
+
+        return view('validate-email', compact('valid'));
     }
 
     private function createUsername($name)

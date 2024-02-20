@@ -45,7 +45,8 @@ class CategoryController extends Controller
         view()->share('title', 'Edit Category');
         $category = $this->categoryRepository->find(request('id'));
         $backUrl = request()->headers->get('referer');
-        return view('admin::category.create', compact('category', 'backUrl'));
+        $categories = $this->categoryRepository->all();
+        return view('admin::category.create', compact('category', 'backUrl', 'categories'));
     }
 
     public function store()
@@ -55,6 +56,7 @@ class CategoryController extends Controller
             'slug' => 'required|unique:categories,slug,' . request('id'),
             'description' => 'nullable',
             'status' => 'required',
+            'sort_by' => 'nullable',
             'parent_id' => 'nullable'
         ]);
 
