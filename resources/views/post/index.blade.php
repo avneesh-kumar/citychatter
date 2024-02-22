@@ -14,18 +14,22 @@
     <div class="md:flex-1 flex-auto">
         <div class="flex justify-between">
             <div>
-                <a href="{{ route('post', $post->slug) }}" class="text-red-600 hover:underline">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round"  stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
-                </a>
+                @if($previousPost)
+                    <a href="{{ route('post', $previousPost->slug) }}" class="text-red-600 hover:underline">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"  stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                    </a>
+                @endif
             </div>
             <div class="mr-8">
-                <a href="{{ route('post', $post->slug) }}" class="text-red-600 hover:underline">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round"  stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                </a>
+                @if($nextPost)
+                    <a href="{{ route('post', $nextPost->slug) }}" class="text-red-600 hover:underline">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"  stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </a>
+                @endif
             </div>
         </div>
         <div class="flex p-8">
@@ -55,12 +59,16 @@
                     </a>
                 </div>
                 <div class="flex-none h-auto ">
-                    <a href="{{ route('post', $post->slug) }}">
-                        <img id="mainImage" src="{{ asset($post->image) }}" alt="" class="object-contain w-full h-96" style="object-fit: contain;">
-                    </a>
-                    <div class="m-2 p-2 flex">
+                    @if($post->image)
+                        <a href="{{ route('post', $post->slug) }}">
+                            <img id="mainImage" src="{{ asset($post->image) }}" alt="" class="object-contain w-full h-96" style="object-fit: contain;">
+                        </a>
+                    @endif
+                    <div class="m-2 p-2 grid grid-cols-3 md:grid-cols-4 gap-4">
                         @if($post->images->count() > 0)
-                            <img src="{{ asset($post->image) }}" alt="" class="object-cover w-48 h-48 m-2 postImage">
+                            @if($post->image)
+                                <img src="{{ asset($post->image) }}" alt="" class="object-cover w-48 h-48 m-2 postImage">
+                            @endif
                             @foreach($post->images as $image)
                                 <img src="{{ asset($image->image) }}" alt="" class="object-cover w-48 h-48 m-2 postImage">
                             @endforeach

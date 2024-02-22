@@ -29,9 +29,18 @@
                 <div>
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email
                     </label>
-                    <input type="text" readonly name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" autocomplete="off" value="{{ old('email') ? old('email') : $user->email }}" />
+                    <input type="email" readonly name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" autocomplete="off" value="{{ old('email') ? old('email') : $user->email }}" />
                     @if ($errors->has('email'))
                         <span class="text-red-600 text-sm">{{ $errors->first('email') }}</span>
+                    @endif
+                </div>
+
+                <div>
+                    <label for="optional_email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Business Email
+                    </label>
+                    <input type="email" name="optional_email" id="optional_email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" autocomplete="off" value="{{ old('optional_email') ? old('optional_email') : $user->profile->optional_email }}" />
+                    @if ($errors->has('optional_email'))
+                        <span class="text-red-600 text-sm">{{ $errors->first('optional_email') }}</span>
                     @endif
                 </div>
                 
@@ -97,10 +106,34 @@
                     <label for="location" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Location
                     </label>
                     <input type="text" name="location" id="location" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5"  autocomplete="off" value="{{ old('location') ? old('location') : $user->profile->location }}" />
-                    <input type="hidden" name="latitude" />
-                    <input type="hidden" name="longitude" />
+                    <input type="hidden" name="latitude" value="{{ $user->profile->latitude }}" />
+                    <input type="hidden" name="longitude" value="{{ $user->profile->longitude }}" />
                     @if ($errors->has('location'))
                         <span class="text-red-600 text-sm">{{ $errors->first('location') }}</span>
+                    @endif
+                </div>
+
+                <div>
+                    <label for="show_username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Show username on the profile page
+                    </label>
+                    <select name="show_username" id="show_username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5">
+                        <option value="1" {{ $user->profile->show_username ? 'selected' : '' }}>Show</option>
+                        <option value="0" {{ !$user->profile->show_username ? 'selected' : '' }}>Hide</option>
+                    </select>
+                    @if ($errors->has('show_username'))
+                        <span class="text-red-600 text-sm">{{ $errors->first('show_username') }}</span>
+                    @endif
+                </div>
+
+                <div>
+                    <label for="show_email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Show email on the profile page
+                    </label>
+                    <select name="show_email" id="show_email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5">
+                        <option value="1" {{ $user->profile->show_email ? 'selected' : '' }}>Show</option>
+                        <option value="0" {{ !$user->profile->show_email ? 'selected' : '' }}>Hide</option>
+                    </select>
+                    @if ($errors->has('show_email'))
+                        <span class="text-red-600 text-sm">{{ $errors->first('show_email') }}</span>
                     @endif
                 </div>
 

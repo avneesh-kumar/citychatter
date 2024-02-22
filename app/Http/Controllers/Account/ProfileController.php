@@ -29,8 +29,11 @@ class ProfileController extends Controller
             'latitude' => 'nullable',
             'longitude' => 'nullable',
             'location' => 'nullable',
+            'show_username' => 'nullable',
+            'show_email' => 'nullable',
             'sort_by' => 'nullable',
             'in_radius' => 'nullable',
+            'optional_email' => 'nullable',
         ]);
 
         $user->update($credentials);

@@ -23,10 +23,6 @@ class HomeController extends Controller
 
         if(auth()->user()) {
             $followers = UserFollow::where('followed_to', auth()->user()->id)->pluck('followed_by')->toArray();
-            // $feeds = Post::where('status', true)
-            //     ->whereIn('user_id', $followers)
-            //     ->orderBy('updated_at', 'desc')
-            //     ->paginate(15);
             $latitude = session('latitude');
             $longitude = session('longitude');
 

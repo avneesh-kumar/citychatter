@@ -57,6 +57,9 @@
                         <div class="text-sm my-2 ">
                             {{ Str::limit($post->content, 180) }}
                         </div>
+                        <div class="text-lg text-gray-500">
+                            {{ $post->location }}
+                        </div>
                     </div>
                 </div>
             @endforeach

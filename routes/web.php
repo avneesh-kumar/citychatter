@@ -54,6 +54,7 @@ Route::group([
     Route::get('/post/create/{id?}', 'App\Http\Controllers\PostController@create')->name('post.create');
     Route::get('/post/{slug}', 'App\Http\Controllers\PostController@index')->name('post');
     Route::post('/post', 'App\Http\Controllers\PostController@store')->name('post.store');
+    Route::post('/post/delete', 'App\Http\Controllers\PostController@delete')->name('post.delete');
     Route::post('/post/like', 'App\Http\Controllers\PostController@like')->name('post.like');
     Route::post('/post/unlike', 'App\Http\Controllers\PostController@unlike')->name('post.unlike');
     Route::post('/post/comment', 'App\Http\Controllers\PostController@comment')->name('post.comment');

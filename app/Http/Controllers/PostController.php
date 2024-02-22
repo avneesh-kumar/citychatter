@@ -15,8 +15,10 @@ class PostController extends Controller
     public function index($slug)
     {
         $post = Post::where('slug', $slug)->first();
+        $nextPost = Post::where('id', '>', $post->id)->where('user_id', '!=', auth()->user()->id)->orderBy('id', 'asc')->first();
+        $previousPost = Post::where('id', '<', $post->id)->where('user_id', '!=', auth()->user()->id)->orderBy('id', 'desc')->first();
         $like = PostLike::where('post_id', $post->id)->where('user_id', auth()->user()->id)->first();
-        return view('post.index', compact('post', 'like'));
+        return view('post.index', compact('post', 'like', 'nextPost', 'previousPost'));
     }
 
     public function create()
@@ -34,42 +36,67 @@ class PostController extends Controller
 
     public function store()
     {
-        // dd(request()->all());
         request()->validate([
             'title' => 'required',
             'content' => 'required',
             'location' => 'required',
             'category' => 'required',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         
-        $imageName = time() . '.' . request()->image->extension();
-        $path = 'images/posts/' . auth()->user()->id;
-        $public_path = public_path($path);
+        $imageName = false;
+        if(request()->hasFile('image')) {
+            $imageName = time() . '.' . request('image')->extension();
+            $path = 'images/posts/' . auth()->user()->id;
+            $public_path = public_path($path);
 
-        if(!file_exists($public_path)) {
-            mkdir($public_path, 0777, true);
+            if(!file_exists($public_path)) {
+                mkdir($public_path, 0777, true);
+            }
+
+            request()->image->move($public_path, $imageName);
         }
 
-        request()->image->move($public_path, $imageName);
+        if(request('id')) {
+            $post = Post::where('id', request('id'))->where('user_id', auth()->user()->id)->first();
+            if(!$post) {
+                return redirect()->route('feed');
+            }
+            $post->update([
+                'title' => request('title'),
+                'slug' => request('slug'),
+                'content' => request('content'),
+                'location' => request('location'),
+                'latitude' => request('latitude'),
+                'longitude' => request('longitude'),
+                'category_id' => request('sub_category') ? request('sub_category') : request('category'),
+                'image' => $imageName ? $path . '/' . $imageName : $post->image,
+            ]);
 
-        $post = Post::create([
-            'title' => request()->title,
-            'slug' => request()->slug,
-            'content' => request()->content,
-            'location' => request()->location,
-            'latitude' => request()->latitude,
-            'longitude' => request()->longitude,
-            'category_id' => request()->sub_category ? request()->sub_category : request()->category,
-            'image' => $path . '/' . $imageName,
-            'user_id' => auth()->user()->id,
-        ]);
+            if(request('old_images')) {
+                $this->handleOldImages(request('old_images'));
+            }
+
+        } else {
+            $post = Post::create([
+                'title' => request()->title,
+                'slug' => request()->slug,
+                'content' => request()->content,
+                'location' => request()->location,
+                'latitude' => request()->latitude,
+                'longitude' => request()->longitude,
+                'category_id' => request()->sub_category ? request()->sub_category : request()->category,
+                'image' => $imageName ? $path . '/' . $imageName : null,
+                'user_id' => auth()->user()->id,
+            ]);
+        }
 
         if(request()->hasFile('images')) {
             $this->addImages(request()->images, $post->id);
         }
 
-        return redirect()->route('feed');
+        return redirect()->route('user.profile', auth()->user()->profile->username);
     }
 
     public function addImages($images, $postId)
@@ -91,6 +118,19 @@ class PostController extends Controller
             ]);
         }
 
+        return;
+    }
+
+    public function handleOldImages($images)
+    {
+        $oldImages = PostImage::where('post_id', request()->id)->get();
+        if($images) {
+            foreach($oldImages as $image) {
+                if(!in_array($image->id, $images)) {
+                    $image->delete();
+                }
+            }
+        }
     }
 
     public function like()
