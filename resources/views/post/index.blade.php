@@ -9,8 +9,29 @@
         </svg>
     </a>
 </div> -->
+<!-- create next and previous buttons -->
 <div class="md:flex">
     <div class="md:flex-1 flex-auto">
+        <div class="flex justify-between">
+            <div>
+                @if($previousPost)
+                    <a href="{{ route('post', $previousPost->slug) }}" class="text-red-600 hover:underline">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"  stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                    </a>
+                @endif
+            </div>
+            <div class="mr-8">
+                @if($nextPost)
+                    <a href="{{ route('post', $nextPost->slug) }}" class="text-red-600 hover:underline">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"  stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </a>
+                @endif
+            </div>
+        </div>
         <div class="flex p-8">
             <div class="flex-none">
                 <a href="{{ route('user.profile', $post->user->profile->username) }}">
@@ -32,18 +53,22 @@
                         <div class="text-xs text-gray-500">{{ $post->created_at->diffForHumans() }}</div>
                     </div>
                 </div>
-                <div class="text-sm my-2">
+                <div class="text-xl my-2">
                     <a href="{{ route('post', $post->slug) }}" class="text-red-600">
                         {{ $post->title }}
                     </a>
                 </div>
                 <div class="flex-none h-auto ">
-                    <a href="{{ route('post', $post->slug) }}">
-                        <img id="mainImage" src="{{ asset($post->image) }}" alt="" class="object-contain w-full h-96" style="object-fit: contain;">
-                    </a>
-                    <div class="m-2 p-2 flex">
+                    @if($post->image)
+                        <a href="{{ route('post', $post->slug) }}">
+                            <img id="mainImage" src="{{ asset($post->image) }}" alt="" class="object-contain w-full h-96" style="object-fit: contain;">
+                        </a>
+                    @endif
+                    <div class="m-2 p-2 grid grid-cols-3 md:grid-cols-4 gap-4">
                         @if($post->images->count() > 0)
-                            <img src="{{ asset($post->image) }}" alt="" class="object-cover w-48 h-48 m-2 postImage">
+                            @if($post->image)
+                                <img src="{{ asset($post->image) }}" alt="" class="object-cover w-48 h-48 m-2 postImage">
+                            @endif
                             @foreach($post->images as $image)
                                 <img src="{{ asset($image->image) }}" alt="" class="object-cover w-48 h-48 m-2 postImage">
                             @endforeach
@@ -52,6 +77,10 @@
                     <div class="text-sm my-2 h-auto text-justify">
                         {!! nl2br($post->content) !!}
                     </div>
+                </div>
+
+                <div>
+                    <div id="map" class="w-full h-96"></div>
                 </div>
 
                 <div class="p-2">
@@ -122,13 +151,13 @@
                             </span>
                         </div>
                         <div class="text-right">
-                            <button type="button" class="px-4 py-2 bg-blue-500 text-white shadow-sm rounded-md" id="commentSubmitBtn">Comment</button>
+                            <button type="button" class="px-4 py-2 bg-red-500 text-white shadow-sm rounded-md" id="commentSubmitBtn">Comment</button>
                         </div>
                     </div>
                     <div class="w-full ">
                         @if($post->postComments)
                             @foreach($post->postComments as $comment)
-                                <div class="p-2 shadow-sm rounded-sm">
+                                <div class="p-2 shadow-lg rounded-sm">
                                     <div class="flex">
                                         @if($comment->user->profile->avatar)
                                             <img src="{{ asset($comment->user->profile->avatar) }}" alt="{{ $comment->user->name }}" class="shadow-xl rounded-full object-cover w-8 h-8">
@@ -145,6 +174,47 @@
                                                 {{ $comment->created_at->diffForHumans() }}
                                             </span><br />
                                             <span>{{ $comment['comment'] }}</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div id="commentreplyTogglebtn-{{ $comment->id }}" class="commentreplyTogglebtn inline-block bg-red-500 text-white p-2 mt-2 text-xs rounded-md cursor-pointer  " style="margin-left: 36px;">Show Replies</div>
+                                        <div id="commentreplybtn-{{ $comment->id }}" class="commentreplybtn inline-block bg-red-500 text-white p-2 mt-2 text-xs rounded-md cursor-pointer  " style="margin-left: 36px;">Reply</div>
+                                        <div id="commentreplytextarea-{{ $comment->id }}" class="commentreplytextarea hidden mt-2" style="margin-left: 36px;">
+                                            <textarea name="comment" id="comment" class="whitespace-pre-line h-28 w-full border-none ring-2 ring-blue-600 shadow-md text-gray-700 focus:ring-2 rounded-sm"></textarea>
+                                            <div>
+                                                <span class="text-red-500 hidden" id="commentError-{{ $comment->id }}">
+                                                    Please fill reply box
+                                                </span>
+                                            </div>
+                                            <div class="text-right mt-2">
+                                                <button type="button" class="commentReplySubmitBtn px-4 py-2 bg-red-500 text-white shadow-sm rounded-md text-xs" id="commentReplySubmitBtn-{{ $comment->id }}">Comment</button>
+                                            </div>
+                                        </div>
+                                        <div class="hidden commentreplyToggleArea" id="commentreplyToggleArea-{{ $comment->id }}">
+                                            <div class="p-2 shadow rounded-sm mt-2" id="commentReplyBox-{{ $comment->id }} ">
+                                                @foreach($comment->replies as $reply)
+                                                    <div class="flex">
+                                                        @if($reply->user->profile->avatar)
+                                                            <img src="{{ asset($reply->user->profile->avatar) }}" alt="{{ $reply->user->name }}" class="shadow-xl rounded-full object-cover w-8 h-8">
+                                                        @else
+                                                            <img src="{{ asset('images/avatar.jpg') }}" alt="{{ $reply->user->name }}" class="shadow-xl rounded-full object-cover w-8 h-8">
+                                                        @endif
+                                                        <div class="ml-2">
+                                                            <span class="text-red-600">
+                                                                <a href="{{ route('user.profile', $reply->user->profile->username) }}">
+                                                                    {{ $reply->user->name }}
+                                                                </a>
+                                                            </span> <br>
+                                                            <span class="text-gray-600 font-normal text-xs ">
+                                                                {{ $reply->created_at->diffForHumans() }}
+                                                            </span><br />
+                                                            <span>
+                                                                {{ $reply->reply }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -167,9 +237,22 @@
 </div>
 
 <script>
-    $(document).ready(function() {
+    var map;
+    var lat = {{ $post->latitude }};
+    var lng = {{ $post->longitude }};
+    
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: lat, lng: lng},
+            zoom: 11
+        });
+    }
+</script>
 
-        // show image on click of image as main image
+<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAP_API_KEY') }}&libraries=places&callback=initMap" async defer></script>
+
+<script>
+    $(document).ready(function() {
         $('.postImage').click(function() {
             let src = $(this).attr('src');
             $('#mainImage').attr('src', src);
@@ -177,6 +260,18 @@
 
         $('#commentBtn').click(function() {
             $('#commentingsection').removeClass('hidden');
+        });
+
+        $('.commentreplybtn').click(function() {
+            let id = $(this).attr('id').split('-')[1];
+            $('.commentreplytextarea').addClass('hidden');
+            $('#commentreplytextarea-' + id).removeClass('hidden');
+        });
+
+        $('.commentreplyTogglebtn').click(function() {
+            let id = $(this).attr('id').split('-')[1];
+            $('.commentreplyToggleArea').addClass('hidden');
+            $('#commentreplyToggleArea-' + id).toggleClass('hidden');
         });
 
         $('#likeBtn').click(function() {
@@ -242,6 +337,36 @@
                         $('#comment').val('');
                         $('#commentingsection').addClass('hidden');
                         location.reload();
+                    }
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            });
+        });
+
+        $('.commentReplySubmitBtn').click(function() {
+            var id = $(this).attr('id').split('-')[1];
+            var comment = $('#commentreplytextarea-' + id + ' textarea').val();
+            if(comment == '') {
+                $('#commentError-' + id).removeClass('hidden');
+                return false;
+            }
+            $.ajax({
+                url: "{{ route('post.comment.reply') }}",
+                type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "post_comment_id": id,
+                    "reply": comment,
+                },
+                success: function(response) {
+                    if(response.success) {
+                        $('#commentreplytextarea-' + id + ' textarea').val('');
+                        $('#commentreplytextarea-' + id).addClass('hidden');
+                        location.reload();
+                    } else {
+                        $('#commentError-' + id).text(response.message).removeClass('hidden');
                     }
                 },
                 error: function(response) {

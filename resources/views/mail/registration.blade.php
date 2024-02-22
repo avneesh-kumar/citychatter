@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registration Successful</title>
-  <!-- Include your own stylesheet or link to a framework like Bootstrap if desired -->
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -54,7 +53,8 @@
   <div class="container">
     <h2>Registration Successful!</h2>
     <p>Thank you for registering. You can now log in to your account.</p>
-    <a href="{{ route('login') }}">Log In</a>
+    Follow the link to validate your email id.
+    <a href="{{ route('register.validateemail', $token) }}">Validate Email</a>
     <footer>
         <p>&copy; 2024 CityChatter. All rights reserved.</p>
     </footer>

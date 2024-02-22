@@ -13,11 +13,15 @@ class UserProfile extends Model
         'gender',
         'bio',
         'avatar',
+        'cover',
         'latitude',
         'longitude',
         'location',
+        'show_username',
+        'show_email',
         'sort_by',
         'in_radius',
+        'optional_email',
     ];
 
     public function user()

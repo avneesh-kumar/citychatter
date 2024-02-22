@@ -19,8 +19,10 @@ class CategoryController extends Controller
                 'categories' => $categories,
             ]);
         } else {
+            $category = Category::where('id', $id)->first();
             return response()->json([
                 'status' => false,
+                'category' => $category,
             ]);
         }
     }

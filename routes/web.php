@@ -51,12 +51,14 @@ Route::group([
 
     Route::get('/feed/{type?}', 'App\Http\Controllers\FeedController@index')->name('feed');
     
-    Route::get('/post/create', 'App\Http\Controllers\PostController@create')->name('post.create');
+    Route::get('/post/create/{id?}', 'App\Http\Controllers\PostController@create')->name('post.create');
     Route::get('/post/{slug}', 'App\Http\Controllers\PostController@index')->name('post');
     Route::post('/post', 'App\Http\Controllers\PostController@store')->name('post.store');
+    Route::post('/post/delete', 'App\Http\Controllers\PostController@delete')->name('post.delete');
     Route::post('/post/like', 'App\Http\Controllers\PostController@like')->name('post.like');
     Route::post('/post/unlike', 'App\Http\Controllers\PostController@unlike')->name('post.unlike');
     Route::post('/post/comment', 'App\Http\Controllers\PostController@comment')->name('post.comment');
+    Route::post('/post/comment/reply', 'App\Http\Controllers\PostController@commentReply')->name('post.comment.reply');
 
     Route::get('/user', 'App\Http\Controllers\UserController@index')->name('user');
     Route::get('/user/profile/{username}', 'App\Http\Controllers\UserController@profile')->name('user.profile');
@@ -76,6 +78,7 @@ Route::group([
     Route::post('/register', 'RegisterController@store')->name('register.store');
     Route::get('/lost-password', 'LostPasswordController@index')->name('lost-password');
     Route::post('/lost-password/email', 'LostPasswordController@email')->name('lost-password.email');
+    Route::get('/validate-email/{token}', 'RegisterController@validateEmail')->name('register.validateemail');
 });
 
 // Route::get('/dashboard', function () {

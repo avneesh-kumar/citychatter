@@ -54,6 +54,9 @@
                                 Slug
                             </th>
                             <th scope="col" class="px-6 py-3">
+                                Sort Order
+                            </th>
+                            <th scope="col" class="px-6 py-3">
                                 Status
                             </th>
                             <th scope="col" class="px-6 py-3">
@@ -70,6 +73,9 @@
                                     </td>
                                     <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                         {{ $category->slug }}
+                                    </td>
+                                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                        {{ $category->sort_by }}
                                     </td>
                                     <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                         {{ $category->status == 1 ? 'Active' : 'Inactive' }}

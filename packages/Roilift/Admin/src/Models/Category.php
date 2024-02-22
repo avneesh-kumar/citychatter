@@ -11,6 +11,7 @@ class Category extends Model
         'slug',
         'description',
         'status',
+        'sort_by',
         'parent_id',
     ];
 
