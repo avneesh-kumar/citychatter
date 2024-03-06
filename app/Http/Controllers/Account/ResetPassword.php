@@ -29,6 +29,6 @@ class ResetPassword extends Controller
         $user->password = bcrypt($request->new_password);
         $user->save();
 
-        return redirect()->route('profile')->with('success', 'Password updated successfully.');
+        return redirect()->route('account.reset-password')->with('success', 'Password updated successfully.');
     }
 }

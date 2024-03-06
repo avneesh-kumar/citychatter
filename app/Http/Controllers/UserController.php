@@ -24,7 +24,7 @@ class UserController extends Controller
             $followers = UserFollow::where('followed_to', $userProfile->user_id)->where('followed_by', '!=', auth()->user()->id)->get();
         }
         
-        return view('user.profile', compact('userProfile','followers', 'isFollowing'));
+        return view('user.profile2', compact('userProfile','followers', 'isFollowing'));
     }
 
     public function follow()

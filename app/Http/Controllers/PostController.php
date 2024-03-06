@@ -15,8 +15,8 @@ class PostController extends Controller
     public function index($slug)
     {
         $post = Post::where('slug', $slug)->first();
-        $nextPost = Post::where('id', '>', $post->id)->where('user_id', '!=', auth()->user()->id)->orderBy('id', 'asc')->first();
-        $previousPost = Post::where('id', '<', $post->id)->where('user_id', '!=', auth()->user()->id)->orderBy('id', 'desc')->first();
+        $nextPost = Post::where('id', '>', $post->id)->orderBy('id', 'asc')->first();
+        $previousPost = Post::where('id', '<', $post->id)->orderBy('id', 'desc')->first();
         $like = PostLike::where('post_id', $post->id)->where('user_id', auth()->user()->id)->first();
         return view('post.index', compact('post', 'like', 'nextPost', 'previousPost'));
     }
@@ -38,6 +38,7 @@ class PostController extends Controller
     {
         request()->validate([
             'title' => 'required',
+            'slug'=> 'nullable|unique:posts,slug,'.request('id').',id,user_id,'.auth()->user()->id,
             'content' => 'required',
             'location' => 'required',
             'category' => 'required',

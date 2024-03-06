@@ -51,10 +51,10 @@
                         </div>
                         <div class="flex-none h-96 ">
                             <a href="{{ route('post', $post->slug) }}">
-                                <img src="{{ asset($post->image) }}" alt="" class="object-cover w-full h-full">
+                                <img src="{{ asset($post->image) }}" alt="" class="object-cover w-full h-full" style="width: 90%">
                             </a>
                         </div>
-                        <div class="text-sm my-2 ">
+                        <div class="text-sm my-2 " style="width: 90%">
                             {{ Str::limit($post->content, 180) }}
                         </div>
                         <div class="text-lg text-gray-500">

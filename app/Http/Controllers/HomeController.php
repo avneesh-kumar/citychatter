@@ -23,6 +23,8 @@ class HomeController extends Controller
 
         if(auth()->user()) {
             $followers = UserFollow::where('followed_to', auth()->user()->id)->pluck('followed_by')->toArray();
+            array_push($followers, auth()->user()->id);
+            // dd($followers);
             $latitude = session('latitude');
             $longitude = session('longitude');
 
@@ -34,6 +36,7 @@ class HomeController extends Controller
             $feeds = Post::selectRaw('*, ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) * .000621371192 as distance', [$latitude, $longitude])
                     ->where('status', true)
                     ->whereIn('user_id', $followers)
+                    ->orWhere('user_id', '==', auth()->user()->id)
                     ->orderBy('distance', 'asc')
                     ->paginate($perPage);
         } else {

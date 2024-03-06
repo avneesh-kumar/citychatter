@@ -50,7 +50,7 @@ class UserController extends Controller
         $user['password'] = bcrypt($user['password']);
 
         if(request('id')) {
-            $user = $this->userRepository->update(request('id'), $user);
+            $user = $this->userRepository->update($user, request('id'));
             $userProfile = UserProfile::where('user_id', request('id'))->first();
             $userProfile->username = request('username');
             $userProfile->gender = request('gender');

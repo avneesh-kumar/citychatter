@@ -6,6 +6,7 @@ use App\Mail\Registration;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Roilift\Admin\Models\Post;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Roilift\Admin\Models\UserFollow;
 use Roilift\Admin\Interfaces\ConfigRepositoryInterface;
@@ -18,11 +19,6 @@ class SearchController extends Controller
     
     public function index()
     {
-        // $posts = Post::where('title', 'like', '%'.request('search').'%')
-        //             ->Orwhere('content', 'like', '%'.request('search').'%')
-        //             ->where('status', true)
-        //             ->paginate(10);
-
         $perPage = $this->configRepository->getConfigValueByKey('postperpage');
         if(!$perPage) {
             $perPage = 15;
@@ -30,6 +26,7 @@ class SearchController extends Controller
 
         if(auth()->user()) {
             $followers = UserFollow::where('followed_to', auth()->user()->id)->pluck('followed_by')->toArray();
+            array_push($followers, auth()->user()->id);
             $latitude = session('latitude');
             $longitude = session('longitude');
 
@@ -37,19 +34,21 @@ class SearchController extends Controller
                 $latitude = auth()->user()->profile->latitude;
                 $longitude = auth()->user()->profile->longitude;
             }
-
-            $posts = Post::selectRaw('*, ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) * .000621371192 as distance', [$latitude, $longitude])
+            $radius = ( request('radius') ? request('radius') : auth()->user()->profile->radius ) / .000621371192;
+            
+            $posts = Post::selectRaw('*, (ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) * .000621371192) as dis', [$latitude, $longitude])
+                    ->having('dis', '<=', $radius)
                     ->where('status', true)
-                    ->where('title', 'like', '%'.request('search').'%')
-                    ->Orwhere('content', 'like', '%'.request('search').'%')
+                    ->where(function ($query) {
+                        $query->where('title', 'like', '%'.request('search').'%')
+                            ->orwhere('content', 'like', '%'.request('search').'%');
+                    })
                     ->whereIn('user_id', $followers)
                     ->orderBy('distance', 'asc')
                     ->paginate($perPage);
-            
-            // dd($posts);
         } else {
             if(session()->has('latitude') && session()->has('longitude')) {
-                $posts = Post::selectRaw('*, ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) * .000621371192 as distance', [session('longitude'), session('latitude')])
+                $posts = Post::selectRaw('*, ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) * .000621371192 as distance', [session('longitude'), session('latitude'), request('radius')])
                     ->where('status', true)
                     ->where('title', 'like', '%'.request('search').'%')
                     ->Orwhere('content', 'like', '%'.request('search').'%')
@@ -63,6 +62,11 @@ class SearchController extends Controller
                     ->paginate(15);
             }
         }
+
+        // write laravel query to get the posts based on the search query and the location of the user and the radius of the user
+
+
+
 
         return view('search.index', compact('posts'));
     }

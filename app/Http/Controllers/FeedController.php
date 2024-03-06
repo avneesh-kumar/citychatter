@@ -37,6 +37,7 @@ class FeedController extends Controller
 
         $breadcrumbs = [];
         $followers = UserFollow::where('followed_to', auth()->user()->id)->pluck('followed_by')->toArray();
+        array_push($followers, auth()->user()->id);
         if($slug) {
             $category = Category::where('slug', $slug)->first();
 
@@ -58,12 +59,14 @@ class FeedController extends Controller
                     ->where('status', true)
                     ->where('category_id', $category->id)
                     ->whereIn('user_id', $followers)
+                    ->orWhere('user_id', '==', auth()->user()->id)
                     ->orderBy('distance', 'asc')
                     ->paginate($perPage);
         } else {
             $feeds = Post::selectRaw('*, ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) * .000621371192 as distance', [$latitude, $longitude])
                 ->where('status', true)
                 ->whereIn('user_id', $followers)
+                ->orWhere('user_id', '==', auth()->user()->id)
                 ->orderBy('distance', 'asc')
                 ->paginate($perPage);
         }

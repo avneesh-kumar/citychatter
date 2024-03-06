@@ -17,15 +17,27 @@
             @endif
 
             @if($categories->count() > 0)
-                @foreach($categories as $category)
-                <li>
-                    <a href="{{ route('feed', $category->slug) }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <span class="ms-3">
-                            {{ $category->name }}
-                        </span>
-                    </a>
-                </li>
-                @endforeach
+                @if(isset($slug) && $slug)
+                    @foreach($categories as $category)
+                    <li>
+                        <a href="{{ route('feed', $category->slug) }}" class="flex items-center p-2 text-red-600 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <span class="ms-3">
+                                {{ $category->name }}
+                            </span>
+                        </a>
+                    </li>
+                    @endforeach
+                @else
+                    @foreach($categories as $category)
+                    <li>
+                        <a href="{{ route('feed', $category->slug) }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <span class="ms-3">
+                                {{ $category->name }}
+                            </span>
+                        </a>
+                    </li>
+                    @endforeach
+                @endif
             @else
                 <li>
                     No sub category found

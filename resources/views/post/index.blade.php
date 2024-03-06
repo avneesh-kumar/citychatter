@@ -64,13 +64,13 @@
                             <img id="mainImage" src="{{ asset($post->image) }}" alt="" class="object-contain w-full h-96" style="object-fit: contain;">
                         </a>
                     @endif
-                    <div class="m-2 p-2 grid grid-cols-3 md:grid-cols-4 gap-4">
+                    <div class="m-2 p-2 grid grid-cols-6 gap-3 ">
                         @if($post->images->count() > 0)
                             @if($post->image)
-                                <img src="{{ asset($post->image) }}" alt="" class="object-cover w-48 h-48 m-2 postImage">
+                                <img src="{{ asset($post->image) }}" alt="" class="object-cover w-32 h-24 m-2 postImage">
                             @endif
                             @foreach($post->images as $image)
-                                <img src="{{ asset($image->image) }}" alt="" class="object-cover w-48 h-48 m-2 postImage">
+                                <img src="{{ asset($image->image) }}" alt="" class="object-cover w-32 h-24 m-2 postImage">
                             @endforeach
                         @endif
                     </div>
@@ -79,17 +79,33 @@
                     </div>
                 </div>
 
-                <div>
+                <div class="my-4 border-t-2">
+                    <div class="grid grid-cols-2">
+                        <div class="text-left">
+                            <span class="text-gray-400 ">
+                                {{ $post['location'] }}
+                            </span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-gray-400 ">
+                                <!-- {{ date('d M Y h:m:i', strtotime($post['created_at']))  }} -->
+                                {{ $post->created_at->diffForHumans() }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="my-4">
                     <div id="map" class="w-full h-96"></div>
                 </div>
 
                 <div class="p-2">
                     <div class="my-4 border-b-2">
-                        <div class="grid grid-cols-3 gap-4">
+                        <div class="grid grid-cols-2 gap-4">
                             <div class="text-left">
                                 <span id="likeCount">{{ $post->postLikes->count() }}</span> Likes
                             </div>
-                            <div class="text-center">
+                            <div class="text-right">
                                 <span class="">
                                     {{ $post->postComments->count() }} Comments
                                 </span>
@@ -97,7 +113,7 @@
                         </div>
                     </div>
                     <div class="my-4 ">
-                        <div class="grid grid-cols-3 gap-4">
+                        <div class="grid grid-cols-2 gap-4">
                             <div class="text-left">
                                 @if($like)
                                     <span class="text-blue-500 cursor-pointer" id="unlikeBtn">
@@ -115,31 +131,16 @@
                                     </span>
                                 @endif
                             </div>
-                            <div class="text-center">
+                            <div class="text-right">
                                 <span class="cursor-pointer" id="commentBtn">
                                     Comment
                                 </span>
                             </div>
-                            <div class="text-right">    
+                            <!-- <div class="text-right">    
                                 <span class="cursor-pointer" >
                                     Share
                                 </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="my-4 border-t-2">
-                        <div class="grid grid-cols-2">
-                            <div class="text-left">
-                                <span class="text-gray-400 ">
-                                    {{ $post['location'] }}
-                                </span>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-gray-400 ">
-                                    <!-- {{ date('d M Y h:m:i', strtotime($post['created_at']))  }} -->
-                                    {{ $post->created_at->diffForHumans() }}
-                                </span>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
@@ -244,7 +245,7 @@
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: lat, lng: lng},
-            zoom: 11
+            zoom: 20
         });
     }
 </script>

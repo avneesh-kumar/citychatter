@@ -11,76 +11,107 @@
     <div class="h-auto mb-4">
         <div class="p-6">
             @if($userProfile->cover)
-                <div class="bg-cover bg-center max-h-96 rounded-md" style="background-image: url({{ asset($userProfile->cover) }})">
+                <div class="bg-cover bg-center max-h-96 rounded-md h-96" style="background-image: url({{ asset($userProfile->cover) }})"></div>
             @else
-                <div>
+                <div class="bg-cover bg-center max-h-96 rounded-md shadow-lg h-96"></div>
             @endif
-                <div class="flex items-center justify-center h-96">
-                    <div class="w-56 h-56">
+            <div class="flex h-64 ">
+                <div class=" w-96 ">
+                    <div class="relative">
+                        <div class="absolute w-56 h-56" style="top:-55px; left: 35%">
+                            @if($userProfile->avatar)
+                            <img src="{{ asset($userProfile->avatar) }}" alt="{{ $userProfile->user->name }}" class="absolute shadow-xl rounded-full object-cover w-full h-full " >
+                            @else
+                            <img src="{{ asset('images/avatar.jpg') }}" alt="{{ $userProfile->user->name }}" class="absolute shadow-xl rounded-full object-cover w-full h-full " >
+                            @endif
+                            <div class="w-full h-72 flex justify-center items-end">
+                                @if(auth()->user()->id !== $userProfile->user->id)
+                                    <div class="mt-4">
+                                        @if($isFollowing)
+                                            <button type="button" data-user-id="{{ $userProfile->user_id}}" class="unfollowBtn bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded">
+                                                Following
+                                            </button>
+                                            <button type="button" data-user-id="{{ $userProfile->user_id}}" class="hidden followBtn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                                                Follow
+                                            </button>
+                                        @else
+                                            <button type="button" data-user-id="{{ $userProfile->user_id}}" class="followBtn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                                                Follow
+                                            </button>
+                                            <button type="button" data-user-id="{{ $userProfile->user_id}}" class="hidden unfollowBtn bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded">
+                                                Following
+                                            </button>
+                                        @endif
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- <div class="relative h-full w-full">
                         @if($userProfile->avatar)
-                            <img src="{{ asset($userProfile->avatar) }}" alt="{{ $userProfile->user->name }}" class="shadow-xl rounded-full object-cover w-full h-full">
+                        <img src="{{ asset($userProfile->avatar) }}" alt="{{ $userProfile->user->name }}" class="absolute shadow-xl rounded-full object-cover w-56 h-56 " style="top:-15%; left: 35%">
                         @else
-                            <img src="{{ asset('images/avatar.jpg') }}" alt="{{ $userProfile->user->name }}" class="shadow-xl rounded-full object-cover w-full h-full">
+                        <img src="{{ asset('images/avatar.jpg') }}" alt="{{ $userProfile->user->name }}" class="absolute shadow-xl rounded-full object-cover w-56 h-56 " style="top:-15%; left: 35%">
                         @endif
+
+                        <div class="absolute " style="top:65%; left: 50%">
+                        @if(auth()->user()->id !== $userProfile->user->id)
+                            <div class="mt-4">
+                                @if($isFollowing)
+                                    <button type="button" data-user-id="{{ $userProfile->user_id}}" class="unfollowBtn bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded">
+                                        Following
+                                    </button>
+                                    <button type="button" data-user-id="{{ $userProfile->user_id}}" class="hidden followBtn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                                        Follow
+                                    </button>
+                                @else
+                                    <button type="button" data-user-id="{{ $userProfile->user_id}}" class="followBtn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                                        Follow
+                                    </button>
+                                    <button type="button" data-user-id="{{ $userProfile->user_id}}" class="hidden unfollowBtn bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded">
+                                        Following
+                                    </button>
+                                @endif
+                            </div>
+                        @endif
+                        </div>
+                    </div> -->
+                </div>
+                <div class="w-full px-16">
+                    <div class="text-left">
+                        <h1 class="text-lg font-bold text-red-500 dark:text-gray-100 mt-4">
+                            {{ $userProfile->user->name }} {{ $userProfile->username ? "(" . $userProfile->username . ")" : '' }}
+                        </h1>
+                        <p class="text-gray-700 dark:text-gray-300">
+                            @if($userProfile->show_email)
+                                <a href="mailto:{{ $userProfile->user->email }}">
+                                    {{ $userProfile->user->email }}
+                                </a> <br />
+                                @if($userProfile->optional_email)
+                                    Business Email :
+                                    <a href="mailto:{{ $userProfile->optional_email }}">
+                                        {{ $userProfile->optional_email }}
+                                    </a>
+                                @endif
+                            @endif
+                        </p>
+                        <p class="w-full lg:w-96 text-justify mt-2 p-2">
+                            {{ $userProfile->bio }}
+                        </p>
                     </div>
                 </div>
             </div>
-            <div class="flex items-center justify-center">
-                <div class="text-center">
-                    @if(auth()->user()->id !== $userProfile->user->id)
-                        <div class="mt-4">
-                            @if($isFollowing)
-                                <button type="button" data-user-id="{{ $userProfile->user_id}}" class="unfollowBtn bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded">
-                                    Following
-                                </button>
-                                <button type="button" data-user-id="{{ $userProfile->user_id}}" class="hidden followBtn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
-                                    Follow
-                                </button>
-                            @else
-                                <button type="button" data-user-id="{{ $userProfile->user_id}}" class="followBtn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
-                                    Follow
-                                </button>
-                                <button type="button" data-user-id="{{ $userProfile->user_id}}" class="hidden unfollowBtn bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded">
-                                    Following
-                                </button>
-                            @endif
-                        </div>
-                    @endif
-                    <h1 class="text-lg font-bold text-red-500 dark:text-gray-100 mt-4">
-                        @if($userProfile->show_username)
-                            {{ '@' . $userProfile->username }}
-                        @else
-                            {{ $userProfile->user->name }}
-                        @endif
-                    </h1>
-                    <p class="text-gray-700 dark:text-gray-300">
-                        @if($userProfile->show_email)
-                            <a href="mailto:{{ $userProfile->user->email }}">
-                                {{ $userProfile->user->email }}
-                            </a> <br />
-                            @if($userProfile->optional_email)
-                                Business Email :
-                                <a href="mailto:{{ $userProfile->optional_email }}">
-                                    {{ $userProfile->optional_email }}
-                                </a>
-                            @endif
-                        @endif
-                    </p>
-                    <p class="w-full lg:w-96 text-justify mt-4">
-                        {{ $userProfile->bio }}
-                    </p>
-                </div>
-            </div>
-            <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+            <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
             <h1 class="text-2xl text-left">
                 Posts
             </h1>
-            <div class="md:flex mt-16 justify-center">
+            <div class="md:flex mt-8 justify-center">
                 <div class="w-full " style="margin: auto;">
                     <div class="mb-4">
                         @foreach($userProfile->user->posts as $feed)
                         <div class="h-auto mb-4 shadow-lg rounded-lg mr-8" id="post-{{ $feed->id }}">
-                            <div class="items-center justify-center h-96 bg-gray-50">
+                            <div class="items-center justify-center h-80 bg-gray-50">
                                 @if($feed['image'])
                                     <a href="{{ route('post', $feed['slug']) }}">
                                         <img class="object-cover w-full h-full rounded-t-lg " src="{{ asset($feed['image'] )}}" alt="{{ $feed['title'] }}" class="w-full h-full" />
@@ -90,7 +121,7 @@
                             <div class="p-2">
                                 <div class="mt-2">
                                     <a href="{{ route('post', $feed['slug']) }}">
-                                        <h1 class="text-xl font-bold text-red-500 hover:underline">
+                                        <h1 class="text-xl text-red-500 hover:underline">
                                                 {{ $feed["title"] }}
                                         </h1>
                                     </a>
@@ -112,32 +143,32 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="my-4">
-                                    <div class="grid grid-cols-2">
-                                        <div class="text-left">
-                                            <span class="text-gray-400 cursor-pointer ">
-                                                <a href="{{ route('post.create', $feed['id']) }}">
-                                                    Edit
-                                                </a>
-                                            </span>
-                                        </div>
-                                        @if(auth()->user()->id == $feed['user_id'])
-                                            <div class="text-right">
+                                @if(auth()->user()->id == $feed['user_id'])
+                                    <div class="my-4">
+                                        <div class="text-right">
+                                            <div class="inline-block text-right">
+                                                <span class="text-gray-400 cursor-pointer ">
+                                                    <a href="{{ route('post.create', $feed['id']) }}">
+                                                        Edit
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="inline-block text-right">
                                                 <span class="text-red-400 cursor-pointer postDeleteBtn" data-post-id="{{ $feed->id }}">
                                                     Delete
                                                 </span>
                                             </div>
-                                        @endif
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             </div>
                         </div>
                         @endforeach
                     </div>
                 </div>
-                <div class="w-1/3 border- text-center">
+                <div class="w-1/3 border- text-left">
                     <div class="mb-4">
-                        <h1 class="text-2xl font-bold text-red-500 dark:text-gray-100">
+                        <h1 class="text-2xl text-red-500 dark:text-gray-100">
                             Followers
                         </h1>
                     </div>
@@ -154,31 +185,31 @@
                                             @endif
                                         </div>
                                         <div class="ml-4 mt-2 text-left">
-                                            <h1 class="text-lg font-bold text-red-500 dark:text-gray-100">
+                                            <h1 class="text-sm text-red-500 dark:text-gray-100">
                                                 <a href="{{ route('user.profile', $follower->followedBy->profile->username) }}">
                                                     {{ $follower->followedBy->name }}
                                                 </a>
                                             </h1>
-                                            <p class="text-gray-700 dark:text-gray-300">
+                                            <!-- <p class="text-gray-700 dark:text-gray-300">
                                                 <a href="{{ route('user.profile', $follower->followedBy->profile->username) }}">
                                                     {{ '@' . $follower->followedBy->profile->username }}
                                                 </a>
-                                            </p>
+                                            </p> -->
                                         </div>
                                     </div>
-                                    <div class="mt-4">
+                                    <div class="mt-1">
                                         @if($follower->followedBy->id !== auth()->user()->id)
-                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="followBtn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="followBtn bg-red-500 hover:bg-red-600 text-white p-1 rounded text-sm">
                                                 Follow
                                             </button>
-                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="hidden unfollowBtn bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded">
+                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="hidden unfollowBtn bg-red-300 hover:bg-red-400 text-white p-1 rounded text-sm">
                                                 Following
                                             </button>
                                         @else
-                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="unfollowBtn bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded">
+                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="unfollowBtn bg-red-300 hover:bg-red-400 text-white py-2 px-4 rounded">
                                                 Following
                                             </button>
-                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="hidden followBtn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="hidden followBtn bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
                                                 Follow
                                             </button>
                                         @endif

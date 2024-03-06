@@ -28,26 +28,19 @@
                             </div>
                         </div>
                         <div class="text-sm my-2">
-                            <a href="{{ route('post', $feed->slug) }}" class="text-red-600">
+                            <a href="{{ route('post', $feed->slug) }}" class="text-xl text-red-600">
                                 {{ $feed->title }}
                             </a>
                         </div>
                         <div class="flex-none h-80 ">
                             <a href="{{ route('post', $feed->slug) }}">
-                                <img src="{{ asset($feed->image) }}" alt="" class="object-cover w-full h-full">
+                                <img src="{{ asset($feed->image) }}" alt="" class="object-cover w-full h-full rounded-lg shadow-md" style="width: 90%;">
                             </a>
                         </div>
-                        <div class="text-sm my-2 ">
+                        <div class="text-sm my-2 " style="width: 90%;">
                             {{ Str::limit($feed->content, 180) }}
                         </div>
                         <div class="text-lg text-gray-500">
-                            <!-- @if($feed->distance < 1)
-                                <span class="text-green-500">Near by</span>
-                            @elseif($feed->distance > 1 && $feed->distance < 5)
-                                <span class="text-yellow-500">{{ $feed->distance }} miles away</span>
-                            @else
-                                <span class="text-red-500">{{ round($feed->distance, 2) }} miles far away</span>
-                            @endif -->
                             {{ $feed->location }}
                         </div>
                     </div>
