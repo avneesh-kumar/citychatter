@@ -166,7 +166,7 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="w-1/3 border- text-left">
+                <div class="w-1/3 text-left">
                     <div class="mb-4">
                         <h1 class="text-2xl text-red-500 dark:text-gray-100">
                             Followers
@@ -174,7 +174,7 @@
                     </div>
                     @if(count($followers) != 0)
                         @foreach($followers as $follower)
-                            <div class="mb-4">
+                            <div class="mb-1">
                                 <div class="flex flex-row justify-between">
                                     <div class="flex flex-row">
                                         <div class="w-12 h-12">
@@ -198,18 +198,18 @@
                                         </div>
                                     </div>
                                     <div class="mt-1">
-                                        @if($follower->followedBy->id !== auth()->user()->id)
-                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="followBtn bg-red-500 hover:bg-red-600 text-white p-1 rounded text-sm">
-                                                Follow
-                                            </button>
+                                        @if(!in_array($follower->followedBy->id, $follows))
                                             <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="hidden unfollowBtn bg-red-300 hover:bg-red-400 text-white p-1 rounded text-sm">
                                                 Following
                                             </button>
+                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="followBtn bg-red-500 hover:bg-red-600 text-white p-1 rounded text-sm">
+                                                Follow
+                                            </button>
                                         @else
-                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="unfollowBtn bg-red-300 hover:bg-red-400 text-white py-2 px-4 rounded">
+                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="unfollowBtn bg-red-300 hover:bg-red-400 text-white p-1 rounded text-sm">
                                                 Following
                                             </button>
-                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="hidden followBtn bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+                                            <button type="button" data-user-id="{{ $follower->followedBy->id }}" class="hidden followBtn bg-red-500 hover:bg-red-600 text-white p-1 rounded text-sm">
                                                 Follow
                                             </button>
                                         @endif
@@ -244,7 +244,7 @@
                     },
                     success: function(response) {
                         if(response.status == 'success') {
-                            $($this).next().removeClass('hidden');
+                            $($this).prev().removeClass('hidden');
                             $($this).addClass('hidden');
                         }
                     }
@@ -263,7 +263,7 @@
                     },
                     success: function(response) {
                         if(response.status == 'success') {
-                            $($this).prev().removeClass('hidden');
+                            $($this).next().removeClass('hidden');
                             $($this).addClass('hidden');
                         }
                     }

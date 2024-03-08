@@ -45,16 +45,16 @@
                             </div>
                         </div>
                         <div class="text-sm my-2">
-                            <a href="{{ route('post', $post->slug) }}" class="text-red-600">
+                            <a href="{{ route('post', $post->slug) }}" class="text-xl text-red-600">
                                 {{ $post->title }}
                             </a>
                         </div>
-                        <div class="flex-none h-96 ">
+                        <div class="flex-none h-96 " style="width: 90%">
                             <a href="{{ route('post', $post->slug) }}">
-                                <img src="{{ asset($post->image) }}" alt="" class="object-cover w-full h-full" style="width: 90%">
+                                <img src="{{ asset($post->image) }}" alt="" class="object-cover w-full h-full" >
                             </a>
                         </div>
-                        <div class="text-sm my-2 " style="width: 90%">
+                        <div class="text-sm my-4 " style="width: 90%">
                             {{ Str::limit($post->content, 180) }}
                         </div>
                         <div class="text-lg text-gray-500">

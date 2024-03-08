@@ -38,13 +38,15 @@ class PostController extends Controller
     {
         request()->validate([
             'title' => 'required',
-            'slug'=> 'nullable|unique:posts,slug,'.request('id').',id,user_id,'.auth()->user()->id,
+            'slug'=> 'nullable',
             'content' => 'required',
             'location' => 'required',
             'category' => 'required',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        $slug = Post::where('slug', request('slug'))->first();
         
         $imageName = false;
         if(request()->hasFile('image')) {
@@ -73,6 +75,7 @@ class PostController extends Controller
                 'longitude' => request('longitude'),
                 'category_id' => request('sub_category') ? request('sub_category') : request('category'),
                 'image' => $imageName ? $path . '/' . $imageName : $post->image,
+                'status' => request()->status ? 1 : 0,
             ]);
 
             if(request('old_images')) {
@@ -82,7 +85,8 @@ class PostController extends Controller
         } else {
             $post = Post::create([
                 'title' => request()->title,
-                'slug' => request()->slug,
+                // 'slug' => request()->slug,
+                'slug' => $slug ? request('slug') . time() : request('slug'),
                 'content' => request()->content,
                 'location' => request()->location,
                 'latitude' => request()->latitude,
@@ -90,6 +94,7 @@ class PostController extends Controller
                 'category_id' => request()->sub_category ? request()->sub_category : request()->category,
                 'image' => $imageName ? $path . '/' . $imageName : null,
                 'user_id' => auth()->user()->id,
+                'status' => request()->status ? 1 : 0,
             ]);
         }
 

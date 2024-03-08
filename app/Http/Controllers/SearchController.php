@@ -34,18 +34,29 @@ class SearchController extends Controller
                 $latitude = auth()->user()->profile->latitude;
                 $longitude = auth()->user()->profile->longitude;
             }
-            $radius = ( request('radius') ? request('radius') : auth()->user()->profile->radius ) / .000621371192;
-            
-            $posts = Post::selectRaw('*, (ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) * .000621371192) as dis', [$latitude, $longitude])
-                    ->having('dis', '<=', $radius)
-                    ->where('status', true)
-                    ->where(function ($query) {
-                        $query->where('title', 'like', '%'.request('search').'%')
-                            ->orwhere('content', 'like', '%'.request('search').'%');
-                    })
-                    ->whereIn('user_id', $followers)
-                    ->orderBy('distance', 'asc')
-                    ->paginate($perPage);
+
+            if(request('latitude') && request('longitude')) {
+                $latitude = request('latitude');
+                $longitude = request('longitude');
+            }
+
+            $radius = ( request('radius') ? request('radius') : auth()->user()->profile->radius );
+
+            $posts = Post::selectRaw('*')
+                ->selectRaw('(ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) / 1609.344) AS dis',
+                                [$longitude, $latitude])
+                ->havingRaw('dis <= ?', [$radius])
+                ->where(function ($query) {
+                    $query->where('title', 'like', '%'.request('search').'%')
+                        ->orwhere('content', 'like', '%'.request('search').'%');
+                })
+                ->whereIn('user_id', $followers)
+                ->orderBy('dis')
+                ->paginate($perPage);
+
+            // dd($posts->toRawSql());
+            // dd($posts);
+                    
         } else {
             if(session()->has('latitude') && session()->has('longitude')) {
                 $posts = Post::selectRaw('*, ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) * .000621371192 as distance', [session('longitude'), session('latitude'), request('radius')])

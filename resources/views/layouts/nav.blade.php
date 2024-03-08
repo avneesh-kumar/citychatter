@@ -24,9 +24,9 @@
                     </svg> -->
                     </div>
                     <form method="get" action="{{ route('search') }}" class="flex items-center justify-center">
-                        <input type="text" id="search" name="search" class="inline-block w-96 mr-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500 " placeholder="Search..." value="{{ request('search') }}">
-                        <input type="text" id="area" name="location" class="inline-block mr-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500 " placeholder="location" value="{{ request('location') }}">
-                        <input type="text" id="radius" name="radius" class="inline-block w-20 mr-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500 " placeholder="In radius" value="{{ request('radius') }}">
+                        <input type="text" id="search" name="search" class="inline-block w-96 mr-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500 " placeholder="Search citychatter" value="{{ request('search') }}">
+                        <input type="text" id="area" name="location" class="inline-block mr-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500 " placeholder="City/Zip" value="{{ request('location') }}">
+                        <input type="text" id="radius" name="radius" class="inline-block w-20 mr-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500 " placeholder="In miles" value="{{ request('radius') }}">
                         <input type="hidden" name="latitude" value="{{ request('latitude') }}">
                         <input type="hidden" name="longitude" value="{{ request('longitude') }}">
                         <button type="submit" class="py-1 px-2 text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none" title="Search">
@@ -87,6 +87,9 @@
                                 </p>
                             </div>
                             <ul class="py-1" role="none">
+                                <li>
+                                    <a href="{{ route('message') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">Message</a>
+                                </li>
                                 <li>
                                     <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">Profile Settings</a>
                                 </li>

@@ -113,28 +113,28 @@
                 </div>
 
                 <div>
-                    <label for="visibility" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Visibility
+                    <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Visibility
                         <span class="text-red-500"> *</span>
                     </label>
-                    <select name="visibility" id="visibility" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required>
+                    <select name="status" id="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required>
                         <option value="">Select Visibility</option>
-                        @if(isset($post) && $post->visibility == 1)
+                        @if(isset($post) && $post->status == 1)
                             <option value="1" selected>Public</option>
-                        @elseif(old('visibility') == 1)
+                        @elseif(old('status') == 1)
                             <option value="1" selected>Public</option>
                         @else
                             <option value="1">Public</option>
                         @endif
-                        @if(isset($post) && $post->visibility == 0)
+                        @if(isset($post) && $post->status === 0)
                             <option value="0" selected>Private</option>
-                        @elseif(old('visibility') == 0)
+                        @elseif(old('status') === 0)
                             <option value="0" selected>Private</option>
                         @else
                             <option value="0">Private</option>
                         @endif
                     </select>
-                    @if ($errors->has('visibility'))
-                        <span class="text-red-600 text-sm">{{ $errors->first('visibility') }}</span>
+                    @if ($errors->has('status'))
+                        <span class="text-red-600 text-sm">{{ $errors->first('status') }}</span>
                     @endif
                 </div>
 

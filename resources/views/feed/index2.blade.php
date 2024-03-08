@@ -49,12 +49,12 @@
                                 {{ $feed->title }}
                             </a>
                         </div>
-                        <div class="flex-none h-80 ">
+                        <div class="flex-none h-80 " style="width: 90%;">
                             <a href="{{ route('post', $feed->slug) }}">
-                                <img src="{{ asset($feed->image) }}" alt="" class="object-cover w-full h-full rounded-lg shadow-md" style="width: 90%;">
+                                <img src="{{ asset($feed->image) }}" alt="" class="object-cover w-full h-full rounded-lg shadow-md" >
                             </a>
                         </div>
-                        <div class="text-sm my-2 " style="width: 90%;">
+                        <div class="text-sm my-4 " style="width: 90%;">
                             {{ Str::limit($feed->content, 180) }}
                         </div>
                         <div class="text-lg text-gray-500">
