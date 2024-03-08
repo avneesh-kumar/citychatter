@@ -21,7 +21,7 @@
                 <div>
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name
                     </label>
-                    <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" autocomplete="off" value="{{ old('name') ? old('name') : $user->name }}" />
+                    <input type="text" readonly name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" autocomplete="off" value="{{ old('name') ? old('name') : $user->name }}" />
                     @if ($errors->has('name'))
                         <span class="text-red-600 text-sm">{{ $errors->first('name') }}</span>
                     @endif
@@ -43,8 +43,44 @@
                         <span class="text-red-600 text-sm">{{ $errors->first('optional_email') }}</span>
                     @endif
                 </div>
-                
+
                 <div>
+                    <label for="show_email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Show email on the profile page
+                    </label>
+                    <select name="show_email" id="show_email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5">
+                        <option value="1" {{ $user->profile->show_email ? 'selected' : '' }}>Show</option>
+                        <option value="0" {{ !$user->profile->show_email ? 'selected' : '' }}>Hide</option>
+                    </select>
+                    @if ($errors->has('show_email'))
+                        <span class="text-red-600 text-sm">{{ $errors->first('show_email') }}</span>
+                    @endif
+                </div>
+
+                <div>
+                    <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username/Business Name
+                    </label>
+                    <input type="text" name="username" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5"  autocomplete="off" value="{{ old('email') ? old('username') : $user->profile->username }}" />
+                    <div id="username-check">
+
+                    </div>
+                    @if ($errors->has('username'))
+                        <span class="text-red-600 text-sm">{{ $errors->first('username') }}</span>
+                    @endif
+                </div>
+
+                <div>
+                    <label for="show_username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Show username on the profile page
+                    </label>
+                    <select name="show_username" id="show_username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5">
+                        <option value="1" {{ $user->profile->show_username ? 'selected' : '' }}>Show</option>
+                        <option value="0" {{ !$user->profile->show_username ? 'selected' : '' }}>Hide</option>
+                    </select>
+                    @if ($errors->has('show_username'))
+                        <span class="text-red-600 text-sm">{{ $errors->first('show_username') }}</span>
+                    @endif
+                </div>
+                
+                <!-- <div>
                     <label for="gender" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender
                     </label>
                     <select name="gender" id="gender" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5">
@@ -55,7 +91,7 @@
                     @if ($errors->has('gender'))
                         <span class="text-red-600 text-sm">{{ $errors->first('gender') }}</span>
                     @endif
-                </div>
+                </div> -->
 
                 <div>
                     <label for="bio" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Bio
@@ -63,18 +99,6 @@
                     <textarea type="text" name="bio" id="bio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" autocomplete="off" >{{ old('bio') ? old('bio') : $user->profile->bio }}</textarea>
                     @if ($errors->has('name'))
                         <span class="text-red-600 text-sm">{{ $errors->first('name') }}</span>
-                    @endif
-                </div>
-
-                <div>
-                    <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username
-                    </label>
-                    <input type="text" name="username" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5"  autocomplete="off" value="{{ old('email') ? old('username') : $user->profile->username }}" />
-                    <div id="username-check">
-
-                    </div>
-                    @if ($errors->has('username'))
-                        <span class="text-red-600 text-sm">{{ $errors->first('username') }}</span>
                     @endif
                 </div>
 
@@ -110,30 +134,6 @@
                     <input type="hidden" name="longitude" value="{{ $user->profile->longitude }}" />
                     @if ($errors->has('location'))
                         <span class="text-red-600 text-sm">{{ $errors->first('location') }}</span>
-                    @endif
-                </div>
-
-                <div>
-                    <label for="show_username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Show username on the profile page
-                    </label>
-                    <select name="show_username" id="show_username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5">
-                        <option value="1" {{ $user->profile->show_username ? 'selected' : '' }}>Show</option>
-                        <option value="0" {{ !$user->profile->show_username ? 'selected' : '' }}>Hide</option>
-                    </select>
-                    @if ($errors->has('show_username'))
-                        <span class="text-red-600 text-sm">{{ $errors->first('show_username') }}</span>
-                    @endif
-                </div>
-
-                <div>
-                    <label for="show_email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Show email on the profile page
-                    </label>
-                    <select name="show_email" id="show_email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5">
-                        <option value="1" {{ $user->profile->show_email ? 'selected' : '' }}>Show</option>
-                        <option value="0" {{ !$user->profile->show_email ? 'selected' : '' }}>Hide</option>
-                    </select>
-                    @if ($errors->has('show_email'))
-                        <span class="text-red-600 text-sm">{{ $errors->first('show_email') }}</span>
                     @endif
                 </div>
 

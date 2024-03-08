@@ -23,6 +23,7 @@ class HomeController extends Controller
 
         if(auth()->user()) {
             $followers = UserFollow::where('followed_to', auth()->user()->id)->pluck('followed_by')->toArray();
+            array_push($followers, auth()->user()->id);
             $latitude = session('latitude');
             $longitude = session('longitude');
 
@@ -60,10 +61,5 @@ class HomeController extends Controller
             'status' => 'success',
             'message' => 'Location saved successfully'
         ]);
-    }
-
-    public function plain()
-    {
-        return view('plain');
     }
 }

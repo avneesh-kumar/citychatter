@@ -37,6 +37,7 @@ class FeedController extends Controller
 
         $breadcrumbs = [];
         $followers = UserFollow::where('followed_to', auth()->user()->id)->pluck('followed_by')->toArray();
+        array_push($followers, auth()->user()->id);
         if($slug) {
             $category = Category::where('slug', $slug)->first();
 

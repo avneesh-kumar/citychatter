@@ -72,18 +72,18 @@
                 </div>
             </div>
             <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
-            <h1 class="text-2xl text-center">
-                Your Feeds
+            <h1 class="text-2xl text-left">
+                Posts
             </h1>
             <div class="md:flex mt-16 justify-center">
                 <div class="w-full " style="margin: auto;">
                     <div class="mb-4">
                         @foreach($userProfile->user->posts as $feed)
-                        <div class="h-auto mb-4 shadow-lg mr-8" id="post-{{ $feed->id }}">
-                            <div class="items-center justify-center h-56 bg-gray-50">
+                        <div class="h-auto mb-4 shadow-lg rounded-lg mr-8" id="post-{{ $feed->id }}">
+                            <div class="items-center justify-center h-96 bg-gray-50">
                                 @if($feed['image'])
                                     <a href="{{ route('post', $feed['slug']) }}">
-                                        <img class="object-cover w-full h-full" src="{{ asset($feed['image'] )}}" alt="{{ $feed['title'] }}" />
+                                        <img class="object-cover w-full h-full rounded-t-lg " src="{{ asset($feed['image'] )}}" alt="{{ $feed['title'] }}" class="w-full h-full" />
                                     </a>
                                 @endif
                             </div>

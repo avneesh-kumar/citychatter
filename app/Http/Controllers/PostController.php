@@ -15,8 +15,8 @@ class PostController extends Controller
     public function index($slug)
     {
         $post = Post::where('slug', $slug)->first();
-        $nextPost = Post::where('id', '>', $post->id)->where('user_id', '!=', auth()->user()->id)->orderBy('id', 'asc')->first();
-        $previousPost = Post::where('id', '<', $post->id)->where('user_id', '!=', auth()->user()->id)->orderBy('id', 'desc')->first();
+        $nextPost = Post::where('id', '>', $post->id)->orderBy('id', 'asc')->first();
+        $previousPost = Post::where('id', '<', $post->id)->orderBy('id', 'desc')->first();
         $like = PostLike::where('post_id', $post->id)->where('user_id', auth()->user()->id)->first();
         return view('post.index', compact('post', 'like', 'nextPost', 'previousPost'));
     }
@@ -38,12 +38,15 @@ class PostController extends Controller
     {
         request()->validate([
             'title' => 'required',
+            'slug'=> 'nullable',
             'content' => 'required',
             'location' => 'required',
             'category' => 'required',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        $slug = Post::where('slug', request('slug'))->first();
         
         $imageName = false;
         if(request()->hasFile('image')) {
@@ -72,6 +75,7 @@ class PostController extends Controller
                 'longitude' => request('longitude'),
                 'category_id' => request('sub_category') ? request('sub_category') : request('category'),
                 'image' => $imageName ? $path . '/' . $imageName : $post->image,
+                'status' => request()->status ? 1 : 0,
             ]);
 
             if(request('old_images')) {
@@ -81,7 +85,8 @@ class PostController extends Controller
         } else {
             $post = Post::create([
                 'title' => request()->title,
-                'slug' => request()->slug,
+                // 'slug' => request()->slug,
+                'slug' => $slug ? request('slug') . time() : request('slug'),
                 'content' => request()->content,
                 'location' => request()->location,
                 'latitude' => request()->latitude,
@@ -89,6 +94,7 @@ class PostController extends Controller
                 'category_id' => request()->sub_category ? request()->sub_category : request()->category,
                 'image' => $imageName ? $path . '/' . $imageName : null,
                 'user_id' => auth()->user()->id,
+                'status' => request()->status ? 1 : 0,
             ]);
         }
 

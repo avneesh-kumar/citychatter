@@ -23,13 +23,22 @@ class UserController extends Controller
         } else {
             $followers = UserFollow::where('followed_to', $userProfile->user_id)->where('followed_by', '!=', auth()->user()->id)->get();
         }
-        
-        return view('user.profile', compact('userProfile','followers', 'isFollowing'));
+
+        $follows = UserFollow::where('followed_by', $userProfile->user_id)->get()->pluck('followed_to')->toArray();
+
+        return view('user.profile2', compact('userProfile','followers', 'isFollowing', 'follows'));
     }
 
     public function follow()
     {
         $id = request('id');
+        $isFollow = UserFollow::where('followed_by', auth()->user()->id)->where('followed_to', $id)->first();
+        if($isFollow) {
+            return response()->json([
+                'status' => 'error'
+            ]);
+        }
+
         $follow = UserFollow::create([
             'followed_by' => auth()->user()->id,
             'followed_to' => $id

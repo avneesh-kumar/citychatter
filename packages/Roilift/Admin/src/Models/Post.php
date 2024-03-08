@@ -14,7 +14,7 @@ class Post extends Model
         'slug',
         'content',
         'image',
-        'latitute',
+        'latitude',
         'longitude',
         'location',
         'status',

@@ -65,6 +65,11 @@ Route::group([
     Route::post('/user/follow', 'App\Http\Controllers\UserController@follow')->name('user.follow');
     Route::post('/user/unfollow', 'App\Http\Controllers\UserController@unfollow')->name('user.unfollow');
     
+    Route::get('/message', 'App\Http\Controllers\MessageController@index')->name('message');
+    Route::get('/message/view', 'App\Http\Controllers\MessageController@view')->name('message.view');
+    Route::post('/message/send', 'App\Http\Controllers\MessageController@send')->name('message.send');
+    Route::post('/message/reply', 'App\Http\Controllers\MessageController@reply')->name('message.reply');
+
     Route::post('/logout', 'Account\LogoutController@index')->name('logout');
 });
 

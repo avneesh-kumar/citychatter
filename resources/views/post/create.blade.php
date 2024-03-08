@@ -20,7 +20,7 @@
                     <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title
                         <span class="text-red-500"> *</span>
                     </label>
-                    <input type="text" name="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required autocomplete="off" value="{{isset($post) ? $post->title : old('title') }}" />
+                    <input type="text" name="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required autocomplete="off" value="{{isset($post) ? $post->title : old('title') }}" placeholder="Title of your post" />
                     <input type="hidden" name="slug" id="slug" value="{{isset($post) ? $post->slug : old('slug') }}" />
                     @if ($errors->has('title'))
                         <span class="text-red-600 text-sm">{{ $errors->first('title') }}</span>
@@ -30,7 +30,7 @@
                     <label for="content" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Details
                         <span class="text-red-500"> *</span>
                     </label>
-                    <textarea type="content" name="content" id="content" class="h-36 whitespace-pre-line bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required>{{isset($post) ? $post->content : old('content') }}</textarea>
+                    <textarea type="content" name="content" id="content" class="h-36 whitespace-pre-line bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Detail of your post" required >{{isset($post) ? $post->content : old('content') }}</textarea>
                     @if ($errors->has('content'))
                         <span class="text-red-600 text-sm">{{ $errors->first('content') }}</span>
                     @endif
@@ -105,36 +105,36 @@
                         <span class="text-red-500"> *</span>
                     </label>
                     <input type="text" name="location" id="location" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required autocomplete="off" value="{{ isset($post) ? $post->location : old('location') }}">
-                    <input type="hidden" name="latitude" value="{{ isset($post) ? $post->latitude : '' }}" >
-                    <input type="hidden" name="longitude" value="{{ isset($post) ? $post->longitude : '' }}">
+                    <input type="hidden" name="latitude" id="latitude" value="{{ isset($post) ? $post->latitude : '' }}" >
+                    <input type="hidden" name="longitude" id="longitude" value="{{ isset($post) ? $post->longitude : '' }}">
                     @if ($errors->has('location'))
                         <span class="text-red-600 text-sm">{{ $errors->first('location') }}</span>
                     @endif
                 </div>
 
                 <div>
-                    <label for="visibility" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Visibility
+                    <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Visibility
                         <span class="text-red-500"> *</span>
                     </label>
-                    <select name="visibility" id="visibility" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required>
+                    <select name="status" id="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required>
                         <option value="">Select Visibility</option>
-                        @if(isset($post) && $post->visibility == 1)
+                        @if(isset($post) && $post->status == 1)
                             <option value="1" selected>Public</option>
-                        @elseif(old('visibility') == 1)
+                        @elseif(old('status') == 1)
                             <option value="1" selected>Public</option>
                         @else
                             <option value="1">Public</option>
                         @endif
-                        @if(isset($post) && $post->visibility == 0)
+                        @if(isset($post) && $post->status === 0)
                             <option value="0" selected>Private</option>
-                        @elseif(old('visibility') == 0)
+                        @elseif(old('status') === 0)
                             <option value="0" selected>Private</option>
                         @else
                             <option value="0">Private</option>
                         @endif
                     </select>
-                    @if ($errors->has('visibility'))
-                        <span class="text-red-600 text-sm">{{ $errors->first('visibility') }}</span>
+                    @if ($errors->has('status'))
+                        <span class="text-red-600 text-sm">{{ $errors->first('status') }}</span>
                     @endif
                 </div>
 
@@ -245,8 +245,10 @@
             var autocomplete = new google.maps.places.Autocomplete(input);
             autocomplete.addListener('place_changed', function() {
                 var place = autocomplete.getPlace();
-                document.getElementsByName('latitude')[0].value = place.geometry.location.lat();
-                document.getElementsByName('longitude')[0].value = place.geometry.location.lng();
+                console.log(place.geometry.location.lat());
+                console.log(place.geometry.location.lng());
+                document.getElementById('latitude').value = place.geometry.location.lat();
+                document.getElementById('longitude').value = place.geometry.location.lng();
             });
         }
     </script>

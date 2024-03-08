@@ -45,12 +45,21 @@
             <div class="flex-auto ml-2 max-w-4xl" >
                 <div class="flex">
                     <div class="flex-auto">
-                        <div class="font-semibold">
-                            <a href="{{ route('user.profile', $post->user->profile->username) }}" class="text-red-600 hover:underline">
-                                {{ $post->user->name }}
-                            </a>
+                        <div class="grid grid-cols-2 ">
+                            <div>
+                                <div class="font-semibold">
+                                    <a href="{{ route('user.profile', $post->user->profile->username) }}" class="text-red-600 hover:underline">
+                                        {{ $post->user->name }}
+                                    </a>
+                                </div>
+                                <div class="text-xs text-gray-500">{{ $post->created_at->diffForHumans() }}</div>
+                            </div>
+                            <div class="text-right">
+                                @if(auth()->user()->id != $post->user->id)
+                                    <button class="py-1 px-2 text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none" data-modal-target="message-modal" data-modal-toggle="message-modal">Message</button>
+                                @endif
+                            </div>
                         </div>
-                        <div class="text-xs text-gray-500">{{ $post->created_at->diffForHumans() }}</div>
                     </div>
                 </div>
                 <div class="text-xl my-2">
@@ -64,13 +73,13 @@
                             <img id="mainImage" src="{{ asset($post->image) }}" alt="" class="object-contain w-full h-96" style="object-fit: contain;">
                         </a>
                     @endif
-                    <div class="m-2 p-2 grid grid-cols-3 md:grid-cols-4 gap-4">
+                    <div class="m-2 p-2 grid grid-cols-6 gap-3 ">
                         @if($post->images->count() > 0)
                             @if($post->image)
-                                <img src="{{ asset($post->image) }}" alt="" class="object-cover w-48 h-48 m-2 postImage">
+                                <img src="{{ asset($post->image) }}" alt="" class="object-cover w-32 h-24 m-2 postImage">
                             @endif
                             @foreach($post->images as $image)
-                                <img src="{{ asset($image->image) }}" alt="" class="object-cover w-48 h-48 m-2 postImage">
+                                <img src="{{ asset($image->image) }}" alt="" class="object-cover w-32 h-24 m-2 postImage">
                             @endforeach
                         @endif
                     </div>
@@ -79,17 +88,33 @@
                     </div>
                 </div>
 
-                <div>
+                <div class="my-4 border-t-2">
+                    <div class="grid grid-cols-2">
+                        <div class="text-left">
+                            <span class="text-gray-400 ">
+                                {{ $post['location'] }}
+                            </span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-gray-400 ">
+                                <!-- {{ date('d M Y h:m:i', strtotime($post['created_at']))  }} -->
+                                {{ $post->created_at->diffForHumans() }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="my-4">
                     <div id="map" class="w-full h-96"></div>
                 </div>
 
                 <div class="p-2">
                     <div class="my-4 border-b-2">
-                        <div class="grid grid-cols-3 gap-4">
+                        <div class="grid grid-cols-2 gap-4">
                             <div class="text-left">
                                 <span id="likeCount">{{ $post->postLikes->count() }}</span> Likes
                             </div>
-                            <div class="text-center">
+                            <div class="text-right">
                                 <span class="">
                                     {{ $post->postComments->count() }} Comments
                                 </span>
@@ -97,7 +122,7 @@
                         </div>
                     </div>
                     <div class="my-4 ">
-                        <div class="grid grid-cols-3 gap-4">
+                        <div class="grid grid-cols-2 gap-4">
                             <div class="text-left">
                                 @if($like)
                                     <span class="text-blue-500 cursor-pointer" id="unlikeBtn">
@@ -115,31 +140,16 @@
                                     </span>
                                 @endif
                             </div>
-                            <div class="text-center">
+                            <div class="text-right">
                                 <span class="cursor-pointer" id="commentBtn">
                                     Comment
                                 </span>
                             </div>
-                            <div class="text-right">    
+                            <!-- <div class="text-right">    
                                 <span class="cursor-pointer" >
                                     Share
                                 </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="my-4 border-t-2">
-                        <div class="grid grid-cols-2">
-                            <div class="text-left">
-                                <span class="text-gray-400 ">
-                                    {{ $post['location'] }}
-                                </span>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-gray-400 ">
-                                    <!-- {{ date('d M Y h:m:i', strtotime($post['created_at']))  }} -->
-                                    {{ $post->created_at->diffForHumans() }}
-                                </span>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
@@ -177,7 +187,9 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <div id="commentreplyTogglebtn-{{ $comment->id }}" class="commentreplyTogglebtn inline-block bg-red-500 text-white p-2 mt-2 text-xs rounded-md cursor-pointer  " style="margin-left: 36px;">Show Replies</div>
+                                        @if($comment->replies->count() > 0)
+                                            <div id="commentreplyTogglebtn-{{ $comment->id }}" class="commentreplyTogglebtn inline-block bg-red-500 text-white p-2 mt-2 text-xs rounded-md cursor-pointer  " style="margin-left: 36px;">Show Replies</div>
+                                        @endif
                                         <div id="commentreplybtn-{{ $comment->id }}" class="commentreplybtn inline-block bg-red-500 text-white p-2 mt-2 text-xs rounded-md cursor-pointer  " style="margin-left: 36px;">Reply</div>
                                         <div id="commentreplytextarea-{{ $comment->id }}" class="commentreplytextarea hidden mt-2" style="margin-left: 36px;">
                                             <textarea name="comment" id="comment" class="whitespace-pre-line h-28 w-full border-none ring-2 ring-blue-600 shadow-md text-gray-700 focus:ring-2 rounded-sm"></textarea>
@@ -236,6 +248,55 @@
     </div>
 </div>
 
+
+
+<!-- Modal for messaging -->
+<div id="message-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-lg font-semibold text-red-600 dark:text-white">
+                    Send message to - 
+                    <a href="{{ route('user.profile', $post->user->profile->username) }}" class="text-red-600 hover:underline">
+                        {{ $post->user->name }}
+                    </a>
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="message-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div id="modal-message-block" class="text-center text-lg text-red-600 p-2"></div>
+            <form class="p-4 md:p-5">
+                <div class="grid gap-4 mb-4 grid-cols-2">
+                    <div class="col-span-2">
+                        <label for="post_title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Post Title</label>
+                        <input type="text" readonly name="post_title" id="post_title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" value="{{ $post->title }}" >
+                        <input type="hidden" name="post_id" value="{{ $post->id }}">
+                        <input type="hidden" name="user_to" value="{{ $post->user->id }}">
+                    </div>
+                    <div class="col-span-2">
+                        <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Message
+                            <span class="text-red-500"> *</span>
+                        </label>
+                        <textarea id="message" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Enter your message here" required></textarea>                    
+                    </div>
+                    <span id="messageError" class="text-red-600 text-sm"></span>
+                </div>
+                <button type="button" id="sendMessageBtn" class="py-1 px-2 text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none">
+                    Send
+                </button>
+            </form>
+        </div>
+    </div>
+</div> 
+
+
 <script>
     var map;
     var lat = {{ $post->latitude }};
@@ -244,7 +305,7 @@
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: lat, lng: lng},
-            zoom: 11
+            zoom: 20
         });
     }
 </script>
@@ -367,6 +428,46 @@
                         location.reload();
                     } else {
                         $('#commentError-' + id).text(response.message).removeClass('hidden');
+                    }
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            });
+        });
+
+        $('#sendMessageBtn').click(function() {
+            const $this = $(this);
+            var post_id = $('input[name="post_id"]').val();
+            var user_to = $('input[name="user_to"]').val();
+            var message = $('#message').val();
+            if(message == '') {
+                $('#messageError').html('Please enter a message');
+                return false;
+            }
+            $.ajax({
+                url: "{{ route('message.send') }}",
+                type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "post_id": post_id,
+                    "user_to": user_to,
+                    "message": message,
+                },
+                beforeSend: function() {
+                    $('#messageError').addClass('hidden');
+                    $this.text('Sending...').attr('disabled', true).addClass('cursor-not-allowed bg-gray-400').removeClass('bg-red-500 hover:bg-red-600');
+                },
+                success: function(response) {
+                    $this.text('Send').attr('disabled', false).removeClass('cursor-not-allowed bg-gray-400').addClass('bg-red-500 hover:bg-red-600');
+                    if(response.success) {
+                        $('#message').val('');
+                        $('#modal-message-block').html(response.message);
+                        setTimeout(function() {
+                            $('#modal-message-block').html('');
+                        }, 3000);
+                    } else {
+                        $('#messageError').html(response.message);
                     }
                 },
                 error: function(response) {

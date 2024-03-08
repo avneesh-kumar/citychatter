@@ -16,6 +16,15 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css"  rel="stylesheet" />
     </head>
     <body class="font-sans text-gray-900 antialiased">
+        ::-moz-selection {
+            color: white;
+            background: #f05252;
+        }
+
+        ::selection {
+            color: white;
+            background: #f05252;
+        }
         <div>
             @include('layouts.nav')
             <div class=" p-2 ">
