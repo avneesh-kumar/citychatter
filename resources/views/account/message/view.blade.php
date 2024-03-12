@@ -10,6 +10,11 @@
                 Back to messages
             </a>
         </div>
+        @if(session('success'))
+            <div class="flex justify-center items-center h-12">
+                <p class="text-green text-center">{{ session('message') }}</p>
+            </div>
+        @endif
         <div class="flex">
             <div class="w-96 overflow-y-hidden max-h-screen shadow-md" style="height: 743px;">
                 @if($message->fromUser->id != auth()->user()->id)

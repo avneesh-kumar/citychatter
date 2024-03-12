@@ -48,7 +48,12 @@
                         <p>{{ $message->created_at->diffForHumans() }}</p>
                     </div>
                     <div class="border p-2">
-                        <a href="{{ route('message.view', ['id' => $message->id]) }}" class="text-blue-500">View</a>
+                        <a href="{{ route('message.view', ['id' => $message->id]) }}" class="inline-block text-blue-500">View</a>
+                        <form action="{{ route('message.delete') }}" method="post" class="ml-4 inline-block">
+                            @csrf
+                            <input type="hidden" name="message_id" value="{{ $message->id }}">
+                            <button type="button" class="deleteBtn text-red-500">Delete</button>
+                        </form>
                     </div>
                 @else
                     <div class="border p-2 font-semibold ">
@@ -71,14 +76,19 @@
                     <div class="border p-2 font-semibold">
                         <p>{{ $message->created_at->diffForHumans() }}</p>
                     </div>
-                    <div class="border p-2 font-semibold">
-                        <a href="{{ route('message.view', ['id' => $message->id]) }}" class="text-blue-500">View</a>
+                    <div class="border p-2">
+                        <a href="{{ route('message.view', ['id' => $message->id]) }}" class="inline-block text-blue-500 font-semibold">View</a>
+                        <form action="{{ route('message.delete') }}" method="post" class="ml-4 inline-block">
+                            @csrf
+                            <input type="hidden" name="message_id" value="{{ $message->id }}">
+                            <button type="button" class="deleteBtn text-red-500">Delete</button>
+                        </form>
                     </div>
                 @endif
             @endforeach
-            <div class="col-span-5 mt-4">
-                {{ $messages->links() }}
-            </div>
+        </div>
+        <div class="mt-10">
+            {{ $messages->links() }}
         </div>
         @else
             <div class="col-span-4 mt-4">
@@ -86,5 +96,14 @@
             </div>
         @endif
     </div>
+    <script>
+        $(document).ready(function(){
+            $('.deleteBtn').click(function(){
+                if(confirm('Are you sure you want to delete this message?')){
+                    $(this).parent().submit();
+                }
+            });
+        });
+    </script>
         
 @endsection
