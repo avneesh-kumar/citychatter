@@ -69,6 +69,7 @@ Route::group([
     Route::get('/message/view', 'App\Http\Controllers\MessageController@view')->name('message.view');
     Route::post('/message/send', 'App\Http\Controllers\MessageController@send')->name('message.send');
     Route::post('/message/reply', 'App\Http\Controllers\MessageController@reply')->name('message.reply');
+    Route::post('/message/delete', 'App\Http\Controllers\MessageController@delete')->name('message.delete');
 
     Route::post('/logout', 'Account\LogoutController@index')->name('logout');
 });

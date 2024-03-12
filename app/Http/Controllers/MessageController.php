@@ -44,6 +44,19 @@ class MessageController extends Controller
         return view('account.message.view', compact('message'));
     }
 
+    public function delete()
+    {
+        $replies = PostMessageReply::where('post_message_id', request('message_id'))->get();
+        foreach($replies as $reply) {
+            $reply->delete();
+        }
+
+        $message = PostMessage::where('id', request('message_id'))->get()->first();
+        $message->delete();
+
+        return redirect()->route('message')->with('message', 'Message deleted successfully');
+    }
+
     public function send()
     {
         if(!request('message')) {
