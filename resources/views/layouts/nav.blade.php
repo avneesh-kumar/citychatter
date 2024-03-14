@@ -23,7 +23,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg> -->
                     </div>
-                    <form method="get" action="{{ route('search') }}" class="flex items-center justify-center">
+                    <form method="get" action="{{ route('search') }}" class="flex items-center justify-left" style="padding-left: 4.5rem;">
                         <input type="text" id="search" name="search" class="inline-block w-96 mr-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500 " placeholder="Search citychatter" value="{{ request('search') }}">
                         <input type="text" id="area" name="location" class="inline-block mr-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500 " placeholder="City/Zip" value="{{ request('location') }}">
                         <input type="text" id="radius" name="radius" class="inline-block w-20 mr-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500 " placeholder="In miles" value="{{ request('radius') }}">

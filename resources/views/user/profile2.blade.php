@@ -96,7 +96,7 @@
                                 @endif
                             @endif
                         </p>
-                        <p class="w-full lg:w-96 text-justify mt-2 p-2">
+                        <p class="w-full text-justify mt-2 p-2">
                             {{ $userProfile->bio }}
                         </p>
                     </div>
