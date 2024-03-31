@@ -10,7 +10,7 @@
                         Privacy Policy
                     </h2>
                 </div>
-                <div class="text-justified">
+                <div class="text-justified" style="padding: 0px 300px;">
                     <p>
                         {!! $privacyPolicy !!}
                     </p>

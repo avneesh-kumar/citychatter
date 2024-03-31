@@ -7,8 +7,10 @@
                 width: 100%; /* Full width on mobile */
             }
         }
+        .ck-editor__editable_inline {
+            min-height: 300px;
+        }
     </style>
-    <!-- create a div and center its content -->
     <div class="flex justify-center">
         <div class="form-container w-1/2">
             <form action="{{ route('post.store') }}" method="post" class="space-y-4" enctype="multipart/form-data">
@@ -30,7 +32,7 @@
                     <label for="content" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Details
                         <span class="text-red-500"> *</span>
                     </label>
-                    <textarea type="content" name="content" id="content" class="h-36 whitespace-pre-line bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Detail of your post" required >{{isset($post) ? $post->content : old('content') }}</textarea>
+                    <textarea type="content" name="content" id="content" class="h-36 whitespace-pre-line bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Detail of your post"  >{{isset($post) ? $post->content : old('content') }}</textarea>
                     @if ($errors->has('content'))
                         <span class="text-red-600 text-sm">{{ $errors->first('content') }}</span>
                     @endif
@@ -147,7 +149,28 @@
         </div>
     </div>
     
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+    
     <script>
+
+        ClassicEditor.create( document.querySelector( '#content' ), {
+            toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
+            heading: {
+                options: [
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                    { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                    { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                    { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                ]
+            }
+        } )
+        .catch( error => {
+            console.error( error );
+        } );
+
         document.getElementById('image').addEventListener('change', function(e) {
             var file = e.target.files[0];
             var reader = new FileReader();

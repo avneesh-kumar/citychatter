@@ -23,7 +23,8 @@ Route::get('/reset-password/{token}', 'App\Http\Controllers\ResetPasswordControl
 Route::post('/reset-password/store', 'App\Http\Controllers\ResetPasswordController@store')->name('reset-password.store');
 Route::post('/currentlocation', 'App\Http\Controllers\HomeController@currentlocation')->name('currentlocation');
 Route::get('/privacy-policy', 'App\Http\Controllers\PrivacyPolicyController@index')->name('privacy-policy');
-Route::get('/license', 'App\Http\Controllers\LicenseController@index')->name('license');
+Route::get('/terms', 'App\Http\Controllers\TermsController@index')->name('terms');
+Route::get('/mission', 'App\Http\Controllers\MissionController@index')->name('mission');
 Route::get('/about', 'App\Http\Controllers\AboutController@index')->name('about');
 Route::get('/contact', 'App\Http\Controllers\ContactController@index')->name('contact');
 Route::post('/contact', 'App\Http\Controllers\ContactController@store')->name('contact.store');

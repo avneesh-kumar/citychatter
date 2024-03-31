@@ -52,10 +52,8 @@ class SearchController extends Controller
                 })
                 ->whereIn('user_id', $followers)
                 ->orderBy('dis')
+                ->orderBy('created_at', 'desc')
                 ->paginate($perPage);
-
-            // dd($posts->toRawSql());
-            // dd($posts);
                     
         } else {
             if(session()->has('latitude') && session()->has('longitude')) {

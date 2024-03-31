@@ -58,7 +58,9 @@
     <h2>{{ $name }} sent you a message.</h2>
     <div class="text-left">
         <p>Sender Name: {{ $name }}</p>
-        <p>Post title: {{ $title }}</p>
+        @if($title)
+          <p>Post title: {{ $title }}</p>
+        @endif
         <p>Message: {!! nl2br($content) !!}</p>
         <a href="{{ $reply }}">Reply</a>
     </div>

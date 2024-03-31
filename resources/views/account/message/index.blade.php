@@ -39,7 +39,7 @@
                         </p>
                     </div>
                     <div class="border p-2">
-                        <p>{{ $message->post->title }}</p>
+                        <p>{{ $message->post ? $message->post->title : 'No Title' }}</p>
                     </div>
                     <div class="border p-2">
                         <p>{{ $message->message }}</p>
@@ -68,7 +68,7 @@
                         </p>
                     </div>
                     <div class="border p-2 font-semibold">
-                        <p>{{ $message->post->title }}</p>
+                        <p>{{ $message->post ? $message->post->title : 'No Title' }}</p>
                     </div>
                     <div class="border p-2 font-semibold">
                         <p>{!! nl2br($message->message) !!}</p>

@@ -41,7 +41,7 @@ class Message extends Mailable
             view: 'mail.message',
             with: [
                 'name' => $this->data->fromUser->name,
-                'title' => $this->data->post->title,
+                'title' => $this->data->post ? $this->data->post->title : '',
                 'content' => $this->data->message,
                 'reply' => route('message.view', ['id' => $this->data->id]),
             ]

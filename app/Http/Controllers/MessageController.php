@@ -67,7 +67,7 @@ class MessageController extends Controller
         }
 
         $message = PostMessage::create([
-            'post_id' => request('post_id'),
+            'post_id' => request('post_id') ?? null,
             'from' => auth()->user()->id,
             'to' => request('user_to'),
             'message' => request('message'),
@@ -86,6 +86,7 @@ class MessageController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Your message could not be sent'
+                // 'message' => $e->getMessage()
             ]);
         }
     }
