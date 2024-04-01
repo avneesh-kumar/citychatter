@@ -12,7 +12,7 @@
                 </div>
                 <div class="flex">
                     <div class="flex-1 w-1/2 p-8 text-justified">
-                        <div class="text-center">
+                        <div class="text-left pl-32">
                             <h3 class="text-2xl font-bold text-red-500">Contact Information</h3>
 
                             <div class="mt-8 text-left">
@@ -28,7 +28,6 @@
                                         {{ $email }}
                                     </a>
                                 </p>
-                            
                             </div>
                         </div>
                     </div>

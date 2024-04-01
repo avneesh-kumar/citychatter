@@ -1,8 +1,12 @@
 @extends('admin::layouts.app')
 
 <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
-
 @section('content')
+    <style>
+        .ck-editor__editable_inline {
+            min-height: 300px;
+        }
+    </style>
     <div class="flex">
         <div class="flex-1">
             <h1 class="text-gray-700 text-lg font-semibold pb-2 border-b border-gray-700">
@@ -21,7 +25,7 @@
             <form action="{{ route('admin.configuration.store') }}" method="post">
                 @csrf
                 <div class="mb-4 w-1/2">
-                    <label for="name" class="block text-gray-700 text-sm font-bold mb-2">
+                    <label for="postperpage" class="block text-gray-700 text-sm font-bold mb-2">
                         Posts Per Page
                     </label>
                     <input type="number" name="postperpage" id="postperpage" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none  focus:ring-red-500 focus:ring-2 w-full p-2 rounded-lg" value="@if(isset($configData['postperpage'])){{$configData['postperpage']}}@endif" >
@@ -32,7 +36,7 @@
                     @enderror
                 </div>
                 <div class="mb-4 w-1/2">
-                    <label for="name" class="block text-gray-700 text-sm font-bold mb-2">
+                    <label for="address" class="block text-gray-700 text-sm font-bold mb-2">
                         Contact Address
                     </label>
                     <input type="text" name="address" id="address" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none  focus:ring-red-500 focus:ring-2 w-full p-2 rounded-lg" value="@if(isset($configData['address'])){{$configData['address']}}@endif" >
@@ -44,7 +48,7 @@
                 </div>
 
                 <div class="mb-4 w-1/2">
-                    <label for="name" class="block text-gray-700 text-sm font-bold mb-2">
+                    <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">
                         Phone
                     </label>
                     <input type="text" name="phone" id="phone" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none  focus:ring-red-500 focus:ring-2 w-full p-2 rounded-lg" value="@if(isset($configData['phone'])){{$configData['phone']}}@endif" >
@@ -56,7 +60,7 @@
                 </div>
 
                 <div class="mb-4 w-1/2">
-                    <label for="name" class="block text-gray-700 text-sm font-bold mb-2">
+                    <label for="email" class="block text-gray-700 text-sm font-bold mb-2">
                         Email
                     </label>
                     <input type="email" name="email" id="email" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none  focus:ring-red-500 focus:ring-2 w-full p-2 rounded-lg" value="@if(isset($configData['email'])){{$configData['email']}}@endif" >
@@ -68,7 +72,7 @@
                 </div>
 
                 <div class="mb-4 w-1/2">
-                    <label for="name" class="block text-gray-700 text-sm font-bold mb-2">
+                    <label for="aboutus" class="block text-gray-700 text-sm font-bold mb-2">
                         About us
                     </label>
                     <textarea name="aboutus" id="aboutus" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none  focus:ring-red-500 focus:ring-2 w-full p-2 rounded-lg h-96" style="min-height: 150px;" >@if(isset($configData['aboutus'])){{$configData['aboutus']}}@endif</textarea>
@@ -79,11 +83,22 @@
                     @enderror
                 </div>
                 <div class="mb-4 w-1/2">
-                    <label for="name" class="block text-gray-700 text-sm font-bold mb-2">
-                        License
+                    <label for="terms" class="block text-gray-700 text-sm font-bold mb-2">
+                        Terms
                     </label>
-                    <textarea name="license" id="license" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none  focus:ring-red-500 focus:ring-2 w-full p-2 rounded-lg h-96" style="min-height: 150px;" >@if(isset($configData['license'])){{$configData['license']}}@endif</textarea>
-                    @error('license')
+                    <textarea name="terms" id="terms" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none  focus:ring-red-500 focus:ring-2 w-full p-2 rounded-lg h-96" style="min-height: 150px;" >@if(isset($configData['terms'])){{$configData['terms']}}@endif</textarea>
+                    @error('terms')
+                        <p class="text-red-500 text-xs italic mt-4">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
+                <div class="mb-4 w-1/2">
+                    <label for="mission" class="block text-gray-700 text-sm font-bold mb-2">
+                        Mission
+                    </label>
+                    <textarea name="mission" id="mission" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none  focus:ring-red-500 focus:ring-2 w-full p-2 rounded-lg h-96" style="min-height: 150px;" >@if(isset($configData['terms'])){{$configData['terms']}}@endif</textarea>
+                    @error('mission')
                         <p class="text-red-500 text-xs italic mt-4">
                             {{ $message }}
                         </p>
@@ -116,7 +131,12 @@
             console.error( error );
         } );
 
-        ClassicEditor.create( document.querySelector( '#license' ) )
+        ClassicEditor.create( document.querySelector( '#terms' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+
+        ClassicEditor.create( document.querySelector( '#mission' ) )
         .catch( error => {
             console.error( error );
         } );

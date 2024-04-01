@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Roilift\Admin\Interfaces\ConfigRepositoryInterface;
 
-class LicenseController extends Controller
+class MissionController extends Controller
 {
     public function __construct(protected ConfigRepositoryInterface $configRepository)
     {
@@ -14,7 +14,7 @@ class LicenseController extends Controller
 
     public function index()
     {
-        $license = $this->configRepository->getConfigValueByKey('license');
-        return view('other.license', compact('license'));
+        $mission = $this->configRepository->getConfigValueByKey('mission');
+        return view('other.mission', compact('mission'));
     }
 }

@@ -36,7 +36,7 @@
                 </div>
 
                 <div>
-                    <label for="optional_email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Business Email
+                    <label for="optional_email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Business Email <span class="text-gray-400 text-sm">(optional)</span>
                     </label>
                     <input type="email" name="optional_email" id="optional_email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" autocomplete="off" value="{{ old('optional_email') ? old('optional_email') : $user->profile->optional_email }}" />
                     @if ($errors->has('optional_email'))
@@ -44,7 +44,7 @@
                     @endif
                 </div>
 
-                <div>
+                <!-- <div>
                     <label for="show_email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Show email on the profile page
                     </label>
                     <select name="show_email" id="show_email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5">
@@ -54,10 +54,10 @@
                     @if ($errors->has('show_email'))
                         <span class="text-red-600 text-sm">{{ $errors->first('show_email') }}</span>
                     @endif
-                </div>
+                </div> -->
 
                 <div>
-                    <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username/Business Name
+                    <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username/Business Name <span class="text-gray-400 text-sm">(optional)</span>
                     </label>
                     <input type="text" name="username" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5"  autocomplete="off" value="{{ old('email') ? old('username') : $user->profile->username }}" />
                     <div id="username-check">
@@ -68,7 +68,7 @@
                     @endif
                 </div>
 
-                <div>
+                <!-- <div>
                     <label for="show_username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Show username on the profile page
                     </label>
                     <select name="show_username" id="show_username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5">
@@ -78,7 +78,7 @@
                     @if ($errors->has('show_username'))
                         <span class="text-red-600 text-sm">{{ $errors->first('show_username') }}</span>
                     @endif
-                </div>
+                </div> -->
                 
                 <!-- <div>
                     <label for="gender" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender
@@ -97,8 +97,8 @@
                     <label for="bio" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Bio
                     </label>
                     <textarea type="text" name="bio" id="bio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" autocomplete="off" >{{ old('bio') ? old('bio') : $user->profile->bio }}</textarea>
-                    @if ($errors->has('name'))
-                        <span class="text-red-600 text-sm">{{ $errors->first('name') }}</span>
+                    @if ($errors->has('bio'))
+                        <span class="text-red-600 text-sm">{{ $errors->first('bio') }}</span>
                     @endif
                 </div>
 

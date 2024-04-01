@@ -16,7 +16,7 @@
             </div>
         @endif
         <div class="flex">
-            <div class="w-96 overflow-y-hidden max-h-screen shadow-md" style="height: 743px;">
+            <!-- <div class="w-96 overflow-y-hidden max-h-screen shadow-md" style="height: 743px;">
                 @if($message->fromUser->id != auth()->user()->id)
                     <div class="flex justify-center items-center h-16 ">
                         <h1 class="text-2xl text-red-500 underline">Sender information</h1>
@@ -113,10 +113,10 @@
                             </div>
                         </div>
                     @endif
-                @endif                    
-            </div>
+                @endif
+            </div> -->
             <input type="hidden" name="post_message_id" value="{{ $message->id }}" >
-            <input type="hidden" name="post_id" value="{{ $message->post_id }}" />
+            <input type="hidden" name="post_id" value="{{ $message->post_id ? $message->post_id : null }}" />
             @if($message->fromUser->id != auth()->user()->id)
                 <input type="hidden" name="to" value="{{ $message->fromUser->id }}" />
             @else
@@ -124,7 +124,102 @@
             @endif
 
             <div class="w-full overflow-y-hidden p-2 ">
+                <!-- @if($message->fromUser->id != auth()->user()->id)
+                    <div class="flex justify-center items-center h-16 ">
+                        <h1 class="text-2xl text-red-500 underline">Sender information</h1>
+                    </div>
+                    <div class="flex justify-center items-center h-28 ">
+                        <div class="w-24 h-24 bg-gray-300 rounded-full">
+                            @if($message->fromUser->profile->avatar)
+                                <img src="{{ asset($message->fromUser->profile->avatar) }}" alt="avatar" class="w-24 h-24 rounded-full shadow-lg">
+                            @else
+                                <img src="{{ asset('images/avatar.jpg') }}" alt="avatar" class="w-24 h-24 rounded-full shadow-lg">
+                            @endif
+                        </div>
+                    </div>
+                    <div class=" justify-center items-center">
+                        <div class="m-2">
+                            <div class="text-center">
+                                <a href="{{ route('user.profile', $message->fromUser->profile->username) }}" class="hover:text-red-500 hover:underline" target="_blank">
+                                    {{ $message->fromUser->name }}
+                                    @if($message->fromUser->profile->show_username)
+                                    <br>
+                                        <span class="text-red-500"> ({{ $message->fromUser->profile->username }})</span>
+                                    @endif
+                                </a>
+                            </div>
+                            <div class="text-justify my-8">
+                                <div class="text-center mb-2">
+                                    <span class="text-red-500 underline">Initial Message:</span>
+                                </div>
+                                {!! nl2br($message->message) !!}
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="flex justify-center items-center h-16 ">
+                        <h1 class="text-2xl text-red-500 underline">Recipient information</h1>
+                    </div>
+                    <div class="flex justify-center items-center h-28 ">
+                        <div class="w-24 h-24 bg-gray-300 rounded-full">
+                            @if($message->toUser->profile->avatar)
+                                <img src="{{ asset($message->toUser->profile->avatar) }}" alt="avatar" class="w-24 h-24 rounded-full shadow-lg">
+                            @else
+                                <img src="{{ asset('images/avatar.jpg') }}" alt="avatar" class="w-24 h-24 rounded-full shadow-lg">
+                            @endif
+                        </div>
+                    </div>
+                    <div class=" justify-center items-center">
+                        <div class="m-2">
+                            <div class="text-center">
+                                <a href="{{ route('user.profile', $message->toUser->profile->username) }}" class="hover:text-red-500 hover:underline" target="_blank">
+                                    {{ $message->toUser->name }}
+                                    @if($message->toUser->profile->show_username)
+                                    <br>
+                                        <span class="text-red-500"> ({{ $message->toUser->profile->username }})</span>
+                                    @endif
+                                </a>
+                            </div>
+                            <div class="text-justify my-8">
+                                <div class="text-center mb-2">
+                                    <span class="text-red-500 underline">Initial Message:</span>
+                                </div>
+                                {!! nl2br($message->message) !!}
+                            </div>
+                        </div>
+                    </div>
+                @endif -->
+                
                 <div id="reply-container" class="p-2 border-t-2 mt-2 border-x-2 overflow-y-auto " style="height: 680px; max-height: 680px;">
+                    <div class="flex">
+                        <div class="w-12 ">
+                            @if($message->fromUser->profile->avatar)
+                                <img src="{{ asset($message->fromUser->profile->avatar) }}" alt="avatar" class="w-12 h-12 rounded-full shadow-lg">
+                            @else
+                                <img src="{{ asset('images/avatar.jpg') }}" alt="avatar" class="w-12 h-12 rounded-full shadow-lg">
+                            @endif
+                        </div>
+                        <div class="w-full ml-4">
+                            <div class="flex justify-between">
+                                <div>
+                                    <a href="{{ route('user.profile', $message->fromUser->profile->username) }}" class="hover:text-red-500 hover:underline">
+                                        {{ $message->fromUser->name }}
+                                        @if($message->fromUser->profile->show_username)
+                                        <br>
+                                            <span class="text-red-500"> ({{ $message->fromUser->profile->username }})</span>
+                                        @endif
+                                    </a>
+                                </div>
+                                <div>
+                                    <p class="text-xs">{{ $message->created_at->diffForHumans() }}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="text-justify my-8">
+                                <b>Initial Message:</b> {!! nl2br($message->message) !!}
+                            </div>
+                        </div>
+                    </div>
                     @if($message->replies->count() > 0)
                         @foreach($message->replies as $reply)
                         <div class="flex">
@@ -151,7 +246,7 @@
                                     </div>
                                 </div>
                                 <hr>
-                                <div class="text-justify my-8">
+                                <div class="text-justify my-6">
                                     {!! nl2br($reply->comment) !!}
                                 </div>
                             </div>
@@ -159,7 +254,7 @@
                         @endforeach
                     @else
                         <div class="text-center">
-                            <p class="text-red-500">No replies yet</p>
+                            <!-- <p class="text-red-500">No replies yet</p> -->
                         </div>
                     @endif
                 </div>
@@ -210,7 +305,7 @@
                         $this.text('Send').attr('disabled', false).addClass('bg-red-500 hover:bg-red-600').removeClass('cursor-not-allowed bg-gray-400');
                         if(response.success) {
                             $('#reply').val('');
-                            location.reload();
+                            // location.reload();
                         } else {
                             console.log(response.message);
                         }

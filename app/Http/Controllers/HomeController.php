@@ -46,7 +46,7 @@ class HomeController extends Controller
             } else {
                 $feeds = Post::where('status', true)
                     ->orderBy('updated_at', 'desc')
-                    ->paginate(15);
+                    ->paginate($perPage);
             }
         }
         return view('home', compact('feeds'));

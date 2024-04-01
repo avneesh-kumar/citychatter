@@ -57,7 +57,9 @@
   <div class="container ">
     <h2>{{ $name }} replied to your message.</h2>
     <div class="text-left">
+      @if($title)
         <p>Post title: {{ $title }}</p>
+      @endif
         <p>Reply: {!! nl2br($comment) !!}</p>
         <a href="{{ $reply }}">Reply</a>
     </div>

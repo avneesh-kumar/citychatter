@@ -42,7 +42,7 @@ class MessageReply extends Mailable
             with: [
                 'name' => $this->data->fromUser->name,
                 'comment' => $this->data->comment,
-                'title' => $this->data->post->title,
+                'title' => $this->data->post ? $this->data->post->title : '',
                 'reply' => route('message.view', ['id' => $this->data->post_message_id]),
             ]
         );

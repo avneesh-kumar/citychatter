@@ -10,10 +10,13 @@
                     <a href="{{ route('about') }}" class="hover:underline me-4 md:me-6">About</a>
                 </li>
                 <li>
+                    <a href="{{ route('mission') }}" class="hover:underline me-4 md:me-6">Mission</a>
+                </li>
+                <li>
                     <a href="{{ route('privacy-policy') }}" class="hover:underline me-4 md:me-6">Privacy Policy</a>
                 </li>
                 <li>
-                    <a href="{{ route('license') }}" class="hover:underline me-4 md:me-6">Licensing</a>
+                    <a href="{{ route('terms') }}" class="hover:underline me-4 md:me-6">Terms</a>
                 </li>
                 <li>
                     <a href="{{ route('contact') }}" class="hover:underline">Contact</a>
@@ -28,27 +31,27 @@
     </div>
 
     <script>
-        $('document').ready(function() {
-            @if (!session('latitude') && !session('longitude'))
-                if(navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(position) {
-                        const latitude = position.coords.latitude;
-                        const longitude = position.coords.longitude;
-                        $.ajax({
-                            url: "{{ route('currentlocation') }}",
-                            type: "POST",
-                            data: {
-                                latitude: latitude,
-                                longitude: longitude,
-                                _token: "{{ csrf_token() }}"
-                            },
-                            success: function(response) {
-                                console.log(response);
-                            }
-                        });
-                    });
-                }
-            @endif
-        });
+        // $('document').ready(function() {
+        //     @if (!session('latitude') && !session('longitude'))
+        //         if(navigator.geolocation) {
+        //             navigator.geolocation.getCurrentPosition(function(position) {
+        //                 const latitude = position.coords.latitude;
+        //                 const longitude = position.coords.longitude;
+        //                 $.ajax({
+        //                     url: "{{ route('currentlocation') }}",
+        //                     type: "POST",
+        //                     data: {
+        //                         latitude: latitude,
+        //                         longitude: longitude,
+        //                         _token: "{{ csrf_token() }}"
+        //                     },
+        //                     success: function(response) {
+        //                         console.log(response);
+        //                     }
+        //                 });
+        //             });
+        //         }
+        //     @endif
+        // });
     </script>
 </footer>

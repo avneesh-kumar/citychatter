@@ -49,11 +49,13 @@
                                 {{ $feed->title }}
                             </a>
                         </div>
-                        <div class="flex-none h-80 " style="width: 90%;">
-                            <a href="{{ route('post', $feed->slug) }}">
-                                <img src="{{ asset($feed->image) }}" alt="" class="object-cover w-full h-full rounded-lg shadow-md" >
-                            </a>
-                        </div>
+                        @if($feed->image)
+                            <div class="flex-none h-80 " style="width: 90%;">
+                                <a href="{{ route('post', $feed->slug) }}">
+                                    <img src="{{ asset($feed->image) }}" alt="" class="object-cover w-full h-full rounded-lg shadow-md" >
+                                </a>
+                            </div>
+                        @endif
                         <div class="text-sm my-4 " style="width: 90%;">
                             {{ Str::limit($feed->content, 180) }}
                         </div>

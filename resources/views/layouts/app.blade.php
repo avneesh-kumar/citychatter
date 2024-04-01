@@ -30,7 +30,7 @@
             @include('layouts.sidebar')
             <div class=" p-2 ">
                 <div class="p-4 sm:ml-64 min-h-screen ">
-                    <div class="p-4 rounded-lg mt-14 min-h-full" >
+                    <div class="p-4 rounded-lg mt-6 min-h-full" >
                         @yield('content')
                     </div>
                     @include('layouts.footer')
