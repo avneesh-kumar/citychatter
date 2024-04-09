@@ -153,129 +153,130 @@
     
     <script>
 
-        ClassicEditor.create( document.querySelector( '#content' ), {
-            toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
-            heading: {
-                options: [
-                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-                    { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-                    { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-                    { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
-                ]
-            }
-        } )
-        .catch( error => {
-            console.error( error );
-        } );
+        $(document).ready(function() {
+            ClassicEditor.create( document.querySelector( '#content' ), {
+                toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
+                heading: {
+                    options: [
+                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                        { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                        { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                    ]
+                }
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
 
-        document.getElementById('image').addEventListener('change', function(e) {
-            var file = e.target.files[0];
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('tempImage').src = e.target.result;
-            }
-            reader.readAsDataURL(file);
-        });
-
-        document.getElementById('images').addEventListener('change', function(e) {
-            var files = e.target.files;
-            var tempImages = document.getElementById('tempImages');
-            var html = tempImages.innerHTML;
-            for(var i = 0; i < files.length; i++) {
+            document.getElementById('image').addEventListener('change', function(e) {
+                var file = e.target.files[0];
                 var reader = new FileReader();
                 reader.onload = function(e) {
-                    html += '<div class="relative w-32 h-32 m-2">';
-                    html += '<img src="' + e.target.result + '" class="max-w-32 max-h-32 w-32 h-32 rounded-lg object-cover" style="max-height: 8rem" />';
-                    html += '<button type="button" class="h-4 w-4 absolute top-0 right-0 bg-red-500 text-white text-sm rounded-full text-center" onclick="this.parentElement.remove()" style="line-height:1" >x</button>';
-                    html += '</div>';
-
-                    tempImages.innerHTML = html;
+                    document.getElementById('tempImage').src = e.target.result;
                 }
-                reader.readAsDataURL(files[i]);
-            }
-        });
+                reader.readAsDataURL(file);
+            });
 
-        @if(isset($post) && $post->category->parent_id)
-            document.getElementById('child-category-block').classList.remove('hidden');
-            document.getElementById('category').value = {{ $post->category->parent_id }};
-            $.ajax({
-                url: "{{ route('category.search') }}",
-                type: 'GET',
-                data: {
-                    id: {{ $post->category->parent_id }}
-                },
-                success: function(response) {
-                    if(response.status) {
-                        var html = '<option value="">Select Sub Category</option>';
-                        response.categories.forEach(function(category) {
-                            if(category.id == {{ $post->category->id }}) {
-                                html += '<option value="' + category.id + '" selected>' + category.name + '</option>';
-                            } else {
+            document.getElementById('images').addEventListener('change', function(e) {
+                var files = e.target.files;
+                var tempImages = document.getElementById('tempImages');
+                var html = tempImages.innerHTML;
+                for(var i = 0; i < files.length; i++) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        html += '<div class="relative w-32 h-32 m-2">';
+                        html += '<img src="' + e.target.result + '" class="max-w-32 max-h-32 w-32 h-32 rounded-lg object-cover" style="max-height: 8rem" />';
+                        html += '<button type="button" class="h-4 w-4 absolute top-0 right-0 bg-red-500 text-white text-sm rounded-full text-center" onclick="this.parentElement.remove()" style="line-height:1" >x</button>';
+                        html += '</div>';
+
+                        tempImages.innerHTML = html;
+                    }
+                    reader.readAsDataURL(files[i]);
+                }
+            });
+
+            @if(isset($post) && $post->category->parent_id)
+                document.getElementById('child-category-block').classList.remove('hidden');
+                document.getElementById('category').value = {{ $post->category->parent_id }};
+                $.ajax({
+                    url: "{{ route('category.search') }}",
+                    type: 'GET',
+                    data: {
+                        id: {{ $post->category->parent_id }}
+                    },
+                    success: function(response) {
+                        if(response.status) {
+                            var html = '<option value="">Select Sub Category</option>';
+                            response.categories.forEach(function(category) {
+                                if(category.id == {{ $post->category->id }}) {
+                                    html += '<option value="' + category.id + '" selected>' + category.name + '</option>';
+                                } else {
+                                    html += '<option value="' + category.id + '">' + category.name + '</option>';
+                                }
+                            });
+                            document.getElementById('sub_category').innerHTML = html;
+                        }
+                    }
+                });
+                document.getElementById('sub_category').value = {{ $post->category_id }};
+            @endif
+
+            document.getElementById('category').addEventListener('change', function(e) {
+                $.ajax({
+                    url: "{{ route('category.search') }}",
+                    type: 'GET',
+                    data: {
+                        id: this.value
+                    },
+                    success: function(response) {
+                        if(response.status) {
+                            var html = '<option value="">Select Sub Category</option>';
+                            response.categories.forEach(function(category) {
                                 html += '<option value="' + category.id + '">' + category.name + '</option>';
-                            }
-                        });
-                        document.getElementById('sub_category').innerHTML = html;
+                            });
+                            document.getElementById('child-category-block').classList.remove('hidden');
+                            document.getElementById('sub_category').innerHTML = html;
+                        } else {
+                            document.getElementById('child-category-block').classList.add('hidden');
+                        }
                     }
-                }
+                }); 
             });
-            document.getElementById('sub_category').value = {{ $post->category_id }};
-        @endif
 
-        document.getElementById('category').addEventListener('change', function(e) {
-            $.ajax({
-                url: "{{ route('category.search') }}",
-                type: 'GET',
-                data: {
-                    id: this.value
-                },
-                success: function(response) {
-                    if(response.status) {
-                        var html = '<option value="">Select Sub Category</option>';
-                        response.categories.forEach(function(category) {
-                            html += '<option value="' + category.id + '">' + category.name + '</option>';
-                        });
-                        document.getElementById('child-category-block').classList.remove('hidden');
-                        document.getElementById('sub_category').innerHTML = html;
-                    } else {
-                        document.getElementById('child-category-block').classList.add('hidden');
-                    }
-                }
-            }); 
-        });
-    </script>
-
-    <script>
-        document.getElementById('title').addEventListener('keyup', function(e) {
-            document.getElementById('slug').value = slugify(this.value);
-        });
-
-        function slugify(text) {
-            return text.toString().toLowerCase()
-                .replace(/\s+/g, '-')           // Replace spaces with -
-                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-                .replace(/^-+/, '')             // Trim - from start of text
-                .replace(/-+$/, '');            // Trim - from end of text
-        }
-
-    </script>
-    <script>
-        function initAutocomplete() {
-            var input = document.getElementById('location');
-            var autocomplete = new google.maps.places.Autocomplete(input);
-            autocomplete.addListener('place_changed', function() {
-                var place = autocomplete.getPlace();
-                console.log(place.geometry.location.lat());
-                console.log(place.geometry.location.lng());
-                document.getElementById('latitude').value = place.geometry.location.lat();
-                document.getElementById('longitude').value = place.geometry.location.lng();
+            document.getElementById('title').addEventListener('keyup', function(e) {
+                document.getElementById('slug').value = slugify(this.value);
             });
-        }
-    </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAP_API_KEY') }}&libraries=places&callback=initAutocomplete" async defer></script>
+            function slugify(text) {
+                return text.toString().toLowerCase()
+                    .replace(/\s+/g, '-')           // Replace spaces with -
+                    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+                    .replace(/^-+/, '')             // Trim - from start of text
+                    .replace(/-+$/, '');            // Trim - from end of text
+            }
+
+            // addEventListener('DOMContentLoaded', init);
+
+            function init() {
+                var input = document.getElementById('location');
+                var autocomplete = new google.maps.places.Autocomplete(input);
+                autocomplete.addListener('place_changed', function() {
+                    var place = autocomplete.getPlace();
+                    console.log(place.geometry.location.lat());
+                    console.log(place.geometry.location.lng());
+                    document.getElementById('latitude').value = place.geometry.location.lat();
+                    document.getElementById('longitude').value = place.geometry.location.lng();
+                });
+            }
+
+            init();
+        });
+
+    </script>
 
 @endsection

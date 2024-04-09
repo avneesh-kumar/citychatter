@@ -23,7 +23,7 @@ class PostController extends Controller
 
     public function create()
     {
-        $categories = Category::all()->where('status', 1)->where('parent_id', null);
+        $categories = Category::where('status', 1)->where('parent_id', null)->orderBy('sort_by')->get();
         if(request()->id) {
             $post = Post::where('id', request()->id)->where('user_id', auth()->user()->id)->get()->first();
             if(!$post) {

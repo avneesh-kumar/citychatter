@@ -10,7 +10,7 @@ class CategoryController extends Controller
     public function search()
     {
         $id = request('id');
-        $category = Category::where('parent_id', $id);
+        $category = Category::where('parent_id', $id)->orderBy('sort_by');
 
         if($category->count() > 0) {
             $categories = $category->get();

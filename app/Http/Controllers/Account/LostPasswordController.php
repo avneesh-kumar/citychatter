@@ -29,10 +29,9 @@ class LostPasswordController extends Controller
             $user->token = $token;
             $user->save();
 
-            // create a mail and send it to the user
             Mail::to($user->email)->send(new LostPassword($token));
 
-            return back()->with('success', 'We have e-mailed your password reset link!');
+            return back()->with('success', 'Please check your e-mail for the password reset link.');
         }
 
         return back()->withErrors([

@@ -305,7 +305,7 @@
                         $this.text('Send').attr('disabled', false).addClass('bg-red-500 hover:bg-red-600').removeClass('cursor-not-allowed bg-gray-400');
                         if(response.success) {
                             $('#reply').val('');
-                            // location.reload();
+                            location.reload();
                         } else {
                             console.log(response.message);
                         }

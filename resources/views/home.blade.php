@@ -40,7 +40,7 @@
                             </div>
                         @endif
                         <div class="text-sm my-4 " style="width: 90%;">
-                            {{ Str::limit($feed->content, 180) }}
+                            {!! Str::limit($feed->content, 180) !!}
                         </div>
                         <div class="text-lg text-gray-500">
                             {{ $feed->location }}
