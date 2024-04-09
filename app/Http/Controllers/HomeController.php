@@ -32,18 +32,14 @@ class HomeController extends Controller
                 $longitude = auth()->user()->profile->longitude;
             }
 
-            // $feeds = Post::selectRaw('*, ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) * .000621371192 as distance', [$latitude, $longitude])
-            //         ->where('status', true)
-            //         ->whereIn('user_id', $followers)
-            //         ->orderBy('distance', 'asc')
-            //         ->paginate($perPage);
-
+            $radius = auth()->user()->profile->radius ? auth()->user()->profile->radius : 10;
+            
             $feeds = Post::selectRaw('*')
                     ->selectRaw('(ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) / 1609.344) AS dis',
                                     [$longitude, $latitude])
-                    // ->havingRaw('dis <= ?', [$radius])
+                    ->havingRaw('dis <= ?', [$radius])
                     ->whereIn('user_id', $followers)
-                    // ->orderBy('dis')
+                    ->orderBy('dis')
                     ->orderBy('created_at', 'desc')
                     ->paginate($perPage);
 
