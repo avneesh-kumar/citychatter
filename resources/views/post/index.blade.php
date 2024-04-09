@@ -68,61 +68,28 @@
                     </a>
                 </div>
                 <div class="flex-none h-auto ">
+                    @if($post->image)
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+                        <style>
+                            .swiper-button-prev {
+                                color: #ff0000;
+                            }
 
-                    <div id="post-image-carousel" class="relative w-full" data-carousel="slide">
-                        <!-- Carousel wrapper -->
-                        <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-                            <!-- Item 1 -->
-                            <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                                <img src="{{ asset($post->image) }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                            .swiper-button-next {
+                                color: #ff0000;
+                            }
+                        </style>
+                        <div class="swiper mySwiper relative h-56 overflow-hidden rounded-lg md:h-96">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide"><img src="{{ asset($post->image) }}" class="object-cover "></div>
+                                @foreach($post->images as $image)
+                                    <div class="swiper-slide"><img src="{{ asset($image->image) }}" class="object-cover "></div>
+                                @endforeach
                             </div>
-                            @foreach($post->images as $image)
-                                <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                                    <img src="{{ asset($image->image) }}" class="object-cover absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                                </div>
-                            @endforeach
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
                         </div>
-                        <!-- Slider indicators -->
-                        <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
-                            <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
-                            @foreach($post->images as $key => $image)
-                                <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="{{ $key+1 }}"></button>
-                            @endforeach
-                        </div>
-                        <!-- Slider controls -->
-                        <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-                            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                                <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-                                </svg>
-                                <span class="sr-only">Previous</span>
-                            </span>
-                        </button>
-                        <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-                            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                                <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                                </svg>
-                                <span class="sr-only">Next</span>
-                            </span>
-                        </button>
-                    </div>
-
-                    <!-- @if($post->image)
-                        <a href="{{ route('post', $post->slug) }}">
-                            <img id="mainImage" src="{{ asset($post->image) }}" alt="" class="object-contain w-full h-96" style="object-fit: contain;">
-                        </a>
                     @endif
-                    <div class="m-2 p-2 grid grid-cols-6 gap-3 ">
-                        @if($post->images->count() > 0)
-                            @if($post->image)
-                                <img src="{{ asset($post->image) }}" alt="" class="object-cover w-32 h-24 m-2 postImage">
-                            @endif
-                            @foreach($post->images as $image)
-                                <img src="{{ asset($image->image) }}" alt="" class="object-cover w-32 h-24 m-2 postImage">
-                            @endforeach
-                        @endif
-                    </div> -->
                     <div class="text-sm my-8 h-auto text-justify">
                         {!! nl2br($post->content) !!}
                     </div>
@@ -291,69 +258,85 @@
 
 
 <!-- Modal for messaging -->
-<div id="message-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-md max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-lg font-semibold text-red-600 dark:text-white">
-                    Send message to - 
-                    <a href="{{ route('user.profile', $post->user->profile->username) }}" class="text-red-600 hover:underline">
-                        {{ $post->user->name }}
-                    </a>
-                </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="message-modal">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <div id="modal-message-block" class="text-center text-lg text-red-600 p-2"></div>
-            <form class="p-4 md:p-5">
-                <div class="grid gap-4 mb-4 grid-cols-2">
-                    <div class="col-span-2">
-                        <label for="post_title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Post Title</label>
-                        <input type="text" readonly name="post_title" id="post_title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" value="{{ $post->title }}" >
-                        <input type="hidden" name="post_id" value="{{ $post->id }}">
-                        <input type="hidden" name="user_to" value="{{ $post->user->id }}">
-                    </div>
-                    <div class="col-span-2">
-                        <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Message
-                            <span class="text-red-500"> *</span>
-                        </label>
-                        <textarea id="message" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Enter your message here" required></textarea>                    
-                    </div>
-                    <span id="messageError" class="text-red-600 text-sm"></span>
+@if(auth()->user()->id != $post->user->id)
+    <div id="message-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-lg font-semibold text-red-600 dark:text-white">
+                        Send message to - 
+                        <a href="{{ route('user.profile', $post->user->profile->username) }}" class="text-red-600 hover:underline">
+                            {{ $post->user->name }}
+                        </a>
+                    </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="message-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
                 </div>
-                <button type="button" id="sendMessageBtn" class="py-1 px-2 text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none">
-                    Send
-                </button>
-            </form>
+                <!-- Modal body -->
+                <div id="modal-message-block" class="text-center text-lg text-red-600 p-2"></div>
+                <form class="p-4 md:p-5">
+                    <div class="grid gap-4 mb-4 grid-cols-2">
+                        <div class="col-span-2">
+                            <label for="post_title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Post Title</label>
+                            <input type="text" readonly name="post_title" id="post_title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" value="{{ $post->title }}" >
+                            <input type="hidden" name="post_id" value="{{ $post->id }}">
+                            <input type="hidden" name="user_to" value="{{ $post->user->id }}">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Message
+                                <span class="text-red-500"> *</span>
+                            </label>
+                            <textarea id="message" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Enter your message here" required></textarea>                    
+                        </div>
+                        <span id="messageError" class="text-red-600 text-sm"></span>
+                    </div>
+                    <button type="button" id="sendMessageBtn" class="py-1 px-2 text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none">
+                        Send
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
-</div> 
+@endif
 
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-<script>
-    var map;
-    var lat = {{ $post->latitude }};
-    var lng = {{ $post->longitude }};
-    
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: lat, lng: lng},
-            zoom: 10
-        });
-    }
-</script>
-
-<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAP_API_KEY') }}&libraries=places&callback=initMap" async defer></script>
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper(".mySwiper", {
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+  </script>
 
 <script>
     $(document).ready(function() {
+
+        // loading map for the post location
+        var map;
+        var lat = {{ $post->latitude }};
+        var lng = {{ $post->longitude }};
+        
+        // addEventListener('DOMContentLoaded', initMap);
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: lat, lng: lng},
+                zoom: 10
+            });
+        }
+
+        initMap();
+        // end here
+        
         $('.postImage').click(function() {
             let src = $(this).attr('src');
             $('#mainImage').attr('src', src);
