@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Mail\Registration;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -35,25 +36,43 @@ class SearchController extends Controller
                 $longitude = auth()->user()->profile->longitude;
             }
 
+            $askedRadius = 1;
+
             if(request('latitude') && request('longitude')) {
                 $latitude = request('latitude');
                 $longitude = request('longitude');
             }
 
-            $radius = ( request('radius') ? request('radius') : auth()->user()->profile->radius );
+            if(request('radius')) {
+                $askedRadius = request('radius');
+            }
 
-            $posts = Post::selectRaw('*')
-                ->selectRaw('(ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) / 1609.344) AS dis',
-                                [$longitude, $latitude])
-                ->havingRaw('dis <= ?', [$radius])
-                ->where(function ($query) {
-                    $query->where('title', 'like', '%'.request('search').'%')
-                        ->orwhere('content', 'like', '%'.request('search').'%');
-                })
-                ->whereIn('user_id', $followers)
-                ->orderBy('dis')
-                ->orderBy('created_at', 'desc')
-                ->paginate($perPage);
+            $radius = $askedRadius;
+            
+            if($longitude && $latitude) {
+                $posts = Post::selectRaw('*')
+                    ->selectRaw('(ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) / 1609.344) AS dis',
+                                    [$longitude, $latitude])
+                    ->havingRaw('dis <= ?', [$radius])
+                    ->where(function ($query) {
+                        $query->where('title', 'like', '%'.request('search').'%')
+                            ->orwhere('content', 'like', '%'.request('search').'%')
+                            ->orWhere('location', 'like', '%'.request('search').'%');
+                    })
+                    // ->whereIn('user_id', $followers)
+                    ->orderBy('dis')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate($perPage);
+            } else {
+                $posts = Post::where('status', true)
+                    ->where(function ($query) {
+                        $query->where('title', 'like', '%'.request('search').'%')
+                            ->orwhere('content', 'like', '%'.request('search').'%')
+                            ->orWhere('location', 'like', '%'.request('search').'%');
+                    })
+                    ->orderBy('updated_at', 'desc')
+                    ->paginate($perPage);
+            }
                     
         } else {
             if(session()->has('latitude') && session()->has('longitude')) {
@@ -72,12 +91,17 @@ class SearchController extends Controller
             }
         }
 
-        // write laravel query to get the posts based on the search query and the location of the user and the radius of the user
-
-
-
-
-        return view('search.index', compact('posts'));
+        $users = User::leftJoin('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+                    ->select('users.*', 'user_profiles.username')
+                    ->where(function ($query) {
+                        $query->where('users.name', 'like', '%'.request('search').'%')
+                            ->orwhere('users.email', 'like', '%'.request('search').'%')
+                            ->orWhere('user_profiles.username', 'like', '%'.request('search').'%');
+                    })
+                    ->paginate(12);
+        
+        $query = request('search');
+        return view('search.index', compact('posts', 'users', 'query'));
     }
 
     public function test()

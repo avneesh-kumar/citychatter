@@ -137,7 +137,7 @@
                     @endif
                 </div>
 
-                <div>
+                <!-- <div>
                     <label for="sort_by" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sort By
                     </label>
                     <select name="sort_by" id="sort_by" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5">
@@ -147,16 +147,16 @@
                     @if ($errors->has('sort_by'))
                         <span class="text-red-600 text-sm">{{ $errors->first('sort_by') }}</span>
                     @endif
-                </div>
+                </div> -->
 
-                <div>
+                <!-- <div>
                     <label for="in_radius" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Feeds in Radius (Miles)
                     </label>
                     <input type="text" name="in_radius" id="in_radius" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5"  autocomplete="off" value="{{ old('in_radius') ? old('in_radius') : $user->profile->in_radius }}" />
                     @if ($errors->has('in_radius'))
                         <span class="text-red-600 text-sm">{{ $errors->first('in_radius') }}</span>
                     @endif
-                </div>
+                </div> -->
 
                 <div class="flex justify-end">
                     <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-medium py-2.5 px-5 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Save</button>

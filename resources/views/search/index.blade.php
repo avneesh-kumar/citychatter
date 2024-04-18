@@ -21,6 +21,42 @@
 
 <div class="md:flex">
     <div class="md:flex-1 flex-auto">
+        <div class="flex items-center justify-between p-4 bg-white border-b border-gray-200">
+            <div class="text-2xl font-semibold text-red-600">
+                Search Results for "{{ $query }}"
+            </div>
+            <div class="text-sm text-gray-500">
+                {{ $posts->total() }} results found
+            </div>
+        </div>
+
+        <!-- show users -->
+        @if($users->count() > 0)
+            <div class="p-8">
+                <div class="text-2xl text-red-600 font-semibold">
+                    Users
+                </div>
+                <div class="grid grid-cols-10 gap-4 mt-4">
+                    @foreach ($users as $user)
+                        <div class="flex items center">
+                            <div class="flex-none text-center">
+                                <a href="{{ route('user.profile', $user->profile->username) }}">
+                                    @if($user->profile->avatar)
+                                        <img src="{{ asset($user->profile->avatar) }}" alt="{{ $user->name }}" class="w-12 h-12 shadow-xl rounded-full object-cover">
+                                    @else
+                                        <img src="{{ asset('images/avatar.jpg') }}" alt="{{ $user->name }}" class="w-12 h-12 shadow-xl rounded-full object-cover">
+                                    @endif
+                                </a>
+                                <a href="{{ route('user.profile', $user->profile->username) }}" class="text-red-600 hover:underline text-xs">
+                                    <!-- cut name after space -->
+                                    {{ Str::before($user->name, ' ') }}
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
         @if($posts->count() > 0)
             @foreach ($posts as $post)
                 <div class="flex p-8">
@@ -57,7 +93,7 @@
                             </div>
                         @endif
                         <div class="text-sm my-4 " style="width: 90%">
-                            {{ Str::limit($post->content, 180) }}
+                            {!! Str::limit($post->content, 180) !!}
                         </div>
                         <div class="text-lg text-gray-500">
                             {{ $post->location }}

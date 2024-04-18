@@ -15,7 +15,7 @@
                 <p class="text-green text-center">{{ session('message') }}</p>
             </div>
         @endif
-        <div class="flex">
+        <div class="flex justify-center">
             <!-- <div class="w-96 overflow-y-hidden max-h-screen shadow-md" style="height: 743px;">
                 @if($message->fromUser->id != auth()->user()->id)
                     <div class="flex justify-center items-center h-16 ">
@@ -123,7 +123,7 @@
                 <input type="hidden" name="to" value="{{ $message->toUser->id }}" />
             @endif
 
-            <div class="w-full overflow-y-hidden p-2 ">
+            <div class="w-1/2 overflow-y-hidden p-2 ">
                 <!-- @if($message->fromUser->id != auth()->user()->id)
                     <div class="flex justify-center items-center h-16 ">
                         <h1 class="text-2xl text-red-500 underline">Sender information</h1>
