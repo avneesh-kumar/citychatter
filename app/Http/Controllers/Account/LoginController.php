@@ -20,7 +20,7 @@ class LoginController extends Controller
         ]);
 
         $user = \App\Models\User::where('email', $credentials['email'])->first();
-
+        
         if ($user && !$user->status) {
             return back()->withErrors([
                 'invalid' => 'Your account is not active. Please check your email for the activation link.',
@@ -30,7 +30,7 @@ class LoginController extends Controller
         if (auth()->attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/feed');
+            return redirect()->route('feed');
         }
 
         return back()->withErrors([

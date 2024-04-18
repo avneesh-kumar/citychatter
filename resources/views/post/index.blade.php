@@ -81,9 +81,9 @@
                         </style>
                         <div class="swiper mySwiper relative h-56 overflow-hidden rounded-lg md:h-96">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide"><img src="{{ asset($post->image) }}" class="object-cover "></div>
+                                <div class="swiper-slide"><img src="{{ asset($post->image) }}" class="object-cover w-full h-full"></div>
                                 @foreach($post->images as $image)
-                                    <div class="swiper-slide"><img src="{{ asset($image->image) }}" class="object-cover "></div>
+                                    <div class="swiper-slide"><img src="{{ asset($image->image) }}" class="object-cover w-full h-full "></div>
                                 @endforeach
                             </div>
                             <div class="swiper-button-next"></div>

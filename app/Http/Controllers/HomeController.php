@@ -21,40 +21,53 @@ class HomeController extends Controller
             $perPage = 15;
         }
 
-        if(auth()->user()) {
-            $followers = UserFollow::where('followed_to', auth()->user()->id)->pluck('followed_by')->toArray();
-            array_push($followers, auth()->user()->id);
-            $latitude = session('latitude');
-            $longitude = session('longitude');
+        $feeds = Post::where('status', true)
+                ->orderBy('updated_at', 'desc')
+                ->paginate($perPage);
 
-            if(auth()->user()->profile->latitude && auth()->user()->profile->longitude) {
-                $latitude = auth()->user()->profile->latitude;
-                $longitude = auth()->user()->profile->longitude;
-            }
+        // if(auth()->user()) {
+        //     // $followers = UserFollow::where('followed_to', auth()->user()->id)->pluck('followed_by')->toArray();
+        //     // array_push($followers, auth()->user()->id);
+        //     $latitude = session('latitude');
+        //     $longitude = session('longitude');
 
-            $radius = auth()->user()->profile->radius ? auth()->user()->profile->radius : 10;
-            
-            $feeds = Post::selectRaw('*')
-                    ->selectRaw('(ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) / 1609.344) AS dis',
-                                    [$longitude, $latitude])
-                    ->havingRaw('dis <= ?', [$radius])
-                    ->whereIn('user_id', $followers)
-                    ->orderBy('dis')
-                    ->orderBy('created_at', 'desc')
-                    ->paginate($perPage);
+        //     if(auth()->user()->profile->latitude && auth()->user()->profile->longitude) {
+        //         $latitude = auth()->user()->profile->latitude;
+        //         $longitude = auth()->user()->profile->longitude;
+        //     }
 
-        } else {
-            if(session()->has('latitude') && session()->has('longitude')) {
-                $feeds = Post::selectRaw('*, ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) * .000621371192 as distance', [session('longitude'), session('latitude')])
-                    ->where('status', true)
-                    ->orderBy('distance', 'asc')
-                    ->paginate($perPage);
-            } else {
-                $feeds = Post::where('status', true)
-                    ->orderBy('updated_at', 'desc')
-                    ->paginate($perPage);
-            }
-        }
+            // if($longitude && $latitude) {
+            //     $feeds = Post::selectRaw('*')
+            //             ->selectRaw('(ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) / 1609.344) AS dis',
+            //                             [$longitude, $latitude])
+            //             // ->havingRaw('dis <= ?', [$radius])
+            //             // ->whereIn('user_id', $followers)
+            //             // ->orderBy('dis')
+            //             ->orderBy('updated_at', 'desc')
+            //             ->paginate($perPage);
+            // } else {
+            //     $feeds = Post::where('status', true)
+            //             ->orderBy('updated_at', 'desc')
+            //             ->paginate($perPage);
+            // }
+
+            // $feeds = Post::where('status', true)
+            //         ->orderBy('updated_at', 'desc')
+            //         ->paginate($perPage);
+
+        // } else {
+        //     if(session()->has('latitude') && session()->has('longitude')) {
+        //         $feeds = Post::selectRaw('*, ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) * .000621371192 as distance', [session('longitude'), session('latitude')])
+        //             ->where('status', true)
+        //             ->orderBy('updated_at', 'desc')
+        //             ->paginate($perPage);
+        //     } else {
+        //         $feeds = Post::where('status', true)
+        //             ->orderBy('updated_at', 'desc')
+        //             ->paginate($perPage);
+        //     }
+        // }
+        
         return view('home', compact('feeds'));
     }
 

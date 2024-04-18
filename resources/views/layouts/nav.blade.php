@@ -23,13 +23,13 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg> -->
                     </div>
-                    <form method="get" action="{{ route('search') }}" class="flex items-center justify-left" style="padding-left: 4.5rem;">
+                    <form method="get" action="{{ route('search') }}" id="search-form" class="flex items-center justify-left" style="padding-left: 4.5rem;">
                         <input type="text" id="search" name="search" class="inline-block w-96 mr-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500 " placeholder="Search citychatter" value="{{ request('search') }}">
-                        <input type="text" id="area" name="location" class="inline-block mr-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500 " placeholder="City/Zip" value="{{ request('location') }}">
+                        <input type="text" id="area" name="location" class="inline-block mr-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500 " placeholder="My City/Zip" value="{{ request('location') }}">
                         <input type="text" id="radius" name="radius" class="inline-block w-20 mr-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-red-500 focus:border-red-500 " placeholder="In miles" value="{{ request('radius') }}">
                         <input type="hidden" name="latitude" value="{{ request('latitude') }}">
                         <input type="hidden" name="longitude" value="{{ request('longitude') }}">
-                        <button type="submit" class="py-1 px-2 text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none" title="Search">
+                        <button type="button" id="searchBtn" class="py-1 px-2 text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none" title="Search">
                             <!-- <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                             </svg> -->
@@ -94,12 +94,12 @@
                                     <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">Profile Settings</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('account.reset-password') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Reset Password</a>
+                                    <a href="{{ route('account.reset-password') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">Reset Password</a>
                                 </li>
                                 <li>
                                     <form action="{{ route('logout') }}" method="post">
                                         @csrf
-                                        <button type="submit" class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-red-500 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</button>
+                                        <button type="submit" class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">Sign out</button>
                                     </form>
                                 </li>
                             </ul>
@@ -143,21 +143,54 @@
     
 <script>
     $('document').ready(function() {
+        var location = localStorage.getItem('location');
+        $('#area').val(location);
+        var latitude = localStorage.getItem('latitude');
+        $('input[name="latitude"]').val(latitude);
+        var longitude = localStorage.getItem('longitude');
+        $('input[name="longitude"]').val(longitude);
+        var radius = localStorage.getItem('radius');
+        $('input[name="radius"]').val(radius);
+
         var input = document.getElementById('area');
         var autocomplete = new google.maps.places.Autocomplete(input);
         autocomplete.addListener('place_changed', function() {
             var place = autocomplete.getPlace();
             $('input[name="latitude"]').val(place.geometry.location.lat());
             $('input[name="longitude"]').val(place.geometry.location.lng());
+
+            localStorage.setItem('location', place.formatted_address);
+            localStorage.setItem('latitude', place.geometry.location.lat());
+            localStorage.setItem('longitude', place.geometry.location.lng());
         });
+
+        $('#radius').on('change', function() {
+            localStorage.setItem('radius', $(this).val());
+        });
+
     });
 </script>
 
 <script>
+
+    $('#searchBtn').on('click', function() {
+        let keyword = $('#area').val();
+        if(keyword == '') {
+            $('input[name="latitude"]').val('');
+            $('input[name="longitude"]').val('');
+        }
+        $('#search-form').submit();
+    });
+
     document.getElementById('search').addEventListener('keypress', function(e) {
+        let keyword = $('#area').val();
         if (e.key === 'Enter') {
             e.preventDefault();
-            this.closest('form').submit();
+            if(keyword == '') {
+                $('input[name="latitude"]').val('');
+                $('input[name="longitude"]').val('');
+            }
+            $('#search-form').submit();
         }
     });
     

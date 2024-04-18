@@ -75,7 +75,10 @@ class MessageController extends Controller
         ]);
         
         try {
-            Mail::to($message->toUser->email)->send(new \App\Mail\Message($message));
+            // Mail::to($message->toUser->email)->send(new \App\Mail\Message($message));
+            $data['email'] = $message->toUser->email;
+            $data['message'] = $message;
+            dispatch(new \App\Jobs\SendMessageEmailJob($data));
 
             return response()->json([
                 'success' => true,
@@ -110,7 +113,10 @@ class MessageController extends Controller
                 'comment' => request('reply'),
             ]);
 
-            Mail::to($reply->toUser->email)->send(new \App\Mail\MessageReply($reply));
+            $data['email'] = $reply->toUser->email;
+            $data['reply'] = $reply;
+
+            dispatch(new \App\Jobs\SendMessageReplyEmailJob($data));
 
             return response()->json([
                 'success' => true,

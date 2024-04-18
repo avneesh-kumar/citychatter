@@ -52,8 +52,8 @@
 <body>
   <div class="container">
     <h2>Registration Successful!</h2>
-    <p>Thank you for registering. You can now log in to your account.</p>
-    Follow the link to validate your email id.
+    <p>Thank you for registering. Please verify your email.</p>
+    Follow the link to validate your email.
     <a href="{{ route('register.validateemail', $token) }}">Validate Email</a>
     <footer>
         <p>&copy; 2024 CityChatter. All rights reserved.</p>

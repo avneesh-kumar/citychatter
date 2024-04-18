@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Account;
 
-use App\Mail\Registration;
+use App\Mail\UserCreation;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -41,11 +41,9 @@ class RegisterController extends Controller
         $user->token = $token;
         $user->save();
 
-        Mail::to($user->email)->send(new Registration($token));
+        Mail::to($user->email)->send(new UserCreation($token));
 
-        // auth()->login($user);
-
-        return redirect()->route('home');
+        return redirect()->route('register')->with('success', 'Registration successful. Please check your email to verify your account.');
     }
 
     public function validateEmail($token)
