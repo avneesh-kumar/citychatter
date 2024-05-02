@@ -1,6 +1,8 @@
 @extends('admin::layouts.app')
 
-<script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+<!-- <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script> -->
+<script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+
 @section('content')
     <style>
         .ck-editor__editable_inline {
@@ -116,6 +118,18 @@
                     @enderror
                 </div>
 
+                <div class="mb-4 w-1/2">
+                    <label for="help" class="block text-gray-700 text-sm font-bold mb-2">
+                        Help
+                    </label>
+                    <textarea name="help" id="help" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none  focus:ring-red-500 focus:ring-2 w-full p-2 rounded-lg h-96" style="min-height: 150px;" >@if(isset($configData['help'])){{$configData['help']}}@endif</textarea>
+                    @error('help')
+                        <p class="text-red-500 text-xs italic mt-4">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
+
                 <div class="mb-4">
                     <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-xs">
                         Save
@@ -126,24 +140,37 @@
     </div>
 
     <script>
-        ClassicEditor.create( document.querySelector( '#aboutus' ) )
-        .catch( error => {
-            console.error( error );
-        } );
+        $(document).ready(function() {
+            CKEDITOR.replace('aboutus');
+            CKEDITOR.replace('terms');
+            CKEDITOR.replace('mission');
+            CKEDITOR.replace('privacypolicy');
+            CKEDITOR.replace('help');
+        });
 
-        ClassicEditor.create( document.querySelector( '#terms' ) )
-        .catch( error => {
-            console.error( error );
-        } );
+        // ClassicEditor.create( document.querySelector( '#aboutus' ) )
+        // .catch( error => {
+        //     console.error( error );
+        // } );
 
-        ClassicEditor.create( document.querySelector( '#mission' ) )
-        .catch( error => {
-            console.error( error );
-        } );
+        // ClassicEditor.create( document.querySelector( '#terms' ) )
+        // .catch( error => {
+        //     console.error( error );
+        // } );
 
-        ClassicEditor.create( document.querySelector( '#privacypolicy' ) )
-        .catch( error => {
-            console.error( error );
-        } );
+        // ClassicEditor.create( document.querySelector( '#mission' ) )
+        // .catch( error => {
+        //     console.error( error );
+        // } );
+
+        // ClassicEditor.create( document.querySelector( '#privacypolicy' ) )
+        // .catch( error => {
+        //     console.error( error );
+        // } );
+
+        // ClassicEditor.create( document.querySelector( '#help' ) )
+        // .catch( error => {
+        //     console.error( error );
+        // } );
     </script>
 @endsection

@@ -19,14 +19,14 @@
     </div>
 @endif
 
-<div class="md:flex">
-    <div class="md:flex-1 flex-auto">
-        <div class="flex items-center justify-between p-4 bg-white border-b border-gray-200">
+<div class="flex">
+    <div class="w-3/4 ">
+        <div class="flex w-[93%] items-center justify-between p-8 bg-white border-b border-gray-200">
             <div class="text-2xl font-semibold text-red-600">
                 Search Results for "{{ $query }}"
             </div>
             <div class="text-sm text-gray-500">
-                {{ $posts->total() }} results found
+                {{ $posts->total() }} posts found
             </div>
         </div>
 
@@ -36,8 +36,11 @@
                 <div class="text-2xl text-red-600 font-semibold">
                     Users
                 </div>
-                <div class="grid grid-cols-10 gap-4 mt-4">
+                <div class="grid grid-cols-10 gap-1 mt-1">
                     @foreach ($users as $user)
+                    @if(!$user->profile)
+                        @continue
+                    @endif
                         <div class="flex items center">
                             <div class="flex-none text-center">
                                 <a href="{{ route('user.profile', $user->profile->username) }}">
@@ -48,7 +51,6 @@
                                     @endif
                                 </a>
                                 <a href="{{ route('user.profile', $user->profile->username) }}" class="text-red-600 hover:underline text-xs">
-                                    <!-- cut name after space -->
                                     {{ Str::before($user->name, ' ') }}
                                 </a>
                             </div>
@@ -88,12 +90,12 @@
                         @if($post->image)
                             <div class="flex-none h-96 " style="width: 90%">
                                 <a href="{{ route('post', $post->slug) }}">
-                                    <img src="{{ asset($post->image) }}" alt="" class="object-cover w-full h-full" >
+                                    <img src="{{ asset($post->image) }}" alt="" class="object-fit w-full h-full rounded-lg shadow-md" >
                                 </a>
                             </div>
                         @endif
                         <div class="text-sm my-4 " style="width: 90%">
-                            {!! Str::limit($post->content, 180) !!}
+                            {!! nl2br(Str::limit(strip_tags($post->content), 180)) !!}
                         </div>
                         <div class="text-lg text-gray-500">
                             {{ $post->location }}
@@ -107,7 +109,7 @@
             </div>
         @endif
     </div>
-    <div class="w-1/3 border-2 border-gray-900">
+    <div class="w-1/4 border-2 border-gray-900">
         <div class="text-center">
             Advertisement
         </div>

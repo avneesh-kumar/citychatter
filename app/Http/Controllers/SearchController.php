@@ -38,9 +38,9 @@ class SearchController extends Controller
 
             $askedRadius = 1;
 
-            if(request('latitude') && request('longitude')) {
-                $latitude = request('latitude');
-                $longitude = request('longitude');
+            if(request('s_latitude') && request('s_longitude')) {
+                $latitude = request('s_latitude');
+                $longitude = request('s_longitude');
             }
 
             if(request('radius')) {
@@ -48,7 +48,7 @@ class SearchController extends Controller
             }
 
             $radius = $askedRadius;
-            
+
             if($longitude && $latitude) {
                 $posts = Post::selectRaw('*')
                     ->selectRaw('(ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) / 1609.344) AS dis',
@@ -59,10 +59,10 @@ class SearchController extends Controller
                             ->orwhere('content', 'like', '%'.request('search').'%')
                             ->orWhere('location', 'like', '%'.request('search').'%');
                     })
-                    // ->whereIn('user_id', $followers)
                     ->orderBy('dis')
                     ->orderBy('created_at', 'desc')
                     ->paginate($perPage);
+
             } else {
                 $posts = Post::where('status', true)
                     ->where(function ($query) {
@@ -72,6 +72,8 @@ class SearchController extends Controller
                     })
                     ->orderBy('updated_at', 'desc')
                     ->paginate($perPage);
+
+                    dd($posts);
             }
                     
         } else {
@@ -98,7 +100,7 @@ class SearchController extends Controller
                             ->orwhere('users.email', 'like', '%'.request('search').'%')
                             ->orWhere('user_profiles.username', 'like', '%'.request('search').'%');
                     })
-                    ->paginate(12);
+                    ->paginate(10);
         
         $query = request('search');
         return view('search.index', compact('posts', 'users', 'query'));

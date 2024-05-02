@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Roilift\Admin\Models\Post;
 use Roilift\Admin\Models\Category;
 use Roilift\Admin\Models\UserFollow;
@@ -40,8 +41,16 @@ class FeedController extends Controller
         // array_push($followers, auth()->user()->id);
 
         if($slug) {
+            $ids = [];
             $category = Category::where('slug', $slug)->first();
 
+            $ids[] = $category->id;
+            if($category->children) {
+                foreach($category->children as $child) {
+                    $ids[] = $child->id;
+                }
+            }
+            
             if($category->parent_id) {
                 $parent = $category->parent;
 
@@ -65,8 +74,8 @@ class FeedController extends Controller
             // ->paginate($perPage);
 
             $feeds = Post::where('status', true)
-                ->where('category_id', $category->id)
-                ->orderBy('updated_at', 'desc')
+                ->whereIn('category_id', $ids)
+                ->orderBy('created_at', 'desc')
                 ->paginate($perPage);
 
         } else {
@@ -77,7 +86,7 @@ class FeedController extends Controller
             // ->orderBy('updated_at', 'desc')
             // ->paginate($perPage);
             $feeds = Post::where('status', true)
-                ->orderBy('updated_at', 'desc')
+                ->orderBy('created_at', 'desc')
                 ->paginate($perPage);
         }
         

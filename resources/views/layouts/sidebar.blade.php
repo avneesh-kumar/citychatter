@@ -38,10 +38,6 @@
                     </li>
                     @endforeach
                 @endif
-            @else
-                <li>
-                    No sub category found
-                </li>
             @endif
         </ul>
     </div>

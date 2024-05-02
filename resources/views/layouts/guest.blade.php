@@ -17,15 +17,17 @@
         <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAP_API_KEY') }}&libraries=places" ></script>
     </head>
     <body class="font-sans text-gray-900 antialiased">
-        ::-moz-selection {
-            color: white;
-            background: #f05252;
-        }
+        <style>
+            ::-moz-selection {
+                color: white;
+                background: #f05252;
+            }
 
-        ::selection {
-            color: white;
-            background: #f05252;
-        }
+            ::selection {
+                color: white;
+                background: #f05252;
+            }   
+        </style>
         <div>
             @include('layouts.nav')
             <div class=" p-2 ">

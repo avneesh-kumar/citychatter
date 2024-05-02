@@ -43,7 +43,7 @@ class UserController extends Controller
         $user = request()->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.request('id'),
-            'password' => 'required',
+            'password' => request('id') ? '' : 'required|min:6',
             'username' => 'required|unique:user_profiles,username,'.request('id'),
         ]);
         

@@ -19,15 +19,17 @@
         
     </head>
     <body class="font-sans antialiased">
-        ::-moz-selection {
-            color: white;
-            background: #f05252;
-        }
+        <style>
+            ::-moz-selection {
+                color: white;
+                background: #f05252;
+            }
 
-        ::selection {
-            color: white;
-            background: #f05252;
-        }
+            ::selection {
+                color: white;
+                background: #f05252;
+            }
+        </style>
         <div class="">
             @include('layouts.nav')
             @include('layouts.sidebar')

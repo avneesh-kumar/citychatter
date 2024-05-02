@@ -15,7 +15,7 @@
                 <p class="text-green text-center">{{ session('message') }}</p>
             </div>
         @endif
-        <div class="flex justify-center">
+        <div class="flex w-3/4 justify-start ">
             <!-- <div class="w-96 overflow-y-hidden max-h-screen shadow-md" style="height: 743px;">
                 @if($message->fromUser->id != auth()->user()->id)
                     <div class="flex justify-center items-center h-16 ">
@@ -123,7 +123,7 @@
                 <input type="hidden" name="to" value="{{ $message->toUser->id }}" />
             @endif
 
-            <div class="w-1/2 overflow-y-hidden p-2 ">
+            <div class="w-full overflow-y-hidden p-8 ">
                 <!-- @if($message->fromUser->id != auth()->user()->id)
                     <div class="flex justify-center items-center h-16 ">
                         <h1 class="text-2xl text-red-500 underline">Sender information</h1>
@@ -190,7 +190,7 @@
                     </div>
                 @endif -->
                 
-                <div id="reply-container" class="p-2 border-t-2 mt-2 border-x-2 overflow-y-auto " style="height: 680px; max-height: 680px;">
+                <div id="reply-container" class="p-2 overflow-y-auto " style="min-height: 450px; max-height: 680px;">
                     <div class="flex">
                         <div class="w-12 ">
                             @if($message->fromUser->profile->avatar)
@@ -263,6 +263,9 @@
                     <button class="bg-red-300 text-white px-4 py-2 h-12 rounded-md mx-2" disabled id="replyBtn">Send</button>
                 </div>
             </div>
+        </div>
+        <div class="w-1/3">
+
         </div>
     </div>
 

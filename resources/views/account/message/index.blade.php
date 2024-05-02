@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="h-screen ">
+    <div class="h-screen w-3/4 p-8 ">
 
         <h1 class="text-2xl text-red-500 text-center mb-8 underline">Messages</h1>
         <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8">

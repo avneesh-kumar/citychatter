@@ -28,6 +28,7 @@ Route::get('/mission', 'App\Http\Controllers\MissionController@index')->name('mi
 Route::get('/about', 'App\Http\Controllers\AboutController@index')->name('about');
 Route::get('/contact', 'App\Http\Controllers\ContactController@index')->name('contact');
 Route::post('/contact', 'App\Http\Controllers\ContactController@store')->name('contact.store');
+Route::get('/help', 'App\Http\Controllers\HelpController@index')->name('help'); 
 
 
 Route::group([

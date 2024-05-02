@@ -3,7 +3,7 @@
 @section('content')
     <div class="flex justify-center items-center h-screen">
         <div class="w-full m-4 md:w-1/4 md:m-0">
-            <div class="bg-white shadow-xl shadow-red-600 rounded px-8 pt-6 pb-8 mb-4">
+            <div class="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4">
                 <h1 class="text-center mb-4">
                     <a href="{{ route('admin.login') }}" class="text-2xl text-red-600 font-bold">
                         {{ config('app.name') }}

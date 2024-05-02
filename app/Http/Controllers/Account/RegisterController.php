@@ -43,7 +43,7 @@ class RegisterController extends Controller
 
         Mail::to($user->email)->send(new UserCreation($token));
 
-        return redirect()->route('register')->with('success', 'Registration successful. Please check your email to verify your account.');
+        return redirect()->route('register')->with('success', 'Registration successful. Please check your email and follow the instructions to activate your account.');
     }
 
     public function validateEmail($token)
