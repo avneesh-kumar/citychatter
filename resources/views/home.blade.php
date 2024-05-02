@@ -2,8 +2,8 @@
 
 @section('content')
 
-<div class="md:flex">
-    <div class="md:flex-1 flex-auto">
+<div class="flex">
+    <div class="w-3/4">
         @if($feeds->count() > 0)
             @foreach ($feeds as $feed)
                 <div class="flex p-8">
@@ -33,14 +33,16 @@
                             </a>
                         </div>
                         @if($feed->image)
-                            <div class="flex-none h-80 " style="width: 90%;">
+                            <div class="flex-none h-96 w-[90%] ">
                                 <a href="{{ route('post', $feed->slug) }}">
-                                    <img src="{{ asset($feed->image) }}" alt="" class="object-cover w-full h-full rounded-lg shadow-md" >
+                                    <img src="{{ asset($feed->image) }}" alt="" class="object-fit w-full h-full rounded-lg shadow-md" >
                                 </a>
                             </div>
                         @endif
-                        <div class="text-sm my-4 " style="width: 90%;">
-                            {!! nl2br(Str::limit($feed->content, 180)) !!}
+                        <div class="text-sm my-4 w-[90%] ">
+                            <div class="w-full">
+                                {!! nl2br(Str::limit(strip_tags($feed->content), 180)) !!}
+                            </div>
                         </div>
                         <div class="text-lg text-gray-500">
                             {{ $feed->location }}
@@ -54,8 +56,8 @@
             </div>
         @endif
     </div>
-    <div class="w-1/3 border-2 border-gray-900">
-        <div class="text-center">
+    <div class="flex w-1/4 border-2 border-gray-900">
+        <div class="text-center w-full">
             Advertisement
         </div>
     </div>

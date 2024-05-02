@@ -19,6 +19,7 @@
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      overflow: auto;
     }
 
     h2 {
@@ -35,13 +36,7 @@
       margin-top: 20px;
     }
     a {
-      display: inline-block;
-      background-color: #dc2626;
-      color: #fff;
-      text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      margin-top: 20px;
+      overflow-wrap: break-word;
     }
     footer {
       margin-top: 20px;
@@ -52,9 +47,11 @@
 <body>
   <div class="container">
     <h2>Registration Successful!</h2>
-    <p>Thank you for registering. Please verify your email.</p>
-    Follow the link to validate your email.
-    <a href="{{ route('register.validateemail', $token) }}">Validate Email</a>
+    <p>Thank you for registering. Please click the link below to activate your account.</p>
+
+    <a href="{{ route('register.validateemail', $token) }}">
+      {{ route('register.validateemail', $token) }}
+    </a>
     <footer>
         <p>&copy; 2024 CityChatter. All rights reserved.</p>
     </footer>

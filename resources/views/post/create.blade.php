@@ -11,166 +11,161 @@
             min-height: 300px;
         }
     </style>
-    <div class="flex justify-center">
-        <div class="form-container w-1/2">
-            <form action="{{ route('post.store') }}" method="post" class="space-y-4" enctype="multipart/form-data">
-                @csrf
-                @if(isset($post))
-                    <input type="hidden" name="id" value="{{ $post->id }}" />
-                @endif
-                <div>
-                    <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title
-                        <span class="text-red-500"> *</span>
-                    </label>
-                    <input type="text" name="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required autocomplete="off" value="{{isset($post) ? $post->title : old('title') }}" placeholder="Title of your post" />
-                    <input type="hidden" name="slug" id="slug" value="{{isset($post) ? $post->slug : old('slug') }}" />
-                    @if ($errors->has('title'))
-                        <span class="text-red-600 text-sm">{{ $errors->first('title') }}</span>
+    <div class="flex">
+        <div class="w-3/4">
+            <div class="form-container w-full p-8">
+                <form action="{{ route('post.store') }}" method="post" class="space-y-4" enctype="multipart/form-data">
+                    @csrf
+                    @if(isset($post))
+                        <input type="hidden" name="id" value="{{ $post->id }}" />
                     @endif
-                </div>
-                <div>
-                    <label for="content" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Details
-                        <span class="text-red-500"> *</span>
-                    </label>
-                    <textarea type="content" name="content" id="content" class="h-36 whitespace-pre-line bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Detail of your post"  >{{isset($post) ? $post->content : old('content') }}</textarea>
-                    @if ($errors->has('content'))
-                        <span class="text-red-600 text-sm">{{ $errors->first('content') }}</span>
-                    @endif
-                </div>
-
-                <div>
-                    <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Main Image</label>
-                    <input type="file" name="image" id="image" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5">
-
-                    @if(isset($post) && $post->image)
-                        <img src="{{ asset($post->image) }}" class="mt-2 w-56" id="tempImage" />
-                    @else
-                        <img src="" class="mt-2 w-56 rounded-lg " id="tempImage" />
-                    @endif
-                    @if ($errors->has('image'))
-                        <span class="text-red-600 text-sm">{{ $errors->first('image') }}</span>
-                    @endif
-                </div>
-
-                <div>
-                    <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Additional Images</label>
-                    <input type="file" name="images[]" id="images" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" multiple>
-
-                    <div class="mt-2 grid grid-cols-3 md:grid-cols-4 gap-4" id="tempImages">
-                        @if(isset($post))
-                            @foreach($post->images as $image)
-                                <div class="relative w-32 h-32 m-2">
-                                    <img src="{{ asset($image->image) }}" class="max-w-32 max-h-32 w-32 h-32 rounded-lg object-cover" style="max-height: 8rem" />
-                                    <input type="hidden" name="old_images[]" value="{{ $image->id }}" />
-                                    <button type="button" class="h-4 w-4 absolute top-0 right-0 bg-red-500 text-white text-sm rounded-full text-center" onclick="this.parentElement.remove()" style="line-height:1" >x</button>
-                                </div>
-                            @endforeach
+                    <div>
+                        <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title
+                            <span class="text-red-500"> *</span>
+                        </label>
+                        <input type="text" name="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required autocomplete="off" value="{{isset($post) ? $post->title : old('title') }}" placeholder="Title of your post" />
+                        <input type="hidden" name="slug" id="slug" value="{{isset($post) ? $post->slug : old('slug') }}" />
+                        @if ($errors->has('title'))
+                            <span class="text-red-600 text-sm">{{ $errors->first('title') }}</span>
                         @endif
                     </div>
-                </div>
+                    <div>
+                        <label for="content" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Details
+                            <span class="text-red-500"> *</span>
+                        </label>
+                        <textarea type="content" name="content" id="content" class="h-36 whitespace-pre-line bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Detail of your post"  >{{isset($post) ? $post->content : old('content') }}</textarea>
+                        @if ($errors->has('content'))
+                            <span class="text-red-600 text-sm">{{ $errors->first('content') }}</span>
+                        @endif
+                    </div>
 
-                <div>
-                    <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category
-                        <span class="text-red-500"> *</span>
-                    </label>
-                    <select name="category" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required>
-                        <option value="">Select Category</option>
-                        @foreach($categories as $category)
-                            @if(isset($post) && $category->id == $post->category_id)
-                                <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
-                            @elseif($category->id == old('category'))
-                                <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
-                            @else
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    <div>
+                        <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Main Image</label>
+                        <input type="file" name="image" id="image" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5">
+
+                        @if(isset($post) && $post->image)
+                            <img src="{{ asset($post->image) }}" class="mt-2 w-56" id="tempImage" />
+                        @else
+                            <img src="" class="mt-2 w-56 rounded-lg " id="tempImage" />
+                        @endif
+                        @if ($errors->has('image'))
+                            <span class="text-red-600 text-sm">{{ $errors->first('image') }}</span>
+                        @endif
+                    </div>
+
+                    <div>
+                        <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Additional Images</label>
+                        <input type="file" name="images[]" id="images" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" multiple>
+
+                        <div class="mt-2 grid grid-cols-3 md:grid-cols-4 gap-4" id="tempImages">
+                            @if(isset($post))
+                                @foreach($post->images as $image)
+                                    <div class="relative w-32 h-32 m-2">
+                                        <img src="{{ asset($image->image) }}" class="max-w-32 max-h-32 w-32 h-32 rounded-lg object-cover" style="max-height: 8rem" />
+                                        <input type="hidden" name="old_images[]" value="{{ $image->id }}" />
+                                        <button type="button" class="h-4 w-4 absolute top-0 right-0 bg-red-500 text-white text-sm rounded-full text-center" onclick="this.parentElement.remove()" style="line-height:1" >x</button>
+                                    </div>
+                                @endforeach
                             @endif
-                        @endforeach
-                    </select>
-                    @if ($errors->has('category'))
-                        <span class="text-red-600 text-sm">{{ $errors->first('category') }}</span>
-                    @endif
-                </div>
+                        </div>
+                    </div>
 
-                <div class="hidden" id="child-category-block">
-                    <label for="sub_category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub Category
-                        <span class="text-red-500"> *</span>
-                    </label>
-                    <select name="sub_category" id="sub_category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5>
-                        <option value="">Select Sub Category</option>
-                    </select>
-                    @if ($errors->has('sub_category'))
-                        <span class="text-red-600 text-sm">{{ $errors->first('sub_category') }}</span>
-                    @endif
-                </div>
-
-                <div>
-                    <label for="location" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Location
-                        <span class="text-red-500"> *</span>
-                    </label>
-                    <input type="text" name="location" id="location" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required autocomplete="off" value="{{ isset($post) ? $post->location : old('location') }}">
-                    <input type="hidden" name="latitude" id="latitude" value="{{ isset($post) ? $post->latitude : '' }}" >
-                    <input type="hidden" name="longitude" id="longitude" value="{{ isset($post) ? $post->longitude : '' }}">
-                    @if ($errors->has('location'))
-                        <span class="text-red-600 text-sm">{{ $errors->first('location') }}</span>
-                    @endif
-                </div>
-
-                <div>
-                    <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Visibility
-                        <span class="text-red-500"> *</span>
-                    </label>
-                    <select name="status" id="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required>
-                        <option value="">Select Visibility</option>
-                        @if(isset($post) && $post->status == 1)
-                            <option value="1" selected>Public</option>
-                        @elseif(old('status') == 1)
-                            <option value="1" selected>Public</option>
-                        @else
-                            <option value="1">Public</option>
+                    <div>
+                        <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category
+                            <span class="text-red-500"> *</span>
+                        </label>
+                        <select name="category" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required>
+                            <option value="">Select Category</option>
+                            @foreach($categories as $category)
+                                @if(isset($post) && $category->id == $post->category_id)
+                                    <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
+                                @elseif($category->id == old('category'))
+                                    <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
+                                @else
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                        @if ($errors->has('category'))
+                            <span class="text-red-600 text-sm">{{ $errors->first('category') }}</span>
                         @endif
-                        @if(isset($post) && $post->status === 0)
-                            <option value="0" selected>Private</option>
-                        @elseif(old('status') === 0)
-                            <option value="0" selected>Private</option>
-                        @else
-                            <option value="0">Private</option>
-                        @endif
-                    </select>
-                    @if ($errors->has('status'))
-                        <span class="text-red-600 text-sm">{{ $errors->first('status') }}</span>
-                    @endif
-                </div>
+                    </div>
 
-                <div class="text-right">
-                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md">
-                        Submit
-                    </button>
-                </div>
-            </form>
+                    <div class="hidden" id="child-category-block">
+                        <label for="sub_category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub Category
+                            <span class="text-red-500"> *</span>
+                        </label>
+                        <select name="sub_category" id="sub_category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5>
+                            <option value="">Select Sub Category</option>
+                        </select>
+                        @if ($errors->has('sub_category'))
+                            <span class="text-red-600 text-sm">{{ $errors->first('sub_category') }}</span>
+                        @endif
+                    </div>
+
+                    <div>
+                        <label for="location" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Location
+                            <span class="text-red-500"> *</span>
+                        </label>
+                        <input type="text" name="location" id="location" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required autocomplete="off" value="{{ isset($post) ? $post->location : old('location') }}">
+                        <input type="hidden" name="latitude" id="latitude" value="{{ isset($post) ? $post->latitude : old('latitude') }}" >
+                        <input type="hidden" name="longitude" id="longitude" value="{{ isset($post) ? $post->longitude : old('longitude') }}">
+                        @if ($errors->has('location'))
+                            <span class="text-red-600 text-sm">{{ $errors->first('location') }}</span>
+                        @endif
+                    </div>
+
+                    <div>
+                        <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Visibility
+                            <span class="text-red-500"> *</span>
+                        </label>
+                        <select name="status" id="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required>
+                            <option value="">Select Visibility</option>
+                            @if(isset($post) && $post->status == 1)
+                                <option value="1" selected>Public</option>
+                            @elseif(old('status') == 1)
+                                <option value="1" selected>Public</option>
+                            @else
+                                <option value="1">Public</option>
+                            @endif
+                            @if(isset($post) && $post->status === 0)
+                                <option value="0" selected>Private</option>
+                            @elseif(old('status') === 0)
+                                <option value="0" selected>Private</option>
+                            @else
+                                <option value="0">Private</option>
+                            @endif
+                        </select>
+                        @if ($errors->has('status'))
+                            <span class="text-red-600 text-sm">{{ $errors->first('status') }}</span>
+                        @endif
+                    </div>
+
+                    <div class="text-right">
+                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="w-1/3 ">
+
         </div>
     </div>
     
-    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script> -->
+    <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
     
     <script>
 
         $(document).ready(function() {
-            ClassicEditor.create( document.querySelector( '#content' ), {
-                toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
-                heading: {
-                    options: [
-                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-                        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-                        { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-                        { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
-                    ]
-                }
-            } )
-            .catch( error => {
-                console.error( error );
-            } );
+            CKEDITOR.replace('content');
+            // ClassicEditor.create( document.querySelector( '#content' ), {
+            // } )
+            // .catch( error => {
+            //     console.error( error );
+            // } );
 
             document.getElementById('image').addEventListener('change', function(e) {
                 var file = e.target.files[0];
@@ -259,8 +254,6 @@
                     .replace(/^-+/, '')             // Trim - from start of text
                     .replace(/-+$/, '');            // Trim - from end of text
             }
-
-            // addEventListener('DOMContentLoaded', init);
 
             function init() {
                 var input = document.getElementById('location');

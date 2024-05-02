@@ -21,7 +21,7 @@ class ProfileController extends Controller
 
         $credentials = request()->validate([
             // 'name' => 'required',
-            'username' => 'nullable|unique:user_profiles,username,' . $user->profile->id,
+            'username' => 'required|unique:user_profiles,username,' . $user->profile->id,
             // 'gender' => 'nullable',
             'bio' => 'nullable|max:255',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',

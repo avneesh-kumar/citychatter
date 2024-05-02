@@ -22,7 +22,7 @@ class HomeController extends Controller
         }
 
         $feeds = Post::where('status', true)
-                ->orderBy('updated_at', 'desc')
+                ->orderBy('created_at', 'desc')
                 ->paginate($perPage);
 
         // if(auth()->user()) {

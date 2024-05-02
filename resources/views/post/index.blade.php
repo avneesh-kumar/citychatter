@@ -2,17 +2,9 @@
 
 @section('content')
 
-<!-- <div>
-    <a href="{{ url()->previous() }}" class="text-red-600 hover:underline">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round"  stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-        </svg>
-    </a>
-</div> -->
-<!-- create next and previous buttons -->
-<div class="md:flex">
-    <div class="md:flex-1 flex-auto">
-        <div class="flex justify-between">
+<div class="flex">
+    <div class="w-3/4">
+        <div class="flex justify-between pl-8 pr-36 py-8 ">
             <div>
                 @if($previousPost)
                     <a href="{{ route('post', $previousPost->slug) }}" class="text-red-600 hover:underline">
@@ -22,7 +14,7 @@
                     </a>
                 @endif
             </div>
-            <div class="mr-8">
+            <div>
                 @if($nextPost)
                     <a href="{{ route('post', $nextPost->slug) }}" class="text-red-600 hover:underline">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -42,7 +34,7 @@
                     @endif
                 </a>
             </div>
-            <div class="flex-auto ml-2 max-w-4xl" >
+            <div class="flex-auto ml-2 w-[90%] max-w-5xl pr-24">
                 <div class="flex">
                     <div class="flex-auto">
                         <div class="grid grid-cols-2 ">
@@ -56,7 +48,7 @@
                             </div>
                             <div class="text-right">
                                 @if(auth()->user()->id != $post->user->id)
-                                    <button class="py-1 px-2 text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none" data-modal-target="message-modal" data-modal-toggle="message-modal">Message</button>
+                                    <button class="py-1 px-2 text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none" data-modal-target="message-modal" data-modal-toggle="message-modal" >Message</button>
                                 @endif
                             </div>
                         </div>
@@ -67,27 +59,71 @@
                         {{ $post->title }}
                     </a>
                 </div>
-                <div class="flex-none h-auto ">
+                <div class="flex-none h-auto " >
                     @if($post->image)
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
                         <style>
                             .swiper-button-prev {
                                 color: #ff0000;
+                                border: 1px solid #FFF;
+                                background-color: #fff;
+                                opacity: .5;
+                                width: 40px;
+                                height: 40px;
+                                border-radius: 50%;
+                            }
+
+                            .swiper-button-prev::after {
+                                opacity: .75;
+                                font-size: 24px;
+                                font-weight: bold;
+                            }
+
+                            .swiper-button-prev:hover {
+                                opacity: .75;
                             }
 
                             .swiper-button-next {
                                 color: #ff0000;
+                                border: 1px solid #FFF;
+                                background-color: #fff;
+                                opacity: .5;
+                                width: 40px;
+                                height: 40px;
+                                border-radius: 50%;
+                            }
+                            
+                            .swiper-button-next::after {
+                                opacity: .75;
+                                font-size: 24px;
+                                font-weight: bold;
+                            }
+
+                            .swiper-button-next:hover {
+                                opacity: .75;
                             }
                         </style>
                         <div class="swiper mySwiper relative h-56 overflow-hidden rounded-lg md:h-96">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide"><img src="{{ asset($post->image) }}" class="object-cover w-full h-full"></div>
+                                <div class="swiper-slide h-58"><img src="{{ asset($post->image) }}" class="object-fit w-full h-full"></div>
                                 @foreach($post->images as $image)
-                                    <div class="swiper-slide"><img src="{{ asset($image->image) }}" class="object-cover w-full h-full "></div>
+                                    <div class="swiper-slide h-58"><img src="{{ asset($image->image) }}" class="object-fit w-full h-full "></div>
                                 @endforeach
                             </div>
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
+                        </div>
+                        <div thumbsSlider="" class="swiper mySwiper2 mt-4">
+                            <div class="swiper-wrapper flex items-center justify-center mt-4">
+                                <div class="swiper-slide flex h-28 w-28" >
+                                    <img src="{{ asset($post->image) }}" class="object-fit w-24 h-24 " />
+                                </div>
+                                @foreach($post->images as $image)
+                                    <div class="swiper-slide flex h-28 w-28" >
+                                        <img src="{{ asset($image->image) }}" class="object-fit w-24 h-24 " />
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     @endif
                     <div class="text-sm my-8 h-auto text-justify">
@@ -95,7 +131,7 @@
                     </div>
                 </div>
 
-                <div class="my-4 border-t-2">
+                <div class="my-4 border-t-2" >
                     <div class="grid grid-cols-2">
                         <div class="text-left">
                             <span class="text-gray-400 ">
@@ -111,11 +147,11 @@
                     </div>
                 </div>
 
-                <div class="my-4">
+                <div class="my-4" >
                     <div id="map" class="w-full h-96"></div>
                 </div>
 
-                <div class="p-2">
+                <div class="p-2" >
                     <div class="my-4 border-b-2">
                         <div class="grid grid-cols-2 gap-4">
                             <div class="text-left">
@@ -248,8 +284,8 @@
             </div>
         </div>
     </div>
-    <div class="w-1/4 border-2 border-gray-900">
-        <div class="text-center">
+    <div class="flex w-1/4 border-2 border-gray-900">
+        <div class="text-center w-full">
             Advertisement
         </div>
     </div>
@@ -309,23 +345,30 @@
 
   <!-- Initialize Swiper -->
   <script>
+    var swiper = new Swiper(".mySwiper2", {
+        width: 400,
+        spaceBetween: 2,
+        slidesPerView: 4,
+        freeMode: true,
+        watchSlidesProgress: true,
+    });
+
     var swiper = new Swiper(".mySwiper", {
       navigation: {
         nextEl: ".swiper-button-next",
         prevEl: ".swiper-button-prev",
+      },
+      thumbs: {
+        swiper: swiper,
       },
     });
   </script>
 
 <script>
     $(document).ready(function() {
-
-        // loading map for the post location
         var map;
         var lat = {{ $post->latitude }};
         var lng = {{ $post->longitude }};
-        
-        // addEventListener('DOMContentLoaded', initMap);
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
@@ -335,7 +378,6 @@
         }
 
         initMap();
-        // end here
         
         $('.postImage').click(function() {
             let src = $(this).attr('src');
@@ -486,9 +528,8 @@
                     if(response.success) {
                         $('#message').val('');
                         $('#modal-message-block').html(response.message);
-                        setTimeout(function() {
-                            $('#modal-message-block').html('');
-                        }, 3000);
+                        const modal = new Modal(document.getElementById('message-modal'));
+                        modal.hide();
                     } else {
                         $('#messageError').html(response.message);
                     }

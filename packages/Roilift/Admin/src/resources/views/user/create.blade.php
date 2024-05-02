@@ -57,23 +57,8 @@
                     <label for="password" class="block text-gray-700 text-sm font-bold mb-2">
                         Password
                     </label>
-                    <input type="password" name="password" id="password" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none  focus:ring-red-500 focus:ring-2 w-full p-2 rounded-lg" value="" required />
+                    <input type="password" name="password" id="password" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none  focus:ring-red-500 focus:ring-2 w-full p-2 rounded-lg" value="" />
                     @error('password')
-                        <p class="text-red-500 text-xs italic mt-4">
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
-                <div class="mb-4 w-1/2">
-                    <label for="status" class="block text-gray-700 text-sm font-bold mb-2">
-                        Status
-                    </label>
-                    <select name="status" id="status" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none  focus:ring-red-500 focus:ring-2 w-full p-2 rounded-lg">
-                        <option value="1" {{ isset($user) && $user->gender == 1 ? 'selected' : '' }}>Male</option>
-                        <option value="0" {{ isset($user) && $user->gender == 0 ? 'selected' : '' }}>Female</option>
-                        <option value="0" {{ isset($user) && $user->gender == 0 ? 'selected' : '' }}>Other</option>
-                    </select>
-                    @error('status')
                         <p class="text-red-500 text-xs italic mt-4">
                             {{ $message }}
                         </p>

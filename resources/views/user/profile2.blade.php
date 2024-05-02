@@ -104,13 +104,13 @@
             <h1 class="text-2xl text-left">
                 Posts
             </h1>
-            <div class="md:flex mt-8 justify-center">
-                <div class="w-full " style="margin: auto;">
+            <div class="flex mt-8 justify-center">
+                <div class="w-3/4" style="margin: auto;">
                     <div class="mb-4">
                         @foreach($userProfile->user->posts as $feed)
-                        <div class="h-auto mb-4 shadow-lg rounded-lg mr-8" id="post-{{ $feed->id }}">
+                        <div class="h-auto mb-4 shadow-lg rounded-lg p-8 w-[90%]" id="post-{{ $feed->id }}" >
                             @if($feed['image'])
-                                <div class="items-center justify-center h-80 bg-gray-50">
+                                <div class="items-center justify-center h-96 bg-gray-50">
                                     <a href="{{ route('post', $feed['slug']) }}">
                                         <img class="object-cover w-full h-full rounded-t-lg " src="{{ asset($feed['image'] )}}" alt="{{ $feed['title'] }}" class="w-full h-full" />
                                     </a>
@@ -124,7 +124,7 @@
                                         </h1>
                                     </a>
                                     <p class="text-gray-700 dark:text-gray-300">
-                                    {!! nl2br(implode(' ', array_slice(explode(' ', $feed['content']), 0, 20))) !!}...
+                                        {!! nl2br(implode(' ', array_slice(explode(' ', strip_tags($feed['content']) ), 0, 20))) !!}...
                                     </p>
                                 </div>
                                 <div class="my-4">
@@ -164,7 +164,7 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="w-1/3 text-left">
+                <div class="w-1/4 text-left">
                     <div class="mb-4">
                         <h1 class="text-2xl text-red-500 dark:text-gray-100">
                             Followers
@@ -333,6 +333,7 @@
             });
         
             $('#sendMessageBtn').click(function() {
+                const modal = new Modal(document.getElementById('message-modal'));
                 const $this = $(this);
                 var post_id = null;
                 var user_to = $('input[name="user_to"]').val();
@@ -359,9 +360,7 @@
                         if(response.success) {
                             $('#message').val('');
                             $('#modal-message-block').html(response.message);
-                            setTimeout(function() {
-                                $('#modal-message-block').html('');
-                            }, 3000);
+                            modal.hide();
                         } else {
                             $('#messageError').html(response.message);
                         }
