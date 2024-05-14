@@ -1312,6 +1312,10 @@ select {
   width: 90%;
 }
 
+.w-\[93\%\] {
+  width: 93%;
+}
+
 .w-auto {
   width: auto;
 }
@@ -1322,14 +1326,6 @@ select {
 
 .w-screen {
   width: 100vw;
-}
-
-.w-\[92\%\] {
-  width: 92%;
-}
-
-.w-\[93\%\] {
-  width: 93%;
 }
 
 .max-w-2xl {
@@ -1507,16 +1503,12 @@ select {
   justify-items: center;
 }
 
-.gap-2 {
-  gap: 0.5rem;
+.gap-1 {
+  gap: 0.25rem;
 }
 
 .gap-4 {
   gap: 1rem;
-}
-
-.gap-1 {
-  gap: 0.25rem;
 }
 
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {

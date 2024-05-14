@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->nullable();
             $table->string('username')->nullable();
-            $table->string('bio')->nullable();
+            $table->text('bio')->nullable();
             $table->string('gender')->nullable();
             $table->string('avatar')->nullable();
             $table->string('latitude')->nullable();
