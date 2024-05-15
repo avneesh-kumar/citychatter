@@ -65,16 +65,14 @@
                         <style>
                             .swiper-button-prev {
                                 color: #ff0000;
-                                border: 1px solid #FFF;
-                                background-color: #fff;
-                                opacity: .5;
+                                border: 1px solid rgba(255, 255, 255, .5);
+                                background-color: rgba(255, 255, 255, .5);
                                 width: 40px;
                                 height: 40px;
                                 border-radius: 50%;
                             }
 
                             .swiper-button-prev::after {
-                                opacity: .75;
                                 font-size: 24px;
                                 font-weight: bold;
                             }
@@ -85,16 +83,14 @@
 
                             .swiper-button-next {
                                 color: #ff0000;
-                                border: 1px solid #FFF;
-                                background-color: #fff;
-                                opacity: .5;
+                                border: 1px solid rgba(255, 255, 255, .5);
+                                background-color: rgba(255, 255, 255, .5);
                                 width: 40px;
                                 height: 40px;
                                 border-radius: 50%;
                             }
                             
                             .swiper-button-next::after {
-                                opacity: .75;
                                 font-size: 24px;
                                 font-weight: bold;
                             }
@@ -102,6 +98,13 @@
                             .swiper-button-next:hover {
                                 opacity: .75;
                             }
+                            .opac-div {
+                                opacity: 0.5;
+                            }
+                            .swiper-slide-thumb-active {
+                                opacity: 1;
+                            }
+
                         </style>
                         <div class="swiper mySwiper relative h-56 overflow-hidden rounded-lg md:h-96">
                             <div class="swiper-wrapper">
@@ -114,12 +117,12 @@
                             <div class="swiper-button-prev"></div>
                         </div>
                         <div thumbsSlider="" class="swiper mySwiper2 mt-4">
-                            <div class="swiper-wrapper flex items-center justify-center mt-4">
-                                <div class="swiper-slide flex h-28 w-28" >
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide opac-div" >
                                     <img src="{{ asset($post->image) }}" class="object-fit w-24 h-24 " />
                                 </div>
                                 @foreach($post->images as $image)
-                                    <div class="swiper-slide flex h-28 w-28" >
+                                    <div class="swiper-slide opac-div" >
                                         <img src="{{ asset($image->image) }}" class="object-fit w-24 h-24 " />
                                     </div>
                                 @endforeach
@@ -347,10 +350,8 @@
   <script>
     var swiper = new Swiper(".mySwiper2", {
         width: 400,
-        spaceBetween: 2,
+        spaceBetween: 5,
         slidesPerView: 4,
-        freeMode: true,
-        watchSlidesProgress: true,
     });
 
     var swiper = new Swiper(".mySwiper", {

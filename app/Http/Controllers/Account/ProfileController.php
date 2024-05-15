@@ -23,7 +23,7 @@ class ProfileController extends Controller
             // 'name' => 'required',
             'username' => 'required|unique:user_profiles,username,' . $user->profile->id,
             // 'gender' => 'nullable',
-            'bio' => 'nullable|max:255',
+            'bio' => 'nullable|max:400',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg.webp|max:2048',
             'latitude' => 'nullable',

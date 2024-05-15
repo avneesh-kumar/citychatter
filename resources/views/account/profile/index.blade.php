@@ -101,6 +101,7 @@
                         @if ($errors->has('bio'))
                             <span class="text-red-600 text-sm">{{ $errors->first('bio') }}</span>
                         @endif
+                        <div id="bio-length"></div>
                     </div>
 
                     <div>
@@ -173,6 +174,16 @@
     
     <script>
         $('document').ready(function() {
+            $('#bio').on('keyup', function() {
+                var bio = $(this).val();
+                if(bio.length > 400) {
+                    $('#bio').val(bio.substring(0, 400));
+                    $('#bio-length').html('<span class="text-red-600 text-sm">Bio must be less than 400 characters</span>');
+                } else {
+                    $('#bio-length').html('<span class="text-green">Characters left: ' + (400 - bio.length) + '</span>');
+                }
+            });
+
             var input = document.getElementById('location');
             var autocomplete = new google.maps.places.Autocomplete(input);
             autocomplete.addListener('place_changed', function() {
