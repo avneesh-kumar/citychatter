@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use PSpell\Config;
-use Roilift\Admin\Interfaces\ConfigRepositoryInterface;
+use Illuminate\Http\Request;
 use Roilift\Admin\Models\Post;
 use Roilift\Admin\Models\UserFollow;
+use Roilift\Admin\Models\Advertisement;
+use Roilift\Admin\Interfaces\ConfigRepositoryInterface;
 
 class HomeController extends Controller
 {
@@ -67,8 +68,13 @@ class HomeController extends Controller
         //             ->paginate($perPage);
         //     }
         // }
+
+        // get advetisement sorted by sort_order
+        $advertisements = Advertisement::where('status', true)
+            ->orderBy('sort_order', 'asc')
+            ->paginate(20);
         
-        return view('home', compact('feeds'));
+        return view('home', compact('feeds', 'advertisements'));
     }
 
     public function currentlocation()

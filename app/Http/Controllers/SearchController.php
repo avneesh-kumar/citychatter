@@ -10,6 +10,7 @@ use Roilift\Admin\Models\Post;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Roilift\Admin\Models\UserFollow;
+use Roilift\Admin\Models\Advertisement;
 use Roilift\Admin\Interfaces\ConfigRepositoryInterface;
 
 class SearchController extends Controller
@@ -101,9 +102,13 @@ class SearchController extends Controller
                             ->orWhere('user_profiles.username', 'like', '%'.request('search').'%');
                     })
                     ->paginate(10);
+
+        $advertisements = Advertisement::where('status', true)
+            ->orderBy('sort_order', 'asc')
+            ->paginate(20);
         
         $query = request('search');
-        return view('search.index', compact('posts', 'users', 'query'));
+        return view('search.index', compact('posts', 'users', 'query', 'advertisements'));
     }
 
     public function test()

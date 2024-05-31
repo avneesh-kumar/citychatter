@@ -56,9 +56,23 @@
             </div>
         @endif
     </div>
-    <div class="flex w-1/4 border-2 border-gray-900">
-        <div class="text-center w-full">
-            Advertisement
+    <div class="flex w-1/4 border- border-gray-900 ">
+        <div class="text-center w-full pt-8 box-content">
+            <div class="text-2xl font-semibold text-red-600">Advertisement</div>
+            <div class="grid grid-cols-1">
+                @if($advertisements->count() > 0)
+                    @foreach ($advertisements as $advertisement)
+                        @if($advertisement->image)
+                            <div class="relative w-full p-1 m-1 h-64 max-h-64">
+                                <!-- <div class="absolute text-xs right-[4px] top-[4px] rounded-sm bg-white text-black">ads</div> -->
+                                <a href="{{ $advertisement->url }}" target="_blank">
+                                    <img src="{{ asset($advertisement->image) }}" alt="" class="object-fit w-full h-full rounded-lg shadow-md">
+                                </a>
+                            </div>
+                        @endif
+                    @endforeach
+                @endif
+            </div>
         </div>
     </div>
 

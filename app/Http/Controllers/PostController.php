@@ -8,6 +8,7 @@ use Roilift\Admin\Models\Category;
 use Roilift\Admin\Models\PostLike;
 use Roilift\Admin\Models\PostImage;
 use Roilift\Admin\Models\PostComment;
+use Roilift\Admin\Models\Advertisement;
 use Roilift\Admin\Models\PostCommentReply;
 
 class PostController extends Controller
@@ -15,10 +16,21 @@ class PostController extends Controller
     public function index($slug)
     {
         $post = Post::where('slug', $slug)->first();
+        if(!$post) {
+            // redirect to 404 view 
+
+            return view('errors.404');
+        }
+
         $nextPost = Post::where('id', '>', $post->id)->orderBy('id', 'asc')->first();
         $previousPost = Post::where('id', '<', $post->id)->orderBy('id', 'desc')->first();
         $like = PostLike::where('post_id', $post->id)->where('user_id', auth()->user()->id)->first();
-        return view('post.index', compact('post', 'like', 'nextPost', 'previousPost'));
+
+        $advertisements = Advertisement::where('status', true)
+            ->orderBy('sort_order', 'asc')
+            ->paginate(20);
+            
+        return view('post.index', compact('post', 'like', 'nextPost', 'previousPost', 'advertisements'));
     }
 
     public function create()
