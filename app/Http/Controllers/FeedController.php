@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Date;
 use Roilift\Admin\Models\Post;
 use Roilift\Admin\Models\Category;
+use Illuminate\Support\Facades\Date;
 use Roilift\Admin\Models\UserFollow;
+use Roilift\Admin\Models\Advertisement;
 use Roilift\Admin\Interfaces\ConfigRepositoryInterface;
 use Roilift\Admin\Interfaces\CategoryRepositoryInterface;
 
@@ -89,7 +90,11 @@ class FeedController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage);
         }
+
+        $advertisements = Advertisement::where('status', true)
+            ->orderBy('sort_order', 'asc')
+            ->paginate(20);
         
-        return view('feed.index2', compact('categories', 'feeds', 'slug', 'breadcrumbs'));
+        return view('feed.index2', compact('categories', 'feeds', 'slug', 'breadcrumbs', 'advertisements'));
     }
 }

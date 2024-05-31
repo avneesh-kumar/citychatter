@@ -38,7 +38,11 @@ Route::group([
     Route::get('/user/get', 'UserController@getUser')->name('user.get');
     Route::post('/user/delete', 'UserController@destroy')->name('user.delete');
     
-
+    Route::get('/advertisement', 'AdvertisementController@index')->name('advertisement');
+    Route::get('/advertisement/create', 'AdvertisementController@create')->name('advertisement.create');
+    Route::get('/advertisement/edit/{id}', 'AdvertisementController@edit')->name('advertisement.edit');
+    Route::post('/advertisement/store', 'AdvertisementController@store')->name('advertisement.store');
+    Route::post('/advertisement/delete', 'AdvertisementController@destroy')->name('advertisement.delete');
 
     Route::get('/account', 'AccountController@index')->name('account');
     Route::post('/account/store', 'AccountController@store')->name('account.store');

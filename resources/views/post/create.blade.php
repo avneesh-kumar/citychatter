@@ -155,12 +155,18 @@
     </div>
     
     <!-- <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script> -->
-    <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+    <!-- <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script> -->
+    <script src="https://cdn.tiny.cloud/1/cer1c08zh0qn5ttc7nhhrsuadtnur2vgr82nnll4q5rst3bs/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     
     <script>
 
         $(document).ready(function() {
-            CKEDITOR.replace('content');
+            tinymce.init({
+                selector: 'textarea',
+                menubar: 'edit view format insert',
+            });
+
+            // CKEDITOR.replace('content');
             // ClassicEditor.create( document.querySelector( '#content' ), {
             // } )
             // .catch( error => {
