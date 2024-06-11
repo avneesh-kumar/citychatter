@@ -317,7 +317,7 @@
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                 <!-- Modal header -->
-                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
                     <h3 class="text-lg font-semibold text-red-600 dark:text-white">
                         Send message to - 
                         <a href="{{ route('user.profile', $post->user->profile->username) }}" class="text-red-600 hover:underline">
@@ -388,7 +388,7 @@
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: lat, lng: lng},
-                zoom: 10
+                zoom: 13
             });
         }
 
