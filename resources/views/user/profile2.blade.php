@@ -9,22 +9,23 @@
         </a>
     </div> -->
     <div class="h-auto mb-4">
-        <div class="p-6">
+        <div class="lg:p-6">
             @if($userProfile->cover)
-                <div class="bg-cover bg-center max-h-96 rounded-md h-96" style="background-image: url({{ asset($userProfile->cover) }})"></div>
+                <div class="bg-cover bg-center max-h-96 rounded-md h-56 lg:h-96" style="background-image: url({{ asset($userProfile->cover) }})"></div>
             @else
-                <div class="bg-cover bg-center max-h-96 rounded-md shadow-lg h-96"></div>
+                <div class="bg-cover bg-center max-h-96 rounded-md shadow-lg h-56 lg:h-96"></div>
             @endif
-            <div class="flex h-64 ">
-                <div class=" w-96 ">
+
+            <div class="flex min-h-64 h-auto" style="min-height: 230px;">
+                <div class="w-52 lg:w-96 ">
                     <div class="relative">
-                        <div class="absolute w-56 h-56" style="top:-55px; left: 35%">
+                        <div class="absolute w-24 h-24 lg:w-56 lg:h-56 left-6 top-[-24px] lg:left-[35%] lg:top-[-55px]" >
                             @if($userProfile->avatar)
                             <img src="{{ asset($userProfile->avatar) }}" alt="{{ $userProfile->user->name }}" class="absolute shadow-xl rounded-full object-cover w-full h-full " >
                             @else
                             <img src="{{ asset('images/avatar.jpg') }}" alt="{{ $userProfile->user->name }}" class="absolute shadow-xl rounded-full object-cover w-full h-full " >
                             @endif
-                            <div class="w-full h-72 flex justify-center items-end">
+                            <div class="w-full h-40 lg:h-72 flex justify-center items-end">
                                 @if(auth()->user()->id !== $userProfile->user->id)
                                     <div class="mt-4">
                                         @if($isFollowing)
@@ -45,48 +46,21 @@
                                     </div>
                                 @endif
                             </div>
+                            @if(auth()->user()->id != $userProfile->user->id)
+                                <button class="w-full block lg:hidden mt-2 py-1 px-2 text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none" data-modal-target="message-modal" data-modal-toggle="message-modal">Message</button>
+                            @endif
                         </div>
                     </div>
-                    
-                    <!-- <div class="relative h-full w-full">
-                        @if($userProfile->avatar)
-                        <img src="{{ asset($userProfile->avatar) }}" alt="{{ $userProfile->user->name }}" class="absolute shadow-xl rounded-full object-cover w-56 h-56 " style="top:-15%; left: 35%">
-                        @else
-                        <img src="{{ asset('images/avatar.jpg') }}" alt="{{ $userProfile->user->name }}" class="absolute shadow-xl rounded-full object-cover w-56 h-56 " style="top:-15%; left: 35%">
-                        @endif
-
-                        <div class="absolute " style="top:65%; left: 50%">
-                        @if(auth()->user()->id !== $userProfile->user->id)
-                            <div class="mt-4">
-                                @if($isFollowing)
-                                    <button type="button" data-user-id="{{ $userProfile->user_id}}" class="unfollowBtn bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded">
-                                        Following
-                                    </button>
-                                    <button type="button" data-user-id="{{ $userProfile->user_id}}" class="hidden followBtn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
-                                        Follow
-                                    </button>
-                                @else
-                                    <button type="button" data-user-id="{{ $userProfile->user_id}}" class="followBtn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
-                                        Follow
-                                    </button>
-                                    <button type="button" data-user-id="{{ $userProfile->user_id}}" class="hidden unfollowBtn bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded">
-                                        Following
-                                    </button>
-                                @endif
-                            </div>
-                        @endif
-                        </div>
-                    </div> -->
                 </div>
-                <div class="w-full px-16">
+                <div class="w-full float-left lg:px-16">
                     <div class="text-left">
-                        <h1 class="inline-block text-lg font-bold text-red-500 dark:text-gray-100 mt-4">
+                        <h1 class="inline-block text-sm lg:text-lg font-bold text-red-500 mt-4">
                             {{ $userProfile->user->name }} {{ $userProfile->username ? "(" . $userProfile->username . ")" : '' }}
                         </h1>
                         @if(auth()->user()->id != $userProfile->user->id)
-                            <button class="float-right mt-2 py-1 px-2 text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none" data-modal-target="message-modal" data-modal-toggle="message-modal">Message</button>
+                            <button class="hidden lg:block float-right mt-2 py-1 px-2 text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none" data-modal-target="message-modal" data-modal-toggle="message-modal">Message</button>
                         @endif
-                        <p class="text-gray-700 dark:text-gray-300">
+                        <p class="text-gray-700">
                             @if($userProfile->optional_email)
                                 Business Email :
                                 <a href="mailto:{{ $userProfile->optional_email }}">
@@ -100,19 +74,19 @@
                     </div>
                 </div>
             </div>
-            <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
-            <h1 class="text-2xl text-left">
+            <hr class="h-px my-4 bg-gray-200 border-0">
+            <h1 class="text-2xl text-center lg:text-left">
                 Posts
             </h1>
-            <div class="flex mt-8 justify-center">
-                <div class="w-3/4" style="margin: auto;">
+            <div class="container flex flex-col lg:flex-row mt-8">
+                <div class="w-full lg:w-3/4" style="margin: auto;">
                     <div class="mb-4">
                         @foreach($userProfile->user->posts as $feed)
-                        <div class="h-auto mb-4 shadow-lg rounded-lg p-8 w-[90%]" id="post-{{ $feed->id }}" >
+                        <div class="h-auto mb-4 shadow-lg rounded-lg p-2 lg:p-8 w-full lg:w-[90%]" id="post-{{ $feed->id }}" >
                             @if($feed['image'])
-                                <div class="items-center justify-center h-96 bg-gray-50">
+                                <div class="flex justify-center h-auto lg:h-96 bg-gray-50">
                                     <a href="{{ route('post', $feed['slug']) }}">
-                                        <img class="object-cover w-full h-full rounded-t-lg " src="{{ asset($feed['image'] )}}" alt="{{ $feed['title'] }}" class="w-full h-full" />
+                                        <img class="object-cover w-auto h-auto max-h-40 lg:max-h-full lg:h-full round-t-lg " src="{{ asset($feed['image'] )}}" alt="{{ $feed['title'] }}" />
                                     </a>
                                 </div>
                             @endif
@@ -123,7 +97,7 @@
                                                 {{ $feed["title"] }}
                                         </h1>
                                     </a>
-                                    <p class="text-gray-700 dark:text-gray-300">
+                                    <p class="text-gray-700">
                                         {!! nl2br(implode(' ', array_slice(explode(' ', strip_tags($feed['content']) ), 0, 20))) !!}...
                                     </p>
                                 </div>
@@ -164,9 +138,9 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="w-1/4 text-left">
+                <div class="w-full lg:w-1/4 text-left">
                     <div class="mb-4">
-                        <h1 class="text-2xl text-red-500 dark:text-gray-100">
+                        <h1 class="text-2xl text-red-500">
                             Followers
                         </h1>
                     </div>
@@ -183,16 +157,11 @@
                                             @endif
                                         </div>
                                         <div class="ml-4 mt-2 text-left">
-                                            <h1 class="text-sm text-red-500 dark:text-gray-100">
+                                            <h1 class="text-sm text-red-500">
                                                 <a href="{{ route('user.profile', $follower->followedBy->profile->username) }}">
                                                     {{ $follower->followedBy->name }}
                                                 </a>
                                             </h1>
-                                            <!-- <p class="text-gray-700 dark:text-gray-300">
-                                                <a href="{{ route('user.profile', $follower->followedBy->profile->username) }}">
-                                                    {{ '@' . $follower->followedBy->profile->username }}
-                                                </a>
-                                            </p> -->
                                         </div>
                                     </div>
                                     <div class="mt-1">
@@ -217,7 +186,7 @@
                         @endforeach
                     @else
                         <div>
-                            <p class="text-gray-700 dark:text-gray-300">
+                            <p class="text-gray-700">
                                 No other followers yet.
                             </p>
                         </div>
@@ -231,16 +200,16 @@
 <div id="message-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
         <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="relative bg-white rounded-lg shadow">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-lg font-semibold text-red-600 dark:text-white">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                <h3 class="text-lg font-semibold text-red-600">
                     Send message to - 
                     <a href="{{ route('user.profile', $userProfile->username) }}" class="text-red-600 hover:underline">
                         {{ $userProfile->user->name }}
                     </a>
                 </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="message-modal">
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center " data-modal-toggle="message-modal">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                     </svg>
@@ -255,7 +224,7 @@
                         <input type="hidden" name="user_to" value="{{ $userProfile->user->id }}">
                     </div>
                     <div class="col-span-2">
-                        <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Message
+                        <label for="message" class="block mb-2 text-sm font-medium text-gray-900">Your Message
                             <span class="text-red-500"> *</span>
                         </label>
                         <textarea id="message" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Enter your message here" required></textarea>                    

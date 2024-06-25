@@ -35,7 +35,7 @@ class LostPasswordController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'We can\'t find a user with that e-mail address.',
+            'email' => 'We can\'t find a user with this e-mail.',
         ]);
     }
 }

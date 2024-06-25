@@ -63,6 +63,7 @@ class RegisterController extends Controller
 
     private function createUsername($name)
     {
+        $name = strtolower(str_replace(' ', '', $name));
         $username = $name . '-' . rand(1000, 9999);
         $userProfile = \Roilift\Admin\Models\UserProfile::where('username', $username)->first();
         if ($userProfile) {

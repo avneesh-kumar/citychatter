@@ -2,9 +2,9 @@
 
 @section('content')
 
-<div class="flex">
-    <div class="w-3/4">
-        <div class="flex justify-between pl-8 pr-36 py-8 ">
+<div class="container flex flex-col lg:flex-row">
+    <div class="w-full lg:w-3/4">
+        <div class="flex justify-between lg:pl-8 lg:pr-36 py-8 ">
             <div>
                 @if($previousPost)
                     <a href="{{ route('post', $previousPost->slug) }}" class="text-red-600 hover:underline">
@@ -24,7 +24,7 @@
                 @endif
             </div>
         </div>
-        <div class="flex p-8">
+        <div class="flex p-2 lg:p-8">
             <div class="flex-none">
                 <a href="{{ route('user.profile', $post->user->profile->username) }}">
                     @if($post->user->profile->avatar)
@@ -34,7 +34,7 @@
                     @endif
                 </a>
             </div>
-            <div class="flex-auto ml-2 w-[90%] max-w-5xl pr-24">
+            <div class="flex-auto ml-2 w-[83%] lg:w-[90%] max-w-5xl lg:pr-24">
                 <div class="flex">
                     <div class="flex-auto">
                         <div class="grid grid-cols-2 ">
@@ -108,9 +108,11 @@
                         </style>
                         <div class="swiper mySwiper relative h-56 overflow-hidden rounded-lg md:h-96">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide h-58"><img src="{{ asset($post->image) }}" class="object-fit w-full h-full"></div>
+                                <div class="swiper-slide h-58" style="display: flex;justify-content: center;">
+                                    <img src="{{ asset($post->image) }}" class="object-fit w-auto h-full">
+                                </div>
                                 @foreach($post->images as $image)
-                                    <div class="swiper-slide h-58"><img src="{{ asset($image->image) }}" class="object-fit w-full h-full "></div>
+                                    <div class="swiper-slide h-58" style="display: flex;justify-content: center;"><img src="{{ asset($image->image) }}" class="object-fit w-auto h-full "></div>
                                 @endforeach
                             </div>
                             <div class="swiper-button-next"></div>
@@ -122,7 +124,7 @@
                                     <img src="{{ asset($post->image) }}" class="object-fit w-24 h-24 " />
                                 </div>
                                 @foreach($post->images as $image)
-                                    <div class="swiper-slide opac-div" >
+                                    <div class="swiper-slide opac-div flex justify-center">
                                         <img src="{{ asset($image->image) }}" class="object-fit w-24 h-24 " />
                                     </div>
                                 @endforeach
@@ -151,7 +153,7 @@
                 </div>
 
                 <div class="my-4" >
-                    <div id="map" class="w-full h-96"></div>
+                    <div id="map" class="w-full h-72 lg:h-96"></div>
                 </div>
 
                 <div class="p-2" >
@@ -200,7 +202,7 @@
                     </div>
 
                     <div class="w-full mt-8 hidden" id="commentingsection">
-                        <textarea name="comment" id="comment" class="whitespace-pre-line h-28 w-full border-none ring-2 ring-blue-600 shadow-md text-gray-700 focus:ring-2 rounded-sm"></textarea>
+                        <textarea name="comment" id="comment" class="whitespace-pre-line h-28 w-full border-none shadow-md text-gray-700 rounded-sm focus:ring-red-500 focus:border-red-500"></textarea>
                         <div>
                             <span class="text-red-500 hidden" id="commentError">
                                 Please fill comment box
@@ -238,7 +240,7 @@
                                         @endif
                                         <div id="commentreplybtn-{{ $comment->id }}" class="commentreplybtn inline-block bg-red-500 text-white p-2 mt-2 text-xs rounded-md cursor-pointer  " style="margin-left: 36px;">Reply</div>
                                         <div id="commentreplytextarea-{{ $comment->id }}" class="commentreplytextarea hidden mt-2" style="margin-left: 36px;">
-                                            <textarea name="comment" id="comment" class="whitespace-pre-line h-28 w-full border-none ring-2 ring-blue-600 shadow-md text-gray-700 focus:ring-2 rounded-sm"></textarea>
+                                            <textarea name="comment" id="comment" class="whitespace-pre-line h-28 w-full border-none focus:ring-red-500 focus:border-red-500 shadow-md text-gray-700 focus:ring-2 rounded-sm"></textarea>
                                             <div>
                                                 <span class="text-red-500 hidden" id="commentError-{{ $comment->id }}">
                                                     Please fill reply box
@@ -287,7 +289,7 @@
             </div>
         </div>
     </div>
-    <div class="flex w-1/4 border- border-gray-900 ">
+    <div class="w-full lg:w-1/4 border- border-gray-900 ">
         <div class="text-center w-full pt-8 box-content">
             <div class="text-2xl font-semibold text-red-600">Advertisement</div>
             <div class="grid grid-cols-1">
@@ -308,23 +310,21 @@
     </div>
 </div>
 
-
-
 <!-- Modal for messaging -->
 @if(auth()->user()->id != $post->user->id)
     <div id="message-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-md max-h-full">
             <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div class="relative bg-white rounded-lg shadow">
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-                    <h3 class="text-lg font-semibold text-red-600 dark:text-white">
+                    <h3 class="text-lg font-semibold text-red-600">
                         Send message to - 
                         <a href="{{ route('user.profile', $post->user->profile->username) }}" class="text-red-600 hover:underline">
                             {{ $post->user->name }}
                         </a>
                     </h3>
-                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="message-modal">
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center " data-modal-toggle="message-modal">
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                         </svg>
@@ -336,13 +336,13 @@
                 <form class="p-4 md:p-5">
                     <div class="grid gap-4 mb-4 grid-cols-2">
                         <div class="col-span-2">
-                            <label for="post_title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Post Title</label>
+                            <label for="post_title" class="block mb-2 text-sm font-medium text-gray-900 ">Post Title</label>
                             <input type="text" readonly name="post_title" id="post_title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" value="{{ $post->title }}" >
                             <input type="hidden" name="post_id" value="{{ $post->id }}">
                             <input type="hidden" name="user_to" value="{{ $post->user->id }}">
                         </div>
                         <div class="col-span-2">
-                            <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Message
+                            <label for="message" class="block mb-2 text-sm font-medium text-gray-900 ">Your Message
                                 <span class="text-red-500"> *</span>
                             </label>
                             <textarea id="message" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Enter your message here" required></textarea>                    

@@ -2,11 +2,11 @@
 
 @section('content')
 
-<div class="flex">
-    <div class="w-3/4">
+<div class="container flex flex-col lg:flex-row">
+    <div class="w-full lg:w-3/4">
         @if($feeds->count() > 0)
             @foreach ($feeds as $feed)
-                <div class="flex p-8">
+                <div class="flex p-2 lg:p-8">
                     <div class="flex-none">
                         <a href="{{ route('user.profile', $feed->user->profile->username) }}">
                             @if($feed->user->profile->avatar)
@@ -33,9 +33,9 @@
                             </a>
                         </div>
                         @if($feed->image)
-                            <div class="flex-none h-96 w-[90%] ">
+                            <div class="flex justify-center h-auto lg:h-96 w-[90%] shadow-lg rounded-lg">
                                 <a href="{{ route('post', $feed->slug) }}">
-                                    <img src="{{ asset($feed->image) }}" alt="" class="object-fit w-full h-full rounded-lg shadow-md" >
+                                    <img src="{{ asset($feed->image) }}" alt="" class="object-cover w-auto h-auto max-h-40 lg:max-h-full lg:h-full rounded-lg lg:rounded-none" >
                                 </a>
                             </div>
                         @endif
@@ -56,7 +56,7 @@
             </div>
         @endif
     </div>
-    <div class="flex w-1/4 border- border-gray-900 ">
+    <div class="w-full lg:w-1/4">
         <div class="text-center w-full pt-8 box-content">
             <div class="text-2xl font-semibold text-red-600">Advertisement</div>
             <div class="grid grid-cols-1">
@@ -75,7 +75,6 @@
             </div>
         </div>
     </div>
-
 </div>
 <div class="md:flex-1 flex-auto" style="margin-top: 100px;">
     {{ $feeds->links() }}

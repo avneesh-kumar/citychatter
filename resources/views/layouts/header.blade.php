@@ -37,10 +37,10 @@
                 </button>
                 <div
                     id="dropdown"
-                    class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+                    class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 "
                 >
                     <ul
-                        class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                        class="py-2 text-sm text-gray-700 "
                         aria-labelledby="dropdown-button"
                     >
                         <li>
@@ -57,13 +57,13 @@
                     <input
                         type="search"
                         id="search-dropdown"
-                        class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+                        class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
                         placeholder="Search for anything..."
                         required
                     />
                     <button
                         type="submit"
-                        class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 "
                     >
                         <svg
                             class="w-4 h-4"
@@ -121,34 +121,34 @@
         <!-- Dropdown menu -->
         <div
             id="dropdownAvatarName"
-            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44"
         >
-            <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+            <div class="px-4 py-3 text-sm text-gray-900 ">
                 <div class="font-medium">Pro User</div>
                 <div class="truncate">name@flowbite.com</div>
             </div>
             <ul
-                class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                class="py-2 text-sm text-gray-700"
                 aria-labelledby="dropdownInformdropdownAvatarNameButtonationButton"
             >
                 <li>
                     <a
                         href="#"
-                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        class="block px-4 py-2 hover:bg-gray-100 "
                         >Dashboard</a
                     >
                 </li>
                 <li>
                     <a
                         href="#"
-                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        class="block px-4 py-2 hover:bg-gray-100 "
                         >Settings</a
                     >
                 </li>
                 <li>
                     <a
                         href="#"
-                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        class="block px-4 py-2 hover:bg-gray-100 "
                         >Earnings</a
                     >
                 </li>
@@ -156,7 +156,7 @@
             <div class="py-2">
                 <a
                     href="#"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
                     >Sign out</a
                 >
             </div>
