@@ -11,16 +11,16 @@
             min-height: 300px;
         }
     </style>
-    <div class="flex">
-        <div class="w-3/4">
-            <div class="form-container w-full p-8">
+    <div class="relative lg:flex">
+        <div class="w-full lg:w-3/4">
+            <div class="form-container w-full p-2 lg:p-8">
                 <form action="{{ route('post.store') }}" method="post" class="space-y-4" enctype="multipart/form-data">
                     @csrf
                     @if(isset($post))
                         <input type="hidden" name="id" value="{{ $post->id }}" />
                     @endif
                     <div>
-                        <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title
+                        <label for="title" class="block mb-2 text-sm font-medium text-gray-900">Title
                             <span class="text-red-500"> *</span>
                         </label>
                         <input type="text" name="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required autocomplete="off" value="{{isset($post) ? $post->title : old('title') }}" placeholder="Title of your post" />
@@ -30,7 +30,7 @@
                         @endif
                     </div>
                     <div>
-                        <label for="content" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Details
+                        <label for="content" class="block mb-2 text-sm font-medium text-gray-900 ">Details
                             <span class="text-red-500"> *</span>
                         </label>
                         <textarea type="content" name="content" id="content" class="h-36 whitespace-pre-line bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Detail of your post"  >{{isset($post) ? $post->content : old('content') }}</textarea>
@@ -40,7 +40,7 @@
                     </div>
 
                     <div>
-                        <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Main Image</label>
+                        <label for="image" class="block mb-2 text-sm font-medium text-gray-900 ">Main Image</label>
                         <input type="file" name="image" id="image" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5">
 
                         @if(isset($post) && $post->image)
@@ -54,7 +54,7 @@
                     </div>
 
                     <div>
-                        <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Additional Images</label>
+                        <label for="image" class="block mb-2 text-sm font-medium text-gray-900 ">Additional Images</label>
                         <input type="file" name="images[]" id="images" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" multiple>
 
                         <div class="mt-2 grid grid-cols-3 md:grid-cols-4 gap-4" id="tempImages">
@@ -71,7 +71,7 @@
                     </div>
 
                     <div>
-                        <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category
+                        <label for="category" class="block mb-2 text-sm font-medium text-gray-900 ">Category
                             <span class="text-red-500"> *</span>
                         </label>
                         <select name="category" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required>
@@ -92,7 +92,7 @@
                     </div>
 
                     <div class="hidden" id="child-category-block">
-                        <label for="sub_category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub Category
+                        <label for="sub_category" class="block mb-2 text-sm font-medium text-gray-900 ">Sub Category
                             <span class="text-red-500"> *</span>
                         </label>
                         <select name="sub_category" id="sub_category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5>
@@ -104,7 +104,7 @@
                     </div>
 
                     <div>
-                        <label for="location" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Location
+                        <label for="location" class="block mb-2 text-sm font-medium text-gray-900 ">Location
                             <span class="text-red-500"> *</span>
                         </label>
                         <input type="text" name="location" id="location" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required autocomplete="off" value="{{ isset($post) ? $post->location : old('location') }}">
@@ -116,7 +116,7 @@
                     </div>
 
                     <div>
-                        <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Visibility
+                        <label for="status" class="block mb-2 text-sm font-medium text-gray-900 ">Visibility
                             <span class="text-red-500"> *</span>
                         </label>
                         <select name="status" id="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required>

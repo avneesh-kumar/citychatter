@@ -19,13 +19,13 @@
     </div>
 @endif
 
-<div class="flex">
-    <div class="w-3/4 ">
-        <div class="flex w-[93%] items-center justify-between p-8 bg-white border-b border-gray-200">
+<div class="container flex flex-col lg:flex-row">
+    <div class="w-full lg:w-3/4">
+        <div class="lg:flex relative w-[93%] items-center justify-between p-8 bg-white border-b border-gray-200">
             <div class="text-2xl font-semibold text-red-600">
                 Search Results for "{{ $query }}"
             </div>
-            <div class="text-sm text-gray-500">
+            <div class="text-sm text-gray-500 mt-4 lg:mt-0">
                 {{ $posts->total() }} posts found
             </div>
         </div>
@@ -36,7 +36,7 @@
                 <div class="text-2xl text-red-600 font-semibold">
                     Users
                 </div>
-                <div class="grid grid-cols-10 gap-1 mt-1">
+                <div class="grid grid-cols-5 lg:grid-cols-10 gap-1 mt-1">
                     @foreach ($users as $user)
                     @if(!$user->profile)
                         @continue
@@ -61,7 +61,7 @@
         @endif
         @if($posts->count() > 0)
             @foreach ($posts as $post)
-                <div class="flex p-8">
+                <div class="flex p-2 lg:p-8">
                     <div class="flex-none">
                         <a href="{{ route('user.profile', $post->user->profile->username ) }}">
                             @if($post->user->profile->avatar)
@@ -88,9 +88,9 @@
                             </a>
                         </div>
                         @if($post->image)
-                            <div class="flex-none h-96 " style="width: 90%">
+                            <div class="flex justify-center h-auto lg:h-96 w-[90%] shadow-lg rounded-lg">
                                 <a href="{{ route('post', $post->slug) }}">
-                                    <img src="{{ asset($post->image) }}" alt="" class="object-fit w-full h-full rounded-lg shadow-md" >
+                                    <img src="{{ asset($post->image) }}" alt="" class="object-cover w-auto h-auto max-h-40 lg:max-h-full lg:h-full rounded-lg lg:rounded-none" >
                                 </a>
                             </div>
                         @endif
@@ -109,7 +109,7 @@
             </div>
         @endif
     </div>
-    <div class="flex w-1/4 border- border-gray-900 ">
+    <div class="w-full lg:w-1/4">
         <div class="text-center w-full pt-8 box-content">
             <div class="text-2xl font-semibold text-red-600">Advertisement</div>
             <div class="grid grid-cols-1">

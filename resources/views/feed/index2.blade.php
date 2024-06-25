@@ -19,11 +19,11 @@
     </div>
 @endif
 
-<div class="flex">
-    <div class="w-3/4">
+<div class="container flex flex-col lg:flex-row">
+    <div class="w-full lg:w-3/4">
         @if($feeds->count() > 0)
             @foreach ($feeds as $feed)
-                <div class="flex p-8">
+                <div class="flex p-2 lg:p-8">
                     <div class="flex-none">
                         <a href="{{ route('user.profile', $feed->user->profile->username ) }}">
                             @if($feed->user->profile->avatar)
@@ -50,9 +50,9 @@
                             </a>
                         </div>
                         @if($feed->image)
-                            <div class="flex-none h-96 w-[90%] " >
+                            <div class="flex justify-center h-auto lg:h-96 w-[90%] shadow-lg rounded-lg" >
                                 <a href="{{ route('post', $feed->slug) }}">
-                                    <img src="{{ asset($feed->image) }}" alt="" class="object-fit w-full h-full rounded-lg shadow-md" >
+                                    <img src="{{ asset($feed->image) }}" alt="" class="object-cover w-auto h-auto max-h-40 lg:max-h-full lg:h-full rounded-lg lg:rounded-none" >
                                 </a>
                             </div>
                         @endif
@@ -60,13 +60,6 @@
                             {!! nl2br(Str::limit(strip_tags($feed->content), 180)) !!}
                         </div>
                         <div class="text-lg text-gray-500">
-                            <!-- @if($feed->distance < 1)
-                                <span class="text-green-500">Near by</span>
-                            @elseif($feed->distance > 1 && $feed->distance < 5)
-                                <span class="text-yellow-500">{{ $feed->distance }} miles away</span>
-                            @else
-                                <span class="text-red-500">{{ round($feed->distance, 2) }} miles far away</span>
-                            @endif -->
                             {{ $feed->location }}
                         </div>
                     </div>
@@ -78,7 +71,7 @@
             </div>
         @endif
     </div>
-    <div class="flex w-1/4 border- border-gray-900 ">
+    <div class="w-full lg:w-1/4">
         <div class="text-center w-full pt-8 box-content">
             <div class="text-2xl font-semibold text-red-600">Advertisement</div>
             <div class="grid grid-cols-1">
@@ -86,7 +79,6 @@
                     @foreach ($advertisements as $advertisement)
                         @if($advertisement->image)
                             <div class="relative w-full p-1 m-1 h-64 max-h-64">
-                                <!-- <div class="absolute text-xs right-[4px] top-[4px] rounded-sm bg-white text-black">ads</div> -->
                                 <a href="{{ $advertisement->url }}" target="_blank">
                                     <img src="{{ asset($advertisement->image) }}" alt="" class="object-fit w-full h-full rounded-lg shadow-md">
                                 </a>
@@ -97,11 +89,12 @@
             </div>
         </div>
     </div>
+</div>
 
-    <!-- show pagination links -->
-</div>
-<div class="md:flex-1 flex-auto" style="margin-top: 100px;">
-    {{ $feeds->links() }}
-</div>
+@if($feeds->count() > 0)
+    <div class="md:flex-1 flex-auto" style="margin-top: 100px;">
+        {{ $feeds->links() }}
+    </div>
+@endif
 
 @endsection
