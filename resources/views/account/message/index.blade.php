@@ -13,7 +13,7 @@
                             <th class="border px-4 py-2 text-left">Sender</th>
                             <th class="border px-4 py-2 text-left">Title of the post</th>
                             <th class="border px-4 py-2 text-left">Message</th>
-                            <th class="border px-4 py-2 text-left">Date</th>
+                            <th class="border px-4 py-2 text-left">Recieved on</th>
                             <th class="border px-4 py-2 text-left">Action</th>
                         </tr>
                     </thead>
@@ -43,19 +43,28 @@
                                     <p>{{ $message->created_at->diffForHumans() }}</p>
                                 </td>
                                 <td class="border px-4 py-2">
-                                    <a href="{{ route('message.view', ['id' => $message->id]) }}" class="inline-block text-blue-500">View</a>
-                                    <form action="{{ route('message.delete') }}" method="post" class="ml-4 inline-block">
-                                        @csrf
-                                        <input type="hidden" name="message_id" value="{{ $message->id }}">
-                                        <button type="button" class="deleteBtn text-red-500">Delete</button>
-                                    </form>
+                                    <div class="flex">
+                                        <div>
+                                            <a href="{{ route('message.view', ['id' => $message->id]) }}" class="inline-block text-blue-500">
+                                                View
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <form action="{{ route('message.delete') }}" method="post" class="ml-4 inline-block">
+                                                @csrf
+                                                <input type="hidden" name="message_id" value="{{ $message->id }}">
+                                                <button type="button" class="deleteBtn text-red-500">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-
         <div class="mt-10">
             {{ $messages->links() }}
         </div>

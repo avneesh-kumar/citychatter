@@ -15,18 +15,24 @@
                         <h3 class="text-2xl font-bold text-red-500">Contact Information</h3>
 
                         <div class="mt-8 text-left">
-                            <p class="text-lg font-semibold text-gray-900 ">Address</p>
-                            <p class="text-gray-600 ">{{ $address }}</p>
+                            !if($address)
+                                <p class="text-lg font-semibold text-gray-900 ">Address</p>
+                                <p class="text-gray-600 ">{{ $address }}</p>
+                            @endif
 
-                            <p class="text-lg font-semibold text-gray-900  mt-4">Phone</p>
-                            <p class="text-gray-600 ">{{ $phone }}</p>
+                            @if($phone)
+                                <p class="text-lg font-semibold text-gray-900  mt-4">Phone</p>
+                                <p class="text-gray-600 ">{{ $phone }}</p>
+                            @endif
 
-                            <p class="text-lg font-semibold text-gray-900  mt-4">Email</p>
-                            <p class="text-gray-600 ">
-                                <a href="mailto:{{ $email }}">
-                                    {{ $email }}
-                                </a>
-                            </p>
+                            @if($email)
+                                <p class="text-lg font-semibold text-gray-900  mt-4">Email</p>
+                                <p class="text-gray-600 ">
+                                    <a href="mailto:{{ $email }}">
+                                        {{ $email }}
+                                    </a>
+                                </p>
+                            @endif
                         </div>
                     </div>
                 </div>

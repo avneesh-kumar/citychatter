@@ -3,12 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Mail\Registration;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use Roilift\Admin\Models\Post;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Roilift\Admin\Models\UserFollow;
 use Roilift\Admin\Models\Advertisement;
 use Roilift\Admin\Interfaces\ConfigRepositoryInterface;
@@ -60,6 +55,7 @@ class SearchController extends Controller
                             ->orwhere('content', 'like', '%'.request('search').'%')
                             ->orWhere('location', 'like', '%'.request('search').'%');
                     })
+                    ->where('status', true)
                     ->orderBy('dis')
                     ->orderBy('created_at', 'desc')
                     ->paginate($perPage);
@@ -73,24 +69,27 @@ class SearchController extends Controller
                     })
                     ->orderBy('updated_at', 'desc')
                     ->paginate($perPage);
-
-                    dd($posts);
             }
-                    
         } else {
             if(session()->has('latitude') && session()->has('longitude')) {
                 $posts = Post::selectRaw('*, ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) * .000621371192 as distance', [session('longitude'), session('latitude'), request('radius')])
                     ->where('status', true)
-                    ->where('title', 'like', '%'.request('search').'%')
-                    ->Orwhere('content', 'like', '%'.request('search').'%')
+                    ->where(function ($query) {
+                        $query->where('title', 'like', '%'.request('search').'%')
+                            ->orwhere('content', 'like', '%'.request('search').'%')
+                            ->orWhere('location', 'like', '%'.request('search').'%');
+                    })
                     ->orderBy('distance', 'asc')
                     ->paginate($perPage);
             } else {
                 $posts = Post::where('status', true)
-                    ->where('title', 'like', '%'.request('search').'%')
-                    ->Orwhere('content', 'like', '%'.request('search').'%')
+                    ->where(function ($query) {
+                        $query->where('title', 'like', '%'.request('search').'%')
+                            ->orwhere('content', 'like', '%'.request('search').'%')
+                            ->orWhere('location', 'like', '%'.request('search').'%');
+                    })
                     ->orderBy('updated_at', 'desc')
-                    ->paginate(15);
+                    ->paginate($perPage);
             }
         }
 
@@ -101,19 +100,13 @@ class SearchController extends Controller
                             ->orwhere('users.email', 'like', '%'.request('search').'%')
                             ->orWhere('user_profiles.username', 'like', '%'.request('search').'%');
                     })
-                    ->paginate(10);
+                    ->paginate($perPage);
 
         $advertisements = Advertisement::where('status', true)
             ->orderBy('sort_order', 'asc')
-            ->paginate(20);
+            ->paginate($perPage);
         
         $query = request('search');
         return view('search.index', compact('posts', 'users', 'query', 'advertisements'));
-    }
-
-    public function test()
-    {
-        die('what are you doing?');
-        // Mail::to('dev@avneeshkumar.in')->send(new Registration([]));
     }
 }

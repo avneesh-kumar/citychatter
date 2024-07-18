@@ -14,6 +14,17 @@
         <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     </head>
 <body>
+    <style>
+        ::-moz-selection {
+            color: white;
+            background: #f05252;
+        }
+
+        ::selection {
+            color: white;
+            background: #f05252;
+        }
+    </style>
     <div class="flex">
         <div class="flex-1">
             @yield('content')

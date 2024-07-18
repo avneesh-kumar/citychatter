@@ -27,19 +27,10 @@ class FeedController extends Controller
         if(!$perPage) {
             $perPage = 15;
         }
-        // $latitude = session('latitude');
-        // $longitude = session('longitude');
-
-        // if(auth()->user()->profile->latitude && auth()->user()->profile->longitude) {
-        //     $latitude = auth()->user()->profile->latitude;
-        //     $longitude = auth()->user()->profile->longitude;
-        // }
 
         $categories = $this->categoryRepository->all();
 
         $breadcrumbs = [];
-        // $followers = UserFollow::where('followed_to', auth()->user()->id)->pluck('followed_by')->toArray();
-        // array_push($followers, auth()->user()->id);
 
         if($slug) {
             $ids = [];
@@ -66,26 +57,12 @@ class FeedController extends Controller
                 'url' => route('feed', $category->slug)
             ];
 
-            // $feeds = Post::selectRaw('*')
-            // ->selectRaw('(ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) / 1609.344) AS dis',
-            //                 [$longitude, $latitude])
-            // ->whereIn('user_id', $followers)
-            // ->where('category_id', $category->id)
-            // ->orderBy('updated_at', 'desc')
-            // ->paginate($perPage);
-
             $feeds = Post::where('status', true)
                 ->whereIn('category_id', $ids)
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage);
 
         } else {
-            // $feeds = Post::selectRaw('*')
-            // ->selectRaw('(ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) / 1609.344) AS dis',
-            //                 [$longitude, $latitude])
-            // ->whereIn('user_id', $followers)
-            // ->orderBy('updated_at', 'desc')
-            // ->paginate($perPage);
             $feeds = Post::where('status', true)
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage);

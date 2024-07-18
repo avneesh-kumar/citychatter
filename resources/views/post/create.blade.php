@@ -24,7 +24,6 @@
                             <span class="text-red-500"> *</span>
                         </label>
                         <input type="text" name="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required autocomplete="off" value="{{isset($post) ? $post->title : old('title') }}" placeholder="Title of your post" />
-                        <input type="hidden" name="slug" id="slug" value="{{isset($post) ? $post->slug : old('slug') }}" />
                         @if ($errors->has('title'))
                             <span class="text-red-600 text-sm">{{ $errors->first('title') }}</span>
                         @endif
@@ -166,13 +165,6 @@
                 menubar: 'edit view format insert',
             });
 
-            // CKEDITOR.replace('content');
-            // ClassicEditor.create( document.querySelector( '#content' ), {
-            // } )
-            // .catch( error => {
-            //     console.error( error );
-            // } );
-
             document.getElementById('image').addEventListener('change', function(e) {
                 var file = e.target.files[0];
                 var reader = new FileReader();
@@ -186,6 +178,12 @@
                 var files = e.target.files;
                 var tempImages = document.getElementById('tempImages');
                 var html = tempImages.innerHTML;
+                if(files.length > 10) {
+                    alert('You can only upload maximum 10 images');
+                    this.value = '';
+                    return;
+                }
+
                 for(var i = 0; i < files.length; i++) {
                     var reader = new FileReader();
                     reader.onload = function(e) {
@@ -247,19 +245,6 @@
                     }
                 }); 
             });
-
-            document.getElementById('title').addEventListener('keyup', function(e) {
-                document.getElementById('slug').value = slugify(this.value);
-            });
-
-            function slugify(text) {
-                return text.toString().toLowerCase()
-                    .replace(/\s+/g, '-')           // Replace spaces with -
-                    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-                    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-                    .replace(/^-+/, '')             // Trim - from start of text
-                    .replace(/-+$/, '');            // Trim - from end of text
-            }
 
             function init() {
                 var input = document.getElementById('location');
