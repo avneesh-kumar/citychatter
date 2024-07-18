@@ -1,6 +1,7 @@
 @extends('admin::layouts.app')
 
 @section('content')
+
     <div class="flex">
         <div class="flex-1">
             <h1 class="text-gray-700 text-lg font-semibold pb-2 border-b border-gray-700">
@@ -21,13 +22,13 @@
             <form action="{{ route('admin.post') }}" method="get">
                 
                 <div class="p-2 m-2">
-                    <label for="name">Name</label>
-                    <input type="text" name="name" id="name" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none focus:ring focus:ring-2 focus:ring-red-600 w-full p-2 rounded-lg" value="{{ request('name') ? request('name') : '' }}" />
+                    <label for="title">Title</label>
+                    <input type="text" name="title" id="title" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none focus:ring-red-600 w-full p-2 rounded-lg" value="{{ request('title') ? request('title') : '' }}" />
                 </div>
                 <div class="p-2 m-2">
                     <label for="status">Status</label>
-                    <select name="status" id="status" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none focus:ring focus:ring-2 focus:ring-red-600 w-full p-2 rounded-lg">
-                        <option value="">Select Status</option>
+                    <select name="status" id="status" class="bg-gray-100 border-none ring-1 ring-gray-700 focus:border-none  focus:ring-red-600 w-full p-2 rounded-lg">
+                        <option value="" selected>Select Status</option>
                         <option value="1" {{ request('status') == 1 ? 'selected' : '' }}>Active</option>
                         <option value="0" {{ request('status') == 0 ? 'selected' : '' }}>Inactive</option>
                     </select>
@@ -55,6 +56,9 @@
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Location
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Status
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Action
@@ -119,8 +123,8 @@
                 "closeButton": true,
                 "progressBar": true
             }
-
-            toastr.success("{{ session('success') }}");
+            let message = "{{ Session::get('success') }}";
+            toastr.success(message, 'Success');
         @endif
     </script>
     <script>

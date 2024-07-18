@@ -187,7 +187,7 @@
         });
 
         var modal_input = document.getElementById('modal_area');
-        var modal_autocomplete = new google.maps.places.Autocomplete(input);
+        var modal_autocomplete = new google.maps.places.Autocomplete(modal_input);
         modal_autocomplete.addListener('place_changed', function() {
             var place = modal_autocomplete.getPlace();
             $('#s_latitude').val(place.geometry.location.lat());
@@ -209,15 +209,21 @@
 
 <script>
 
-    $('#searchBtn, #modal_searchBtn').on('click', function() {
+    $('#searchBtn').on('click', function() {
         let keyword = $('#area').val();
         if(keyword == '') {
             $('#s_latitude').val('');
             $('#s_longitude').val('');
+        }
+        $('#search-form').submit();
+    });
+
+    $('#modal_searchBtn').on('click', function() {
+        let keyword = $('#modal_area').val();
+        if(keyword == '') {
             $('#modal_s_latitude').val('');
             $('#modal_s_longitude').val('');
         }
-        $('#search-form').submit();
         $('#modal-search-form').submit();
     });
 
@@ -230,7 +236,6 @@
                 $('#s_longitude').val('');
             }
             $('#search-form').submit();
-            $('#modal-search-form').submit();
         }
     });
 
@@ -239,12 +244,9 @@
         if (e.key === 'Enter') {
             e.preventDefault();
             if(keyword == '') {
-                $('#s_latitude').val('');
-                $('#s_longitude').val('');
                 $('#modal_s_latitude').val('');
                 $('#modal_s_longitude').val('');
             }
-            $('#search-form').submit();
             $('#modal-search-form').submit();
         }
     });

@@ -4,6 +4,12 @@ namespace Roilift\Admin\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Roilift\Admin\Models\PostLike;
+use Roilift\Admin\Models\PostImage;
+use Roilift\Admin\Models\PostComment;
+use Roilift\Admin\Models\PostMessage;
+use Roilift\Admin\Models\PostCommentReply;
+use Roilift\Admin\Models\PostMessageReply;
 use Roilift\Admin\Interfaces\PostRepositoryInterface;
 use Roilift\Admin\Interfaces\CategoryRepositoryInterface;
 
@@ -61,10 +67,33 @@ class PostController extends Controller
         return redirect()->route('admin.post');
     }
 
-    public function destroy($id)
+    public function destroy()
     {
-        $this->postRepository->destroy($id);
-        return redirect()->route('admin.post');
+        $post = $this->postRepository->find(request('id'));
+        if($post) {
+            $postComments = PostComment::where('post_id', $post->id)->get();
+            foreach($postComments as $postComment) {
+                $postCommentReplies = PostCommentReply::where('post_comment_id', $postComment->id)->get();
+                foreach($postCommentReplies as $postCommentReply) {
+                    $postCommentReply->delete();
+                }
+                $postComment->delete();
+            }
+            PostImage::where('post_id', $post->id)->delete();
+            PostLike::where('post_id', $post->id)->delete();
+            $postMessages = PostMessage::where('post_id', $post->id)->get();
+            foreach($postMessages as $postMessage) {
+                $postMessageReplies = PostMessageReply::where('post_message_id', $postMessage->id)->get();
+                foreach($postMessageReplies as $postMessageReply) {
+                    $postMessageReply->delete();
+                }
+                $postMessage->delete();
+            }
+
+            $post->delete();
+        }
+
+        return redirect()->route('admin.post')->with('success', 'Post deleted successfully');
     }
 }
 

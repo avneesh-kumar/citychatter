@@ -21,7 +21,6 @@ class AccountController extends Controller
 
     public function store()
     {
-        // dd(request()->all());
         $account = request()->validate([
             'name' => 'required',
             'password' => 'nullable|confirmed|min:8',

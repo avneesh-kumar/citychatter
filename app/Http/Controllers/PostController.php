@@ -2,17 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use Stringable;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Roilift\Admin\Models\Post;
 use Roilift\Admin\Models\Category;
 use Roilift\Admin\Models\PostLike;
 use Roilift\Admin\Models\PostImage;
 use Roilift\Admin\Models\PostComment;
+use Roilift\Admin\Models\PostMessage;
 use Roilift\Admin\Models\Advertisement;
 use Roilift\Admin\Models\PostCommentReply;
+use Roilift\Admin\Models\PostMessageReply;
+use Roilift\Admin\Interfaces\PostRepositoryInterface;
 
 class PostController extends Controller
 {
+    public function __construct(protected PostRepositoryInterface $postRepository)
+    {
+    }
+
     public function index($slug)
     {
         $post = Post::where('slug', $slug)->first();
@@ -50,15 +59,12 @@ class PostController extends Controller
     {
         request()->validate([
             'title' => 'required',
-            'slug'=> 'nullable',
             'content' => 'required',
             'location' => 'required',
             'category' => 'required',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
-
-        $slug = Post::where('slug', request('slug'))->first();
         
         $imageName = false;
         if(request()->hasFile('image')) {
@@ -80,14 +86,13 @@ class PostController extends Controller
             }
             $post->update([
                 'title' => request('title'),
-                'slug' => request('slug'),
                 'content' => request('content'),
                 'location' => request('location'),
                 'latitude' => request('latitude'),
                 'longitude' => request('longitude'),
                 'category_id' => request('sub_category') ? request('sub_category') : request('category'),
                 'image' => $imageName ? $path . '/' . $imageName : $post->image,
-                'status' => request()->status ? 1 : 0,
+                'status' => request('status'),
             ]);
 
             if(request('old_images')) {
@@ -97,8 +102,7 @@ class PostController extends Controller
         } else {
             $post = Post::create([
                 'title' => request()->title,
-                // 'slug' => request()->slug,
-                'slug' => $slug ? request('slug') . time() : request('slug'),
+                'slug' => $this->generateSlug(request()->title),
                 'content' => request()->content,
                 'location' => request()->location,
                 'latitude' => request()->latitude,
@@ -115,6 +119,17 @@ class PostController extends Controller
         }
 
         return redirect()->route('user.profile', auth()->user()->profile->username);
+    }
+
+    private function generateSlug($title)
+    {
+        $slug = Str::slug($title);
+        $post = Post::where('slug', $slug)->first();
+        if($post) {
+            $slug = $slug . '-' . time();
+        }
+
+        return $slug;
     }
 
     public function addImages($images, $postId)
@@ -212,14 +227,29 @@ class PostController extends Controller
 
     public function delete()
     {
-        $postId = request('id');
-        PostComment::where('post_id', $postId)->delete();
-        PostImage::where('post_id', $postId)->delete();
+        $post = $this->postRepository->find(request('id'));
+        if($post) {
+            $postComments = PostComment::where('post_id', $post->id)->get();
+            foreach($postComments as $postComment) {
+                $postCommentReplies = PostCommentReply::where('post_comment_id', $postComment->id)->get();
+                foreach($postCommentReplies as $postCommentReply) {
+                    $postCommentReply->delete();
+                }
+                $postComment->delete();
+            }
+            PostImage::where('post_id', $post->id)->delete();
+            PostLike::where('post_id', $post->id)->delete();
+            $postMessages = PostMessage::where('post_id', $post->id)->get();
+            foreach($postMessages as $postMessage) {
+                $postMessageReplies = PostMessageReply::where('post_message_id', $postMessage->id)->get();
+                foreach($postMessageReplies as $postMessageReply) {
+                    $postMessageReply->delete();
+                }
+                $postMessage->delete();
+            }
 
-        // need to add post_id field and then delete all the replies of that post
-        // PostCommentReply::where('post_id', $postId)->delete();
-
-        Post::where('id', request('id'))->where('user_id', auth()->user()->id)->delete();
+            $post->delete();
+        }
 
         return response()->json([
             'success' => true,

@@ -253,7 +253,7 @@
                     },
                     success: function(response) {
                         if(response.status == 'success') {
-                            $($this).prev().removeClass('hidden');
+                            $($this).next().removeClass('hidden');
                             $($this).addClass('hidden');
                         }
                     }
