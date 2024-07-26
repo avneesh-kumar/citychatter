@@ -25,9 +25,7 @@ class PostController extends Controller
     public function index($slug)
     {
         $post = Post::where('slug', $slug)->first();
-        if(!$post) {
-            // redirect to 404 view 
-
+        if(!$post || !$post->status) {
             return view('errors.404');
         }
 

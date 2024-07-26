@@ -95,6 +95,36 @@ class PostController extends Controller
 
         return redirect()->route('admin.post')->with('success', 'Post deleted successfully');
     }
+
+    public function activate()
+    {
+        $post = $this->postRepository->find(request('id'));
+
+        if($post) {
+            $post->status = true;
+            $post->save();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Post is live'
+        ]);
+    }
+
+    public function deactivate()
+    {
+        $post = $this->postRepository->find(request('id'));
+
+        if($post) {
+            $post->status = false;
+            $post->save();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Post is deactivated'
+        ]);
+    }
 }
 
 ?>

@@ -17,6 +17,10 @@ class UserController extends Controller
     {
         $userProfile = UserProfile::where('username', $username)->firstOrFail();
         $userProfile->user->posts = $userProfile->user->posts()->latest()->get();
+        if(auth()->user()->id != $userProfile->user_id) {
+            $userProfile->user->posts = $userProfile->user->posts()->where('status', 1)->latest()->get();
+        }
+
         $isFollowing = UserFollow::where('followed_by', auth()->user()->id)->where('followed_to', $userProfile->user_id)->first();
         if(auth()->user()->id == $userProfile->user_id) {
             $followers = UserFollow::where('followed_to', $userProfile->user_id)->get();
