@@ -49,6 +49,7 @@
                             <div class="text-right">
                                 @if(auth()->user()->id != $post->user->id)
                                     <button class="py-1 px-2 text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none" data-modal-target="message-modal" data-modal-toggle="message-modal" >Message</button>
+                                    <button class="py-1 px-2 text-red-500 bg-white border border-red-500 rounded-md shadow-sm  focus:outline-none" data-modal-target="report-modal" data-modal-toggle="report-modal">Report</button>
                                 @endif
                             </div>
                         </div>
@@ -356,28 +357,72 @@
             </div>
         </div>
     </div>
+
+    <div id="report-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                    <h3 class="text-lg font-semibold text-red-600">
+                        Report Post
+                        {{ $post->title }}
+                    </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center " data-modal-toggle="report-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div id="modal-report-message-block" class="text-center text-lg text-red-600 p-2"></div>
+                <div id="modal-report-success" class="text-lg text-green-500 mt-4 text-center"></div>
+                <form class="p-4 md:p-5">
+                    <div class="grid gap-4 mb-4 grid-cols-2">
+                        <input type="hidden" name="post_id" value="{{ $post->id }}">
+                        <div class="col-span-2">
+                            <label for="message" class="block mb-2 text-sm font-medium text-gray-900 ">Your Reason
+                                <span class="text-red-500"> *</span>
+                            </label>
+                            <select id="report-reason" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" required>
+                                <option value="">Select your reason</option>
+                                <?php $reasons = config('reason'); ?>
+                                @foreach($reasons as $key => $reason)
+                                    <option value="{{ $reason['reason'] }}" data-description="{{ $reason['description'] }}">{{ $reason['reason'] }}</option>
+                                @endforeach
+                            </select>
+                            <div id="report-description" class="text-sm text-gray-500 mt-4"></div>
+                        </div>
+                    </div>
+                    <button type="button" id="reportBtn" class="py-1 px-2 text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none">
+                        Report
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 @endif
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-  <!-- Initialize Swiper -->
-  <script>
-    var swiper = new Swiper(".mySwiper2", {
-        width: 400,
-        spaceBetween: 5,
-        slidesPerView: 4,
-    });
+<script>
+var swiper = new Swiper(".mySwiper2", {
+    width: 400,
+    spaceBetween: 5,
+    slidesPerView: 4,
+});
 
-    var swiper = new Swiper(".mySwiper", {
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
-      thumbs: {
-        swiper: swiper,
-      },
-    });
-  </script>
+var swiper = new Swiper(".mySwiper", {
+    navigation: {
+    nextEl: ".swiper-button-next",
+    prevEl: ".swiper-button-prev",
+    },
+    thumbs: {
+    swiper: swiper,
+    },
+});
+</script>
 
 <script>
     $(document).ready(function() {
@@ -555,8 +600,49 @@
             });
         });
 
+        $('#report-reason').change(function() {
+            var description = $('#report-reason option:selected').attr('data-description');
+            $('#report-description').html(description);
+        });
+
+        $('#reportBtn').click(function() {
+            const $this = $(this);
+            var post_id = $('input[name="post_id"]').val();
+            var reason = $('#report-reason').val();
+            if(reason == '') {
+                $('#modal-report-message-block').html('Please select a reason');
+                return false;
+            }
+
+            var description = $('#report-description').text();
+            $.ajax({
+                url: "{{ route('post.report') }}",
+                type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "post_id": post_id,
+                    "reason": reason,
+                    "description": description,
+                },
+                beforeSend: function() {
+                    $('#modal-report-message-block').html('');
+                    $this.text('Reporting...').attr('disabled', true).addClass('cursor-not-allowed bg-gray-400').removeClass('bg-red-500 hover:bg-red-600');
+                },
+                success: function(response) {
+                    $this.text('Report').attr('disabled', false).removeClass('cursor-not-allowed bg-gray-400').addClass('bg-red-500 hover:bg-red-600');
+                    if(response.success) {
+                        $('#modal-report-success').html(response.message);
+                    } else {
+                        $('#modal-report-success').html(response.message);
+                    }
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            });
+        });
+
     });
 
-    
 </script>
 @endsection

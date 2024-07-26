@@ -29,8 +29,11 @@ Route::group([
     Route::get('/post/edit/{id}', 'PostController@edit')->name('post.edit');
     Route::post('/post/store', 'PostController@store')->name('post.store');
     Route::post('/post/delete', 'PostController@destroy')->name('post.delete');
+    Route::post('/post/activate', 'PostController@activate')->name('post.activate');
+    Route::post('/post/deactivate', 'PostController@deactivate')->name('post.deactivate');
 
-    
+    Route::get('/post/report', 'PostReportController@index')->name('post.report');
+
     Route::get('/user', 'UserController@index')->name('user');
     Route::get('/user/create/', 'UserController@create')->name('user.create');
     Route::get('/user/edit/{id}', 'UserController@edit')->name('user.edit');

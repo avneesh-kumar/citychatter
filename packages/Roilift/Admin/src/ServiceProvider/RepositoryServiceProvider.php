@@ -8,12 +8,14 @@ use Roilift\Admin\Repository\UserRepository;
 use Roilift\Admin\Repository\AdminRepository;
 use Roilift\Admin\Repository\ConfigRepository;
 use Roilift\Admin\Repository\CategoryRepository;
+use Roilift\Admin\Repository\PostReportRepository;
 use Roilift\Admin\Interfaces\PostRepositoryInterface;
 use Roilift\Admin\Interfaces\UserRepositoryInterface;
 use Roilift\Admin\Repository\AdvertisementRepository;
 use Roilift\Admin\Interfaces\AdminRepositoryInterface;
 use Roilift\Admin\Interfaces\ConfigRepositoryInterface;
 use Roilift\Admin\Interfaces\CategoryRepositoryInterface;
+use Roilift\Admin\Interfaces\PostReportRepositoryInterface;
 use Roilift\Admin\Interfaces\AdvertisementRepositoryInterface;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -29,6 +31,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AdminRepositoryInterface::class, AdminRepository::class);
         $this->app->bind(ConfigRepositoryInterface::class, ConfigRepository::class);
         $this->app->bind(AdvertisementRepositoryInterface::class, AdvertisementRepository::class);
+        $this->app->bind(PostReportRepositoryInterface::class, PostReportRepository::class);
     }
 
     /**

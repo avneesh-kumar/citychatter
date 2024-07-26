@@ -11,6 +11,11 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-red-600 hover:opacity-50" href="{{ route('admin.post.report') }}">
+                <i class="fa-solid fa-flag"></i>&nbsp; Reported Post
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-red-600 hover:opacity-50" href="{{ route('admin.user') }}">
                 <i class="fa-sharp fa-solid fa-users"></i>&nbsp; User
             </a>

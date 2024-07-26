@@ -254,6 +254,7 @@
                     success: function(response) {
                         if(response.status == 'success') {
                             $($this).next().removeClass('hidden');
+                            $($this).prev().removeClass('hidden');
                             $($this).addClass('hidden');
                         }
                     }
@@ -273,6 +274,7 @@
                     success: function(response) {
                         if(response.status == 'success') {
                             $($this).next().removeClass('hidden');
+                            $($this).prev().removeClass('hidden');
                             $($this).addClass('hidden');
                         }
                     }

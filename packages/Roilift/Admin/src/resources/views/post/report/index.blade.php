@@ -9,15 +9,15 @@
             </h1>
         </div>
         <div class="flex-1 items-end text-right">
-            <button type="button"  class="float-right hover:bg-red-700 bg-red-600 text-white font-bold py-2 px-4 rounded text-xs ml-2" data-drawer-target="drawer-filter" data-drawer-show="drawer-filter" data-drawer-placement="right" aria-controls="drawer-filter">
+            <!-- <button type="button"  class="float-right hover:bg-red-700 bg-red-600 text-white font-bold py-2 px-4 rounded text-xs ml-2" data-drawer-target="drawer-filter" data-drawer-show="drawer-filter" data-drawer-placement="right" aria-controls="drawer-filter">
                 <i class="fa-solid fa-filter"></i>&nbsp; Filter
-            </button>
+            </button> -->
             <!-- <a href="{{ route('admin.post.create') }}" class="float-right hover:bg-red-700 bg-red-600 text-white font-bold py-2 px-4  rounded text-xs">
                 <i class="fa-solid fa-plus"></i>&nbsp; Add Post
             </a> -->
         </div>
     </div>
-    <div id="drawer-filter" class="fixed top-0 right-0 z-40 h-screen p-4 overflow-y-auto transition-transform translate-x-full bg-white w-80" tabindex="-1" aria-labelledby="drawer-right-label">
+    <!-- <div id="drawer-filter" class="fixed top-0 right-0 z-40 h-screen p-4 overflow-y-auto transition-transform translate-x-full bg-white w-80" tabindex="-1" aria-labelledby="drawer-right-label">
         <div class="mt-16">
             <form action="{{ route('admin.post') }}" method="get">
                 
@@ -39,7 +39,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> -->
 
     <div class="flex">
         <div class="flex-auto mt-8">
@@ -50,10 +50,10 @@
                             Title
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Image
+                            Reason
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Location
+                            Reported By
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Status
@@ -64,50 +64,47 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if($posts->count() > 0)
-                        @foreach($posts as $post)
+                    @if($reportedPosts->count() > 0)
+                        @foreach($reportedPosts as $reportedPost)
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                    {{ $post->title }}
+                                    {{ $reportedPost->post->title }}
                                 </td>
                                 <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                    @if($post->image)
-                                        <img src="{{ asset($post->image) }}" alt="{{ $post->title }}" class="w-20 h-20 object-cover" />
-                                    @endif
+                                    <div id="tooltip-description-{{ $reportedPost->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-red-500 transition-opacity duration-300 rounded-lg shadow-sm opacity-0 tooltip border border-red-500 ">
+                                        {{ $reportedPost->description }}
+                                        <div class="tooltip-arrow" class="border bg-red-500" data-popper-arrow></div>
+                                    </div>
+                                    <span data-tooltip-target="tooltip-description-{{ $reportedPost->id }}">
+                                        {{ $reportedPost->reason }}
+                                    </span>
                                 </td>
                                 <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                    {{ $post->location }}
+                                    {{ $reportedPost->reporter->name }}
                                 </td>
                                 <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                    {{ $post->status == 1 ? 'Active' : 'Inactive' }}
+                                    {{ $reportedPost->post->status == 1 ? 'Active' : 'Inactive' }}
                                 </td>
                                 <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                    @if($post->status)
-                                        <button type="button" title="Disapprove post" class="text-red-600 hover:text-red-900 disapprove-btn" data-id="{{ $post->id }}">
+                                    @if($reportedPost->post->status)
+                                        <button type="button" title="Disapprove post" class="text-red-600 hover:text-red-900 disapprove-btn" data-id="{{ $reportedPost->post->id }}">
                                             <i class="fa-solid fa-thumbs-down"></i>
                                         </button>
                                     @else
-                                        <button type="button" title="Approve post" class="text-green-600 hover:text-green-900 approve-btn" data-id="{{ $post->id }}">
+                                        <button type="button" title="Approve post" class="text-green-600 hover:text-green-900 approve-btn" data-id="{{ $reportedPost->post->id }}">
                                             <i class="fa-solid fa-thumbs-up"></i>
                                         </button>
                                     @endif
-                                    <a href="{{ route('post', $post->slug) }}" target="_blank" class="text-red-600 hover:text-red-900">
+                                    <a href="{{ route('post', $reportedPost->post->slug) }}" target="_blank" class="text-red-600 hover:text-red-900">
                                         <i class="fa-solid fa-eye"></i>
                                     </a>
-                                    <form action="{{ route('admin.post.delete') }}" method="post" class="inline-block" id="delete-form-{{ $post->id }}" >
-                                        @csrf
-                                        <input type="hidden" name="id" value="{{ $post->id }}" />
-                                        <button type="button" class="text-red-600 hover:text-red-900 deleteBtn" id="delete-form-id-{{ $post->id }}" >
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </form>
                                 </td>
                             </tr>
                         @endforeach
                     @else
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <td colspan="4" class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 text-center">
-                                No Post found.
+                                No Reported Post found.
                             </td>
                         </tr>
                     @endif
@@ -117,32 +114,12 @@
     </div>
     <div class="flex">
         <div class="flex-auto mt-8">
-            {{ $posts->links() }}
+            {{ $reportedPosts->links() }}
         </div>
     </div>
-    <script>
-        @if(Session::has('success'))
-            toastr.options = {
-                "closeButton": true,
-                "progressBar": true
-            }
-            let message = "{{ Session::get('success') }}";
-            toastr.success(message, 'Success');
-        @endif
-    </script>
 
     <script>
         $(document).ready(function() {
-            $('.deleteBtn').on('click', function(e) {
-                e.preventDefault();
-                let id = $(this).attr('id');
-                let formId = id.replace('delete-form-id-', '');
-                let form = $('#delete-form-' + formId);
-                let confirmation = confirm('Are you sure you want to delete this post?');
-                if(confirmation) {
-                    form.submit();
-                }
-            });
 
             $('.approve-btn').on('click', function(e) {
                 e.preventDefault();

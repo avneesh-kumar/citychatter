@@ -15,7 +15,7 @@
                         <h3 class="text-2xl font-bold text-red-500">Contact Information</h3>
 
                         <div class="mt-8 text-left">
-                            !if($address)
+                            @if($address)
                                 <p class="text-lg font-semibold text-gray-900 ">Address</p>
                                 <p class="text-gray-600 ">{{ $address }}</p>
                             @endif

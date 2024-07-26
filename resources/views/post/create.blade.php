@@ -127,7 +127,7 @@
                             @else
                                 <option value="1">Public</option>
                             @endif
-                            @if(isset($post) && $post->status === 0)
+                            @if(isset($post) && $post->status == 0)
                                 <option value="0" selected>Private</option>
                             @elseif(old('status') === 0)
                                 <option value="0" selected>Private</option>

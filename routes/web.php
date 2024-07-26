@@ -61,6 +61,7 @@ Route::group([
     Route::post('/post/unlike', 'App\Http\Controllers\PostController@unlike')->name('post.unlike');
     Route::post('/post/comment', 'App\Http\Controllers\PostController@comment')->name('post.comment');
     Route::post('/post/comment/reply', 'App\Http\Controllers\PostController@commentReply')->name('post.comment.reply');
+    Route::post('/post/report', 'App\Http\Controllers\PostReportController@report')->name('post.report');
 
     Route::get('/user', 'App\Http\Controllers\UserController@index')->name('user');
     Route::get('/user/profile/{username}', 'App\Http\Controllers\UserController@profile')->name('user.profile');
