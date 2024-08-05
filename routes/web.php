@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/test', 'App\Http\Controllers\SearchController@test')->name('test');
-
 Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home');
 Route::get('/plain', 'App\Http\Controllers\HomeController@plain')->name('plain');
 Route::get('/search', 'App\Http\Controllers\SearchController@index')->name('search');
@@ -27,9 +25,8 @@ Route::get('/terms', 'App\Http\Controllers\TermsController@index')->name('terms'
 Route::get('/mission', 'App\Http\Controllers\MissionController@index')->name('mission');
 Route::get('/about', 'App\Http\Controllers\AboutController@index')->name('about');
 Route::get('/contact', 'App\Http\Controllers\ContactController@index')->name('contact');
-Route::post('/contact', 'App\Http\Controllers\ContactController@store')->name('contact.store');
+Route::post('/contact', 'App\Http\Controllers\ContactController@store')->middleware('recaptcha')->name('contact.store');
 Route::get('/help', 'App\Http\Controllers\HelpController@index')->name('help'); 
-
 
 Route::group([
     'namespace' => 'App\Http\Controllers',
@@ -82,11 +79,11 @@ Route::group([
     'middleware' => 'guest',
 ], function () {
     Route::get('/login', 'LoginController@index')->name('login');
-    Route::post('/login', 'LoginController@authenticate')->name('login.authenticate');
+    Route::post('/login', 'LoginController@authenticate')->middleware('recaptcha')->name('login.authenticate');
     Route::get('/register', 'RegisterController@index')->name('register');
-    Route::post('/register', 'RegisterController@store')->name('register.store');
+    Route::post('/register', 'RegisterController@store')->middleware('recaptcha')->name('register.store');
     Route::get('/lost-password', 'LostPasswordController@index')->name('lost-password');
-    Route::post('/lost-password/email', 'LostPasswordController@email')->name('lost-password.email');
+    Route::post('/lost-password/email', 'LostPasswordController@email')->middleware('recaptcha')->name('lost-password.email');
     Route::get('/validate-email/{token}', 'RegisterController@validateEmail')->name('register.validateemail');
 });
 

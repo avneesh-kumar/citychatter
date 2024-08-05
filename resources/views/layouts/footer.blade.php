@@ -33,3 +33,11 @@
         </div>
     </div>
 </footer>
+
+<script>
+    grecaptcha.ready(function() {
+        grecaptcha.execute('{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}', {action: 'submit'}).then(function(token) {
+            document.getElementById('g-recaptcha-response').value = token;
+        });
+    });
+</script>

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Messages')
+
 @section('content')
     <div class="w-full lg:w-3/4 p-2 lg:p-8">
         <h1 class="text-2xl text-red-500 text-center mb-8 underline">Messages</h1>

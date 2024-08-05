@@ -1,5 +1,7 @@
 @extends('layouts.guest')
 
+@section('title', 'Login')
+
 @section('content')
 
     <section class="rounded-lg">
@@ -14,6 +16,13 @@
                             <span class="text-red-600 text-sm font-semibold ">{{ $errors->first('invalid') }}</span>
                         </div>
                     @endif
+
+                    @if ($errors->has('error'))
+                        <div class="text-center p-1 mt-2">
+                            <span class="text-red-600 text-sm font-semibold ">{{ $errors->first('error') }}</span>
+                        </div>
+                    @endif
+                    
                     <form class="mt-8 space-y-6" action="{{ route('login.authenticate') }}" method="post">
                         @csrf
                         <div>
@@ -37,6 +46,8 @@
                         <div class="flex items-start">
                             <p>Don't have account, <a href="{{ route('register') }}" class="text-red-600">signup</a> here </p>
                         </div>
+
+                        <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
                         <button type="submit" class="w-full px-5 py-3 text-base font-medium text-center text-white bg-red-500 rounded-lg hover:bg-red-600 focus:ring-4 focus:ring-red-300 sm:w-auto ">Login to your account</button>
                         
                     </form>

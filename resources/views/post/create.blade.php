@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Create Post')
+
 @section('content')
     <style>
         @media (max-width: 767px) {
