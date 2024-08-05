@@ -9,7 +9,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class SendMessageEmailJob implements ShouldQueue
 {
@@ -30,7 +29,6 @@ class SendMessageEmailJob implements ShouldQueue
      */
     public function handle(): void
     {
-        // Send email
         Mail::to($this->data['email'])->send(new Message($this->data['message']));
     }
 }

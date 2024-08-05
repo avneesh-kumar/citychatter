@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', nl2br($message->message))
+
 @section('content')
     <div class="h-screen ">
         <!-- add a back button without backgroud -->

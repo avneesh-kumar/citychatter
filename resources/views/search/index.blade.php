@@ -1,4 +1,7 @@
-@extends('layouts.app') 
+@extends('layouts.app')
+
+@section('title', 'Search Results')
+
 @section('content')
 
 @if(isset($breadcrumbs) && $breadcrumbs)

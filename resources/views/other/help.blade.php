@@ -1,5 +1,8 @@
 @extends('layouts.guest')
 
+@section('title', 'Help')
+@section('description', Str::limit(strip_tags(html_entity_decode($help)), 160))
+
 @section('content')
 
     <section class="rounded-lg">

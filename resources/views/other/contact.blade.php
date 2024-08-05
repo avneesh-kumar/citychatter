@@ -1,5 +1,7 @@
 @extends('layouts.guest')
 
+@section('title', 'Contact Us')
+
 @section('content')
 
     <section class="rounded-lg">
@@ -37,13 +39,18 @@
                     </div>
                 </div>
                 <div class="flex-1 w-/1/2 p-2 py-8 lg:p-8">
-                    <h3 class="text-2xl font-bold text-red-500">Send us a message</h3>
                     @if (session('message'))
-                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4" role="alert">
-                            <strong class="font-bold">Success!</strong>
-                            <span class="block sm:inline">{{ session('message') }}</span>
-                        </div>
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4" role="alert">
+                        <strong class="font-bold">Success!</strong>
+                        <span class="block sm:inline">{{ session('message') }}</span>
+                    </div>
                     @endif
+                    @if ($errors->any())
+                    <div class="text-center p-1 mt-2">
+                        <span class="text-red-600 text-sm font-semibold ">{{ $errors->first('error') }}</span>
+                    </div>
+                    @endif
+                    <h3 class="text-2xl font-bold text-red-500">Send us a message</h3>
                     <form method="post" action="{{ route('contact.store') }}" class="mt-8 space-y-6 w-full">
                         @csrf
                         <div>
@@ -73,6 +80,9 @@
                                 <span class="text-red-600 text-sm">{{ $errors->first('message') }}</span>
                             @endif
                         </div>
+
+                        <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
+
                         <div>
                             <button type="submit" class="bg-red-500 text-white rounded-lg px-4 py-2 hover:bg-red-600">Submit</button>
                         </div>

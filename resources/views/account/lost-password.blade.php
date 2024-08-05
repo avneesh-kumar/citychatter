@@ -1,5 +1,7 @@
 @extends('layouts.guest')
 
+@section('title', 'Lost Password')
+
 @section('content')
 
     <section class="rounded-lg">
@@ -10,6 +12,11 @@
                         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                             <strong class="font-bold">Success!</strong>
                             <span class="block sm:inline">{{ session('success') }}</span>
+                        </div>
+                    @endif
+                    @if ($errors->any())
+                        <div class="text-center p-1 mt-2">
+                            <span class="text-red-600 text-sm font-semibold ">{{ $errors->first('error') }}</span>
                         </div>
                     @endif
                     <h2 class="text-2xl text-red-500 font-bold border-b-2 border-red-600">

@@ -1,5 +1,7 @@
 @extends('layouts.guest')
 
+@section('title', 'Email Verification')
+
 @section('content')
     <section class="rounded-lg">
         <div class="mx-auto">

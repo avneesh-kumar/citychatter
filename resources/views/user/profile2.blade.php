@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', $userProfile->user->name)
+@section('description', \Str::limit(strip_tags($userProfile->bio), 100))
+
 @section('content')
     <!-- <div>
         <a href="{{ url()->previous() }}" class="text-red-600 hover:underline">

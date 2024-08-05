@@ -1,4 +1,10 @@
-@extends('layouts.app') 
+@extends('layouts.app')
+
+@if($currentCategory != null)
+    @section('title', $currentCategory->name)
+    @section('description', Str::limit($currentCategory->description, 160))
+@endif
+
 @section('content')
 
 @if(isset($breadcrumbs) && $breadcrumbs)

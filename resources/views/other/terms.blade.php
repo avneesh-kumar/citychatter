@@ -1,5 +1,7 @@
 @extends('layouts.guest')
 
+@section('title', 'Terms & Conditions')
+
 @section('content')
 
     <section class="rounded-lg">

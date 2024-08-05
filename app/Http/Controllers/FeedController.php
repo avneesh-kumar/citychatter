@@ -29,22 +29,22 @@ class FeedController extends Controller
         }
 
         $categories = $this->categoryRepository->all();
-
+        $currentCategory = null;
         $breadcrumbs = [];
 
         if($slug) {
             $ids = [];
-            $category = Category::where('slug', $slug)->first();
+            $currentCategory = Category::where('slug', $slug)->first();
 
-            $ids[] = $category->id;
-            if($category->children) {
-                foreach($category->children as $child) {
+            $ids[] = $currentCategory->id;
+            if($currentCategory->children) {
+                foreach($currentCategory->children as $child) {
                     $ids[] = $child->id;
                 }
             }
             
-            if($category->parent_id) {
-                $parent = $category->parent;
+            if($currentCategory->parent_id) {
+                $parent = $currentCategory->parent;
 
                 $breadcrumbs[] = [
                     'name' => $parent->name,
@@ -53,8 +53,8 @@ class FeedController extends Controller
             }
 
             $breadcrumbs[] = [
-                'name' => $category->name,
-                'url' => route('feed', $category->slug)
+                'name' => $currentCategory->name,
+                'url' => route('feed', $currentCategory->slug)
             ];
 
             $feeds = Post::where('status', true)
@@ -72,6 +72,6 @@ class FeedController extends Controller
             ->orderBy('sort_order', 'asc')
             ->paginate(20);
         
-        return view('feed.index2', compact('categories', 'feeds', 'slug', 'breadcrumbs', 'advertisements'));
+        return view('feed.index2', compact('currentCategory', 'feeds', 'slug', 'breadcrumbs', 'advertisements'));
     }
 }

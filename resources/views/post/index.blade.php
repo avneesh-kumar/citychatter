@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', $post->title)
+@section('description', \Str::limit(strip_tags($post->content), 160))
+
 @section('content')
 
 <div class="container flex flex-col lg:flex-row">
