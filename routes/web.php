@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::view('/offline', 'offline');
+
 Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home');
 Route::get('/plain', 'App\Http\Controllers\HomeController@plain')->name('plain');
 Route::get('/search', 'App\Http\Controllers\SearchController@index')->name('search');
