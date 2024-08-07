@@ -1,0 +1,15 @@
+{
+    "name": "CityChatter",
+    "short_name": "CityChatter",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#ef4444",
+    "icons": [
+      {
+        "src": "/logo.png",
+        "sizes": "72x72",
+        "type": "image/png"
+      }
+    ]
+}
