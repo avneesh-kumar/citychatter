@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response;
 
 class VerifyRecaptcha
@@ -16,21 +16,20 @@ class VerifyRecaptcha
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $recaptchaSecret = env('GOOGLE_RECAPTCHA_SECRET_KEY');
-        $recaptchaResponse = $request->input('g-recaptcha-response');
-
-        $client = new Client();
-        $response = $client->post('https://www.google.com/recaptcha/api/siteverify', [
-            'form_params' => [
-                'secret' => $recaptchaSecret,
-                'response' => $recaptchaResponse,
-            ]
+        request()->validate([
+            'g-recaptcha-response' => 'required',
         ]);
 
-        $body = json_decode((string) $response->getBody());
-        
-        if (!$body->success || $body->score < 0.5) {
-            return redirect()->back()->withErrors(['error' => 'Captcha verification failed.']);
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => env('GOOGLE_RECAPTCHA_V2_SECRET_KEY'),
+            'response' => request('g-recaptcha-response'),
+            'remoteip' => request('REMOTE_ADDR'),
+        ]);
+    
+        $recaptchaData = $response->json();
+    
+        if (!$recaptchaData['success']) {
+            return back()->withErrors(['g-recaptcha-response' => 'reCAPTCHA verification failed. Please try again.']);
         }
 
         return $next($request);

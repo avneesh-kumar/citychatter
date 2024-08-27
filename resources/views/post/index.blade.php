@@ -51,9 +51,28 @@
                             </div>
                             <div class="text-right">
                                 @if(auth()->user()->id != $post->user->id)
+                                    <button id="dropdownMenuIconButton" data-dropdown-toggle="dropdownDots" class="inline-flex items-center p-2 text-sm font-medium text-center text-red-500" type="button">
+                                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                                        </svg>
+                                    </button>
+
+                                    <div id="dropdownDots" class="z-10 hidden bg-red-500 divide-y divide-gray-100 rounded-lg shadow w-24 ">
+                                        <ul class="py-2 text-sm text-left" aria-labelledby="dropdownMenuIconButton">
+                                            <li class="p-2 border-b border-white">
+                                                <button class="text-white" data-modal-target="message-modal" data-modal-toggle="message-modal" >Message</button>
+                                            </li>
+                                            <li class="px-2 py-1">
+                                                <button class="text-white" data-modal-target="report-modal" data-modal-toggle="report-modal">Report</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                @endif
+
+                                <!-- @if(auth()->user()->id != $post->user->id)
                                     <button class="py-1 px-2 text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none" data-modal-target="message-modal" data-modal-toggle="message-modal" >Message</button>
                                     <button class="py-1 px-2 text-red-500 bg-white border border-red-500 rounded-md shadow-sm  focus:outline-none" data-modal-target="report-modal" data-modal-toggle="report-modal">Report</button>
-                                @endif
+                                @endif -->
                             </div>
                         </div>
                     </div>
