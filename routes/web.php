@@ -85,18 +85,6 @@ Route::group([
     Route::get('/register', 'RegisterController@index')->name('register');
     Route::post('/register', 'RegisterController@store')->middleware('recaptcha')->name('register.store');
     Route::get('/lost-password', 'LostPasswordController@index')->name('lost-password');
-    Route::post('/lost-password/email', 'LostPasswordController@email')->middleware('recaptcha')->name('lost-password.email');
+    Route::post('/lost-password/email', 'LostPasswordController@email')->name('lost-password.email');
     Route::get('/validate-email/{token}', 'RegisterController@validateEmail')->name('register.validateemail');
 });
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
-
-// require __DIR__.'/auth.php';

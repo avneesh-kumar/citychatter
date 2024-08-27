@@ -51,13 +51,13 @@
                     </div>
                     @endif
                     <h3 class="text-2xl font-bold text-red-500">Send us a message</h3>
-                    <form method="post" action="{{ route('contact.store') }}" class="mt-8 space-y-6 w-full">
+                    <form method="post" id="recaptcha-form" action="{{ route('contact.store') }}" class="mt-8 space-y-6 w-full">
                         @csrf
                         <div>
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Your Name
                                 <span class="text-red-500"> *</span>
                             </label>
-                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Enter your name" required>
+                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Enter your name" required value="{{ old('name') }}">
                             @if ($errors->has('name'))
                                 <span class="text-red-600 text-sm">{{ $errors->first('name') }}</span>
                             @endif
@@ -66,7 +66,7 @@
                             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Your email
                                 <span class="text-red-500"> *</span>
                             </label>
-                            <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Enter your email id" required>
+                            <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Enter your email id" required value="{{ old('email') }}">
                             @if ($errors->has('email'))
                                 <span class="text-red-600 text-sm">{{ $errors->first('email') }}</span>
                             @endif
@@ -75,16 +75,16 @@
                             <label for="message" class="block mb-2 text-sm font-medium text-gray-900 ">Your message
                                 <span class="text-red-500"> *</span>
                             </label>
-                            <textarea name="message" id="message" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Enter your message" required></textarea>
+                            <textarea name="message" id="message" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="Enter your message" required>{{ old('message') }}</textarea>
                             @if ($errors->has('message'))
                                 <span class="text-red-600 text-sm">{{ $errors->first('message') }}</span>
                             @endif
                         </div>
 
-                        <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
-
+                        <x-recaptcha />
+                        
                         <div>
-                            <button type="submit" class="bg-red-500 text-white rounded-lg px-4 py-2 hover:bg-red-600">Submit</button>
+                            <button type="submit" id="contactUsSubmitBtn" class="bg-red-500 text-white rounded-lg px-4 py-2 hover:bg-red-600">Submit</button>
                         </div>
                     </form>
                 </div>

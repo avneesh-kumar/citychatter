@@ -32,24 +32,46 @@
             Curated by <a href="https://roilift.com/" rel="nofollow" class="hover:underline">Roilift</a>
         </div>
     </div>
-</footer>
+
+    <button id="add-to-home-screen" class="fixed bottom-4 right-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full shadow-lg z-50">
+    Add to Home Screen
+</button>
 
 <script>
-    grecaptcha.ready(function() {
-        grecaptcha.execute('{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}', {action: 'submit'}).then(function(token) {
-            document.getElementById('g-recaptcha-response').value = token;
+    let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (event) => {
+    // Prevent the mini-infobar from appearing on mobile
+    event.preventDefault();
+    // Stash the event so it can be triggered later.
+    deferredPrompt = event;
+    // Update UI to notify the user they can add to home screen
+    const addToHomeScreenButton = document.getElementById('add-to-home-screen');
+    addToHomeScreenButton.classList.remove('hidden');
+
+    addToHomeScreenButton.addEventListener('click', () => {
+        // Hide the button
+        addToHomeScreenButton.classList.add('hidden');
+        // Show the install prompt
+        deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the A2HS prompt');
+            } else {
+                console.log('User dismissed the A2HS prompt');
+            }
+            deferredPrompt = null;
         });
     });
-</script>
+});
 
-<script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register("{{ asset('serviceworker.js') }}")
-            .then(registration => {
-                console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            })
-            .catch(error => {
-                console.log('ServiceWorker registration failed: ', error);
-            });
-    }
+// Optional: Handle the appinstalled event
+window.addEventListener('appinstalled', () => {
+    console.log('Application has been installed.');
+    // You can hide the button after installation
+    document.getElementById('add-to-home-screen').classList.add('hidden');
+});
+
 </script>
+</footer>

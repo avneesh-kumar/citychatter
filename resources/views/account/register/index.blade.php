@@ -22,7 +22,7 @@
                     <h2 class="text-2xl text-red-500 font-bold border-b-2 border-red-600">
                         Register
                     </h2>
-                    <form method="post" action="{{ route('register.store') }}" class="mt-8 space-y-6">
+                    <form method="post" id="recaptcha-form" action="{{ route('register.store') }}" class="mt-8 space-y-6">
                         @csrf
                         <div>
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Your Name
@@ -60,6 +60,9 @@
                                 <span class="text-red-600 text-sm">{{ $errors->first('password_confirmation') }}</span>
                             @endif
                         </div>
+
+                        <x-recaptcha />
+                        
                         <div class="flex items-start">
                             <div class="flex items-center h-5">
                                 <label for="agreement" class="">

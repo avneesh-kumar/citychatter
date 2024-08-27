@@ -3,7 +3,9 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "tailwindwatch": "npx tailwindcss -i ./dist/input.css -o ./public/assets/css/app.css --watch",
+        "tailwindbuild": "npx tailwindcss -i ./dist/input.css -o ./public/assets/css/app.css"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",

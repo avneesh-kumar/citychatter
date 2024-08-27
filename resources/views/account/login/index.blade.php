@@ -23,7 +23,7 @@
                         </div>
                     @endif
                     
-                    <form class="mt-8 space-y-6" action="{{ route('login.authenticate') }}" method="post">
+                    <form class="mt-8 space-y-6" id="recaptcha-form" action="{{ route('login.authenticate') }}" method="post">
                         @csrf
                         <div>
                             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Your email</label>
@@ -33,6 +33,9 @@
                             <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Your password</label>
                             <input type="password" name="password" id="password" placeholder="Enter your password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 " required value="{{ old('password') }}">
                         </div>
+
+                        <x-recaptcha />
+                        
                         <div class="flex items-start">
                             <div class="flex items-center h-5">
                                 <input id="remember" aria-describedby="remember" name="remember" type="checkbox" class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-red-300 ">
@@ -47,9 +50,7 @@
                             <p>Don't have account, <a href="{{ route('register') }}" class="text-red-600">signup</a> here </p>
                         </div>
 
-                        <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
                         <button type="submit" class="w-full px-5 py-3 text-base font-medium text-center text-white bg-red-500 rounded-lg hover:bg-red-600 focus:ring-4 focus:ring-red-300 sm:w-auto ">Login to your account</button>
-                        
                     </form>
                 </div>
             </div>
