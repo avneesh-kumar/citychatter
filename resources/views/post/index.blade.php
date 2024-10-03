@@ -59,11 +59,11 @@
 
                                     <div id="dropdownDots" class="z-10 hidden bg-red-500 divide-y divide-gray-100 rounded-lg shadow w-24 ">
                                         <ul class="py-2 text-sm text-left" aria-labelledby="dropdownMenuIconButton">
-                                            <li class="p-2 border-b border-white">
-                                                <button class="text-white" data-modal-target="message-modal" data-modal-toggle="message-modal" >Message</button>
+                                            <li>
+                                                <button class="text-red-500" data-modal-target="message-modal" data-modal-toggle="message-modal" >Message</button>
                                             </li>
-                                            <li class="px-2 py-1">
-                                                <button class="text-white" data-modal-target="report-modal" data-modal-toggle="report-modal">Report</button>
+                                            <li>
+                                                <button class="py-1 px-2 text-red-500 bg-white border border-red-500 rounded-md shadow-sm  focus:outline-none" data-modal-target="report-modal" data-modal-toggle="report-modal">Report</button>
                                             </li>
                                         </ul>
                                     </div>

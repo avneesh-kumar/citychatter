@@ -33,45 +33,58 @@
         </div>
     </div>
 
-    <button id="add-to-home-screen" class="fixed bottom-4 right-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full shadow-lg z-50">
-    Add to Home Screen
-</button>
+    <div class="block lg:hidden">
+        <button id="add-to-home-screen" class="fixed hidden bottom-4  right-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full shadow-lg z-50">
+            Add to Home Screen
+        </button>
+    </div>
 
-<script>
-    let deferredPrompt;
+    <div id="ios-install-prompt" class="fixed hidden text-center bottom-4 right-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full shadow-lg z-50">
+        <p>Install this app on your iPhone <br /> tap <img src="{{ asset('share-ios.svg') }}" alt="Add to Home Screen" class="inline-block rounded-full p-1 bg-white h-8 w-8" > and then "Add to Home Screen"</p>
+    </div>
 
-window.addEventListener('beforeinstallprompt', (event) => {
-    // Prevent the mini-infobar from appearing on mobile
-    event.preventDefault();
-    // Stash the event so it can be triggered later.
-    deferredPrompt = event;
-    // Update UI to notify the user they can add to home screen
-    const addToHomeScreenButton = document.getElementById('add-to-home-screen');
-    addToHomeScreenButton.classList.remove('hidden');
+    <script>
+        let deferredPrompt;
 
-    addToHomeScreenButton.addEventListener('click', () => {
-        // Hide the button
-        addToHomeScreenButton.classList.add('hidden');
-        // Show the install prompt
-        deferredPrompt.prompt();
-        // Wait for the user to respond to the prompt
-        deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-                console.log('User accepted the A2HS prompt');
-            } else {
-                console.log('User dismissed the A2HS prompt');
-            }
-            deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (event) => {
+            event.preventDefault();
+            deferredPrompt = event;
+            const addToHomeScreenButton = document.getElementById('add-to-home-screen');
+            addToHomeScreenButton.classList.remove('hidden');
+
+            addToHomeScreenButton.addEventListener('click', () => {
+                addToHomeScreenButton.classList.add('hidden');
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted permission to install the pwa app');
+                    } else {
+                        console.log('User dismissed the permission to install the pwa app');
+                    }
+                    deferredPrompt = null;
+                });
+            });
         });
-    });
-});
 
-// Optional: Handle the appinstalled event
-window.addEventListener('appinstalled', () => {
-    console.log('Application has been installed.');
-    // You can hide the button after installation
-    document.getElementById('add-to-home-screen').classList.add('hidden');
-});
+        window.addEventListener('appinstalled', () => {
+            console.log('Application has been installed.');
+            document.getElementById('add-to-home-screen').classList.add('hidden');
+        });
+        
+        const isIos = () => {
+        const userAgent = window.navigator.userAgent.toLowerCase();
+            return /iphone|ipad|ipod/.test(userAgent);
+        };
 
-</script>
+        const iosBtn = document.getElementById('ios-install-prompt');
+        
+        let hasSeenInstallPopup = localStorage.getItem("hasSeenInstallPopup");
+
+        const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+        if (isIos() && !isInStandaloneMode() && !hasSeenInstallPopup) {
+            iosBtn.style.display = 'block';
+            localStorage.setItem("hasSeenInstallPopup", true);
+        }
+
+    </script>
 </footer>
